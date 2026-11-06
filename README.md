@@ -11,7 +11,7 @@
 
 Website des **Sportverein 1946 Hochhausen/Tauber e.V.** (Tauberbischofsheim-Hochhausen).
 Gebaut mit [Astro](https://astro.build): statische Seiten, kaum JavaScript, sehr schnell.
-Kontakt- und Spendenformular laufen als kleine Serverfunktion auf Vercel.
+Kontakt- und Spendenformular laufen als kleines PHP-Skript direkt auf dem Webspace.
 
 > ⚠️ Nicht verwechseln: Der **SV Hochhausen 1966 e.V.** (Hochhausen am Neckar, sv-hochhausen.de) ist ein anderer Verein.
 
@@ -25,7 +25,7 @@ npm run build        # Produktions-Build (lädt die 7 Stockfotos + Instagram)
 ```
 
 Die echten Vereinsfotos und das Wappen liegen im Repository (`src/assets/`). Die wenigen Stockfotos werden erst beim
-Build (z. B. auf Vercel) geladen; ohne Internet zeigt die Seite dort gezeichnete Grafiken in Vereinsfarben.
+Build (in GitHub Actions) geladen; ohne Internet zeigt die Seite dort gezeichnete Grafiken in Vereinsfarben.
 
 Voraussetzung: Node.js **24.22.2** (steht in `.nvmrc`, mit nvm einfach `nvm use`) oder mindestens 22.23.4 bzw. 24.22.1 –
 ältere Versionen haben eine Sicherheitslücke in Brotli (CVE-2026-111497).
@@ -37,18 +37,26 @@ Voraussetzung: Node.js **24.22.2** (steht in `.nvmrc`, mit nvm einfach `nvm use`
 | Seiten       | Start, Aktuelles (+ Artikel), Verein (Vorstand, Geschichte, Sportstätten), Sport (6 Abteilungen), Fußball, Jugend, Termine & Training, Kalender (Liste/Monat), Vereinsleben, Galerie, Spenden, Mitglied werden, Sponsoren (+ Partner), Kontakt, Suche, Impressum, Datenschutz, 404 – alte Adressen der bisherigen Vereinswebsite leiten automatisch weiter |
 | Fußball      | Teamdaten + Tabellenstand aus fussball.de, offizielle Widgets per 2-Klick-Lösung (DSGVO)                                                                                                                                                                                                                                                                   |
 | Social Media | Bereich „Folge dem SVH“: Instagram-Beiträge (beim Build geladen, **lokal** ausgeliefert, kein Tracking; ohne Feed ein Bild-Teaser mit Link zu @sv_hochhausen) + Facebook-Timeline der Vereinsseite per 2-Klick                                                                                                                                             |
-| Formulare    | Spendenseite mit Vereinskonto, Kopier-Knöpfen und GiroCode (QR für Banking-Apps); Kontakt & Spende → E-Mail per SMTP (jedes Postfach, Mailjet optional), Honeypot + Zeitsperre gegen Spam, funktioniert auch ohne JavaScript                                                                                                                               |
+| Formulare    | Spendenseite mit Vereinskonto, Kopier-Knöpfen und GiroCode (QR für Banking-Apps); Kontakt & Spende → E-Mail per PHP auf dem Webspace (ohne Zugangsdaten), Honeypot + Zeitsperre gegen Spam, funktioniert auch ohne JavaScript                                                                                                                              |
 | Bilder       | Echte Vereinsfotos (alte Website + fussball.de) > 7 geprüfte Stockfotos ohne Personen > gezeichnete Grafik; kein Foto doppelt auf einer Seite, kleine Archivfotos nie unscharf groß; Galerie nur mit echten Fotos (+ Instagram); Original-Wappen; automatisch WebP + srcset                                                                                |
 | Animationen  | Weiche Seitenwechsel, Hero-Einstieg mit Ken-Burns-Effekt, Sport-Laufband, Scroll-Fortschritt, hochzählende Zahlen, Countdown zum nächsten Spiel, „Heute“ im Wochenplan, Hover-Effekte – alles abschaltbar über „Bewegung reduzieren“ im Betriebssystem                                                                                                     |
 | Termine      | Wochenplan aller Trainings, Kalender mit Monatsansicht, `.ics`-Export                                                                                                                                                                                                                                                                                      |
 | Suche        | Index wird beim Build erzeugt (`/suche.json`), Overlay mit Tastatursteuerung (`/` oder Strg+K)                                                                                                                                                                                                                                                             |
 | Datenschutz  | Schriften und Bilder lokal, keine Cookies, keine Karten-Einbettung, fussball.de und Facebook erst nach Klick                                                                                                                                                                                                                                               |
 
-## Deployment (GitHub + Vercel)
+## Deployment (GitHub → Webspace)
 
-1. **Windows:** Doppelklick auf `GITHUB-HOCHLADEN.cmd` – installiert bei Bedarf Git und GitHub CLI, meldet dich an, legt das Repository an und lädt alles hoch.
-2. Auf [vercel.com/new](https://vercel.com/new) das Repository importieren → _Deploy_. Vercel erkennt Astro automatisch.
-3. Umgebungsvariablen unter _Project → Settings → Environment Variables_ eintragen (siehe `.env.example`), danach _Redeploy_.
+1. Jeder Push auf `main` wird von der CI geprüft (Format, Lint, Unit-Tests, Build, E2E inkl. Formulare).
+2. Ist die CI grün, baut der Workflow **Deploy** die Seite und lädt `dist/` per SFTP auf den Webspace – zusätzlich
+   jede Nacht, damit „Kommende Termine“, das nächste Spiel und Instagram aktuell bleiben.
+3. Einmalig einrichten: öffentlichen Deploy-Schlüssel in der Hosting-Verwaltung hinterlegen, dann
+   `bash scripts/deploy-secrets.sh` (überträgt die Werte aus der lokalen `.env` als GitHub-Secrets, ohne sie anzuzeigen)
+   und `gh variable set DEPLOY_ENABLED --body true`.
+
+**Windows:** Doppelklick auf `GITHUB-HOCHLADEN.cmd` lädt Änderungen nach GitHub hoch – veröffentlicht wird dann automatisch.
+
+> 🔒 Das Repository ist öffentlich: Zugangsdaten, Server und Logins gehören nie hinein – nur in die lokale `.env` und
+> in GitHub-Secrets (siehe [`AGENTS.md`](AGENTS.md), Regel 1).
 
 ## Inhalte pflegen
 
@@ -80,7 +88,7 @@ Mitmachen: [`CONTRIBUTING.md`](CONTRIBUTING.md).
 ```
 src/
   data/         Inhalte (Verein, News, Termine, Sport, Vorstand, Spenden, fussball.de …)
-  pages/        Seiten (+ api/contact.js, api/spende.js als Serverfunktionen)
+  pages/        Seiten (+ api/config.json.js: Einstellungen für die Formulare)
   components/   Astro-Komponenten (Header, Karten, Formulare, Widgets …)
   layouts/      BaseLayout (Meta, Header, Footer)
   lib/          Helfer (Bilder, Platzhalter, Datum, Suche, Mail)
@@ -89,6 +97,6 @@ src/
   assets/       wappen.png, photos/ (Vereinsfotos), instagram/ (wird beim Build erzeugt)
 tests/          Unit-Tests (Vitest)
 scripts/        prebuild.mjs (Fotos/Instagram laden), github-upload.ps1
-public/         favicon, Open-Graph-Bild
+public/         favicon, Open-Graph-Bild, api/*.php (Kontakt- und Spendenformular)
 .github/        CI, Dependabot, Vorlagen für Issues und Pull Requests
 ```
