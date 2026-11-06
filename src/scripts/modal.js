@@ -2,6 +2,7 @@
    Termin-Details (Modal) + Kalendereintrag (.ics)
    ========================================================= */
 import { trapFocus } from './a11y.js'
+import { buildIcs } from './ics.js'
 
 const modal = document.querySelector('[data-event-modal]')
 const dataEl = document.getElementById('svh-events-data')
@@ -10,47 +11,6 @@ let returnFocus = null
 let current = null
 
 const $ = (sel) => modal?.querySelector(sel)
-
-function icsEscape(s = '') {
-  return String(s).replace(/\\/g, '\\\\').replace(/;/g, '\;').replace(/,/g, '\\,').replace(/\n/g, '\\n')
-}
-function pad(n) {
-  return String(n).padStart(2, '0')
-}
-function buildIcs(ev) {
-  const [y, m, d] = ev.date.split('-').map(Number)
-  const t = (ev.time || '').match(/(\d{1,2}):(\d{2})/)
-  const stamp = new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d+/, '')
-  let start
-  let end
-  if (t) {
-    const s = new Date(y, m - 1, d, Number(t[1]), Number(t[2]))
-    const e = new Date(s.getTime() + (ev.durationMin || 120) * 60000)
-    const f = (x) => `${x.getFullYear()}${pad(x.getMonth() + 1)}${pad(x.getDate())}T${pad(x.getHours())}${pad(x.getMinutes())}00`
-    start = `DTSTART:${f(s)}`
-    end = `DTEND:${f(e)}`
-  } else {
-    const next = new Date(y, m - 1, d + 1)
-    start = `DTSTART;VALUE=DATE:${y}${pad(m)}${pad(d)}`
-    end = `DTEND;VALUE=DATE:${next.getFullYear()}${pad(next.getMonth() + 1)}${pad(next.getDate())}`
-  }
-  return [
-    'BEGIN:VCALENDAR',
-    'VERSION:2.0',
-    'PRODID:-//SV Hochhausen 1946//Website//DE',
-    'CALSCALE:GREGORIAN',
-    'BEGIN:VEVENT',
-    `UID:${ev.id}@sv-hochhausen-1946`,
-    `DTSTAMP:${stamp}`,
-    start,
-    end,
-    `SUMMARY:${icsEscape(ev.title)}`,
-    `LOCATION:${icsEscape(ev.location || '')}`,
-    `DESCRIPTION:${icsEscape(ev.description || '')}`,
-    'END:VEVENT',
-    'END:VCALENDAR',
-  ].join('\r\n')
-}
 
 export function openEvent(id) {
   const ev = events[id]
