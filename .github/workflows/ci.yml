@@ -15,13 +15,24 @@ concurrency:
 
 jobs:
   quality:
-    name: Format, Lint & Tests
+    name: Format, Lint & Tests (Node ${{ matrix.label }})
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # Neueste 24er laut .nvmrc und die kleinste erlaubte 22er (Brotli-Fix, CVE-2026-111497).
+          # Exakte Versionen: mit nur „22“ nimmt setup-node evtl. eine ältere, vorinstallierte Version.
+          - label: 24 (.nvmrc)
+            node-version-file: .nvmrc
+          - label: 22.23.4
+            node-version: 22.23.4
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v7
         with:
-          node-version-file: .nvmrc
+          node-version: ${{ matrix.node-version }}
+          node-version-file: ${{ matrix.node-version-file }}
           cache: npm
       - run: npm ci
       - name: Prettier

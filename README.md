@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/teifler/sv-hochhausen/actions/workflows/ci.yml/badge.svg)](https://github.com/teifler/sv-hochhausen/actions/workflows/ci.yml)
 ![Astro 7](https://img.shields.io/badge/Astro-7.4-BC52EE?logo=astro&logoColor=white)
-![Node ≥ 22.23](https://img.shields.io/badge/Node-%E2%89%A522.23-339933?logo=nodedotjs&logoColor=white)
+![Node 24.22 | 22.23.4+](https://img.shields.io/badge/Node-24.22%20%7C%2022.23.4%2B-339933?logo=nodedotjs&logoColor=white)
 [![Prettier](https://img.shields.io/badge/code_style-Prettier-F7B93E?logo=prettier&logoColor=white)](https://prettier.io)
 [![ESLint](https://img.shields.io/badge/lint-ESLint-4B32C3?logo=eslint&logoColor=white)](https://eslint.org)
 [![Vitest](https://img.shields.io/badge/tests-Vitest-6E9F18?logo=vitest&logoColor=white)](https://vitest.dev)
@@ -26,7 +26,8 @@ npm run build        # Produktions-Build (lädt die 7 Stockfotos + Instagram)
 Die echten Vereinsfotos und das Wappen liegen im Repository (`src/assets/`). Die wenigen Stockfotos werden erst beim
 Build (z. B. auf Vercel) geladen; ohne Internet zeigt die Seite dort gezeichnete Grafiken in Vereinsfarben.
 
-Voraussetzung: Node.js ≥ 22.23.4 (empfohlen 24 LTS – mit nvm einfach `nvm use`, die Version steht in `.nvmrc`).
+Voraussetzung: Node.js **24.22.2** (steht in `.nvmrc`, mit nvm einfach `nvm use`) oder mindestens 22.23.4 bzw. 24.22.1 –
+ältere Versionen haben eine Sicherheitslücke in Brotli (CVE-2026-111497).
 
 ## Was drin ist
 

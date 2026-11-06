@@ -5,14 +5,14 @@ Menschen. `CLAUDE.md` bindet diese Datei nur ein. Inhaltspflege für Vereinsmitg
 
 ## Auf einen Blick
 
-|              |                                                                                             |
-| ------------ | ------------------------------------------------------------------------------------------- |
-| Projekt      | Website des **Sportverein 1946 Hochhausen/Tauber e.V.**                                     |
-| Stack        | Astro 7.4 (statisch) · Vanilla-JS · CSS-Custom-Properties · Formular-API als Serverfunktion |
-| Node         | ≥ 22.23.4 (Astro 7.4.2), empfohlen 24 LTS – siehe `.nvmrc` (`nvm use`)                      |
-| Inhalte      | ausschließlich `src/data/*.js`                                                              |
-| Qualität     | Prettier · ESLint (inkl. a11y) · Vitest · Husky + lint-staged + commitlint · GitHub Actions |
-| Fertig heißt | `npm run validate` **und** `npm run build:local` laufen fehlerfrei                          |
+|              |                                                                                                            |
+| ------------ | ---------------------------------------------------------------------------------------------------------- |
+| Projekt      | Website des **Sportverein 1946 Hochhausen/Tauber e.V.**                                                    |
+| Stack        | Astro 7.4 (statisch) · Vanilla-JS · CSS-Custom-Properties · Formular-API als Serverfunktion                |
+| Node         | **24.22.2** laut `.nvmrc` (`nvm use`); erlaubt `>=22.23.4 <23 \|\| >=24.22.1` (Brotli-Fix CVE-2026-111497) |
+| Inhalte      | ausschließlich `src/data/*.js`                                                                             |
+| Qualität     | Prettier · ESLint (inkl. a11y) · Vitest · Husky + lint-staged + commitlint · GitHub Actions                |
+| Fertig heißt | `npm run validate` **und** `npm run build:local` laufen fehlerfrei                                         |
 
 ## 1. Was ist das?
 

@@ -11,7 +11,7 @@ nichts selbst ändert, legt ein Issue mit der Vorlage **„Inhalt ändern oder e
 ## Am Code arbeiten
 
 ```bash
-nvm use              # Node-Version aus .nvmrc (24 LTS)
+nvm use              # Node-Version aus .nvmrc (24.22.2)
 npm install          # installiert auch die Git-Hooks
 npm run dev          # http://localhost:4321
 ```
