@@ -1,0 +1,88 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import PageHero from '../../components/PageHero.astro'
+import Icon from '../../components/Icon.astro'
+import ContactForm from '../../components/ContactForm.astro'
+import { contact, socials, routeUrl } from '../../data/site.js'
+import { chairs, departmentHeads } from '../../data/people.js'
+import { venues } from '../../data/venues.js'
+
+const c = contact.main
+const live = socials.filter((s) => s.url)
+const places = venues.filter((v) => ['sportplatz', 'konradsaal', 'friedhof'].includes(v.id))
+---
+<BaseLayout title="Kontakt" description="Kontakt zum SV Hochhausen 1946: Zum Sportplatz 10, 97941 Tauberbischofsheim-Hochhausen, Telefon Sportheim 09341 12534, info@sportverein-hochhausen.de.">
+  <PageHero title="Kontakt" eyebrow="Wir sind für dich da" lead="Fragen zu Training, Mitgliedschaft, Sponsoring oder Sportheim? Schreib uns – oder komm einfach vorbei." theme="club" seed={8} />
+
+  <section class="svh-section">
+    <div class="svh-container">
+      <div class="svh-contact-grid">
+        <div>
+          <div class="svh-contact-list">
+            <a class="svh-contact-item" href={routeUrl('Zum Sportplatz 10, 97941 Tauberbischofsheim')} target="_blank" rel="noopener noreferrer">
+              <span class="svh-contact-item__icon"><Icon name="map-pin" /></span>
+              <div><h3>Adresse</h3><p>Sportverein 1946 Hochhausen/Tauber e.V.<br />{c.street}<br />{c.zip} {c.city}</p></div>
+            </a>
+            <a class="svh-contact-item" href={`tel:${c.phoneHref}`}>
+              <span class="svh-contact-item__icon"><Icon name="phone" /></span>
+              <div><h3>Telefon</h3><p>{c.phone} (Sportheim)</p></div>
+            </a>
+            <a class="svh-contact-item" href={`mailto:${c.email}`}>
+              <span class="svh-contact-item__icon"><Icon name="mail" /></span>
+              <div><h3>E-Mail</h3><p>{c.email}</p></div>
+            </a>
+            <div class="svh-contact-item">
+              <span class="svh-contact-item__icon"><Icon name="instagram" /></span>
+              <div>
+                <h3>Social Media</h3>
+                <p>
+                  {live.map((s, i) => (
+                    <>
+                      {i > 0 && ' · '}
+                      <a href={s.url} target="_blank" rel="noopener noreferrer">{s.label}</a>
+                    </>
+                  ))}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <h2 class="svh-subhead svh-mt-3" style="margin-top:2rem">Ansprechpersonen</h2>
+          <dl class="svh-roles">
+            <div><dt>Vorsitzende</dt><dd>{chairs.map((p) => p.name).join(', ')}</dd></div>
+            {departmentHeads.map((d) => (
+              <div>
+                <dt><a href={d.to}>{d.dept}</a></dt>
+                <dd>{d.name}</dd>
+              </div>
+            ))}
+          </dl>
+          <p class="svh-form__note svh-mt-1">Alle Ansprechpersonen erreichst du über {c.email} oder das Formular.</p>
+        </div>
+
+        <div class="svh-form-card">
+          <h2>Schreib uns</h2>
+          <p>Wir melden uns so bald wie möglich bei dir.</p>
+          <ContactForm />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="svh-section svh-section--soft">
+    <div class="svh-container">
+      <div class="svh-section-head"><span class="svh-eyebrow">Anfahrt</span><h2 class="svh-section-title">So findest du uns</h2></div>
+      <div class="svh-grid svh-grid--3">
+        {places.map((v) => (
+          <a class="svh-info-card" href={routeUrl(v.maps)} target="_blank" rel="noopener noreferrer">
+            <span class="svh-info-card__icon"><Icon name="navigation" /></span>
+            <h3>{v.name}</h3>
+            <p>{v.address}</p>
+            <span class="svh-textlink">Route planen <Icon name="external" /></span>
+          </a>
+        ))}
+      </div>
+      <p class="svh-form__note svh-mt-2">Die Routenplanung öffnet Google Maps in einem neuen Fenster. Auf unserer Website ist bewusst keine Karte eingebunden – so werden beim Besuch keine Daten an Kartendienste übertragen.</p>
+    </div>
+  </section>
+</BaseLayout>

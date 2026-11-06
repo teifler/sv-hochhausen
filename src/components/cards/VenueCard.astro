@@ -1,0 +1,23 @@
+---
+import Media from '../Media.astro'
+import Icon from '../Icon.astro'
+import { routeUrl } from '../../data/site.js'
+
+interface Props {
+  venue: any
+}
+const { venue: v } = Astro.props
+---
+<article class="svh-venue">
+  <Media theme={v.theme} seed={v.seed} ratio="16x9" zoom photo={false} />
+  <div class="svh-venue__body">
+    <h3 class="svh-venue__title">{v.name}</h3>
+    <p class="svh-venue__addr"><Icon name="map-pin" /><span>{v.address}</span></p>
+    <p class="svh-venue__text">{v.text}</p>
+    <div class="svh-tags">{v.tags.map((t: string) => <span class="svh-chip">{t}</span>)}</div>
+    <div class="svh-venue__foot svh-actions">
+      <a class="svh-textlink" href={routeUrl(v.maps)} target="_blank" rel="noopener noreferrer">Route planen <Icon name="navigation" /></a>
+      {v.phone && <a class="svh-textlink" href={`tel:${v.phoneHref}`}>{v.phone} <Icon name="phone" /></a>}
+    </div>
+  </div>
+</article>

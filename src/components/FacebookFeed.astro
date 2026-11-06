@@ -1,0 +1,45 @@
+---
+/* Facebook-Seite des Vereins (Timeline) – erst nach Klick laden */
+import Icon from './Icon.astro'
+import { socials } from '../data/site.js'
+
+interface Props {
+  height?: number
+}
+const { height = 640 } = Astro.props
+const fb = socials.find((s) => s.id === 'facebook' && s.url)
+const src = fb
+  ? `https://www.facebook.com/plugins/page.php?href=${encodeURIComponent(fb.url)}&tabs=timeline&width=500&height=${height}&small_header=true&adapt_container_width=true&hide_cover=false&show_facepile=false`
+  : ''
+const html = fb
+  ? `<iframe src="${src}" width="500" height="${height}" style="border:none;overflow:hidden;width:100%;max-width:500px" scrolling="no" allowfullscreen="true" allow="encrypted-media" loading="lazy" title="Facebook-Seite des SV Hochhausen"></iframe>`
+  : ''
+---
+{
+  fb && (
+    <div class="svh-fbfeed" data-embed="facebook">
+      <div class="svh-fbfeed__head">
+        <span class="svh-fbfeed__icon"><Icon name="facebook" /></span>
+        <div>
+          <b>SV Hochhausen auf Facebook</b>
+          <span>Neuigkeiten, Fotos und Termine</span>
+        </div>
+        <a class="svh-btn svh-btn--outline svh-btn--sm" href={fb.url} target="_blank" rel="noopener noreferrer">Seite öffnen <Icon name="external" /></a>
+      </div>
+      <div class="svh-consent" data-embed-consent>
+        <p>
+          <strong>Facebook-Beiträge hier anzeigen?</strong> Beim Laden werden Daten (u. a. deine IP-Adresse) an Meta übertragen.{' '}
+          <a href="/datenschutz/#facebook">Mehr dazu</a>
+        </p>
+        <div class="svh-actions">
+          <label class="svh-check"><input type="checkbox" data-embed-remember />Für künftige Besuche merken</label>
+          <button class="svh-btn svh-btn--primary svh-btn--sm" type="button" data-embed-load>Beiträge laden</button>
+        </div>
+      </div>
+      <div class="svh-fbfeed__slot" data-embed-slot><template set:html={html}></template></div>
+    </div>
+  )
+}
+<script>
+  import '../scripts/embeds.js'
+</script>

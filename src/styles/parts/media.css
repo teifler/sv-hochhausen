@@ -1,0 +1,74 @@
+/* --- Media / Bild-Platzhalter ---------------------------- */
+.svh-media {
+  position: relative;
+  overflow: hidden;
+  background: var(--svh-bg-soft);
+  border-radius: var(--svh-radius);
+  isolation: isolate;
+}
+.svh-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.svh-media--r-16x9 {
+  aspect-ratio: 16 / 9;
+}
+.svh-media--r-3x2 {
+  aspect-ratio: 3 / 2;
+}
+.svh-media--r-4x3 {
+  aspect-ratio: 4 / 3;
+}
+.svh-media--r-1x1 {
+  aspect-ratio: 1 / 1;
+}
+.svh-media--r-3x4 {
+  aspect-ratio: 3 / 4;
+}
+.svh-media--r-21x9 {
+  aspect-ratio: 21 / 9;
+}
+.svh-media--fill {
+  height: 100%;
+}
+
+/* Zoom bei Hover des umgebenden, interaktiven Elements */
+.svh-zoom img {
+  transition: transform var(--svh-t-slow) var(--svh-ease);
+}
+.svh-hoverable:hover .svh-zoom img,
+a:hover > .svh-zoom img {
+  transform: scale(1.06);
+}
+
+/* Verlaufs-Overlay für Text auf Bildern */
+.svh-media__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(8, 10, 15, 0.72) 0%, rgba(8, 10, 15, 0.15) 45%, transparent 70%);
+}
+.svh-media__cap {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 1.1rem 1.25rem;
+  color: #fff;
+  z-index: 2;
+}
+.svh-media__badge {
+  position: absolute;
+  top: 0.9rem;
+  left: 0.9rem;
+  z-index: 3;
+}
+
+/* Logo-Marke (Wappen) */
+.svh-logo {
+  display: block;
+}
+img.svh-logo {
+  object-fit: contain;
+  filter: drop-shadow(0 1px 1px rgba(10, 12, 18, 0.18));
+}

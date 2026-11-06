@@ -1,0 +1,212 @@
+/* --- Buttons & Chips ------------------------------------- */
+.svh-btn {
+  --btn-bg: var(--svh-red);
+  --btn-fg: #fff;
+  --btn-bd: transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  font-family: var(--svh-display);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 1.02rem;
+  line-height: 1;
+  padding: 0.92rem 1.5rem;
+  border-radius: var(--svh-radius-pill);
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  border: 2px solid var(--btn-bd);
+  transition:
+    transform var(--svh-t) var(--svh-ease),
+    background var(--svh-t) var(--svh-ease),
+    color var(--svh-t) var(--svh-ease),
+    box-shadow var(--svh-t) var(--svh-ease),
+    border-color var(--svh-t) var(--svh-ease);
+}
+.svh-btn svg {
+  width: 1.05em;
+  height: 1.05em;
+  transition: transform var(--svh-t) var(--svh-ease);
+}
+.svh-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--svh-shadow);
+}
+.svh-btn:hover svg.svh-arrow {
+  transform: translateX(3px);
+}
+.svh-btn:active {
+  transform: translateY(0);
+}
+
+.svh-btn--primary {
+  --btn-bg: var(--svh-red);
+  --btn-fg: #fff;
+}
+.svh-btn--primary:hover {
+  --btn-bg: var(--svh-red-dark);
+}
+.svh-btn--dark {
+  --btn-bg: var(--svh-ink);
+  --btn-fg: #fff;
+}
+.svh-btn--dark:hover {
+  --btn-bg: #000;
+}
+.svh-btn--light {
+  --btn-bg: #fff;
+  --btn-fg: var(--svh-ink);
+  --btn-bd: var(--svh-line);
+}
+.svh-btn--light:hover {
+  --btn-bg: var(--svh-bg-soft);
+}
+.svh-btn--outline {
+  --btn-bg: transparent;
+  --btn-fg: var(--svh-ink);
+  --btn-bd: var(--svh-ink);
+}
+.svh-btn--outline:hover {
+  --btn-bg: var(--svh-ink);
+  --btn-fg: #fff;
+}
+.svh-btn--ghost {
+  --btn-bg: transparent;
+  --btn-fg: var(--svh-red);
+  --btn-bd: transparent;
+  padding-inline: 0.6rem;
+}
+.svh-btn--ghost:hover {
+  box-shadow: none;
+  --btn-fg: var(--svh-red-dark);
+}
+/* Auf dunklen / roten Flächen */
+.svh-btn--on-dark {
+  --btn-bg: #fff;
+  --btn-fg: var(--svh-ink);
+}
+.svh-btn--on-dark:hover {
+  --btn-bg: rgba(255, 255, 255, 0.88);
+}
+.svh-btn--outline-on-dark {
+  --btn-bg: transparent;
+  --btn-fg: #fff;
+  --btn-bd: rgba(255, 255, 255, 0.55);
+}
+.svh-btn--outline-on-dark:hover {
+  --btn-bg: rgba(255, 255, 255, 0.12);
+  --btn-bd: #fff;
+}
+
+.svh-btn--sm {
+  font-size: 0.9rem;
+  padding: 0.62rem 1.05rem;
+}
+.svh-btn--lg {
+  font-size: 1.14rem;
+  padding: 1.05rem 1.9rem;
+}
+.svh-btn--block {
+  width: 100%;
+}
+.svh-btn[disabled] {
+  opacity: 0.6;
+  cursor: progress;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Text-Link mit Pfeil */
+.svh-textlink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: var(--svh-display);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--svh-red);
+  transition: gap var(--svh-t) var(--svh-ease);
+}
+.svh-textlink svg {
+  width: 1.05em;
+  height: 1.05em;
+  transition: transform var(--svh-t) var(--svh-ease);
+}
+.svh-textlink:hover {
+  gap: 0.7rem;
+}
+.svh-textlink:hover svg {
+  transform: translateX(2px);
+}
+.svh-section--dark .svh-textlink,
+.svh-section--red .svh-textlink {
+  color: #fff;
+}
+
+/* Kategorie-/Filter-Chips */
+.svh-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--svh-display);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 0.82rem;
+  padding: 0.38rem 0.85rem;
+  border-radius: var(--svh-radius-pill);
+  background: var(--svh-bg-soft);
+  color: var(--svh-ink-2);
+  border: 1.5px solid transparent;
+  transition:
+    background var(--svh-t) var(--svh-ease),
+    color var(--svh-t) var(--svh-ease),
+    border-color var(--svh-t) var(--svh-ease);
+}
+.svh-chip__dot {
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 50%;
+  background: var(--chip-accent, var(--svh-red));
+}
+button.svh-chip:hover {
+  border-color: var(--svh-line);
+}
+.svh-chip.is-active {
+  background: var(--svh-ink);
+  color: #fff;
+}
+.svh-chip.is-active .svh-chip__dot {
+  background: #fff;
+}
+
+/* Kleines Label / Badge */
+.svh-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--svh-display);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.76rem;
+  padding: 0.32rem 0.7rem;
+  border-radius: var(--svh-radius-pill);
+  background: var(--svh-red-soft);
+  color: var(--svh-red-dark);
+}
+.svh-badge--solid {
+  background: var(--svh-red);
+  color: #fff;
+}
+.svh-badge--muted {
+  background: var(--svh-bg-soft);
+  color: var(--svh-muted);
+}
+.svh-badge--placeholder {
+  background: #fff5e6;
+  color: #a35a00;
+}

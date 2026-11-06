@@ -1,0 +1,41 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import PageHero from '../components/PageHero.astro'
+import SectionHeader from '../components/SectionHeader.astro'
+import EventCard from '../components/cards/EventCard.astro'
+import WeeklyPlan from '../components/WeeklyPlan.astro'
+import EventModal from '../components/EventModal.astro'
+import Icon from '../components/Icon.astro'
+import { upcomingEvents } from '../data/events.js'
+
+const events = upcomingEvents()
+---
+<BaseLayout title="Termine & Training" description="Veranstaltungen, Spiele und alle Trainingszeiten des SV Hochhausen 1946 auf einen Blick.">
+  <PageHero title="Termine & Training" eyebrow="Was steht an?" lead="Veranstaltungen, Spiele und der Wochenplan mit allen Trainingszeiten." theme="hiking" seed={3} />
+
+  <section class="svh-section">
+    <div class="svh-container">
+      <div class="svh-head-row">
+        <SectionHeader eyebrow="Veranstaltungen" title="Nächste Termine" lead="Ein Klick auf einen Termin zeigt alle Details – inklusive Kalendereintrag zum Speichern." />
+        <a class="svh-btn svh-btn--dark" href="/kalender/">Zum Vereinskalender <Icon name="calendar" /></a>
+      </div>
+      {
+        events.length ? (
+          <div class="svh-grid svh-grid--2">{events.map((e) => <EventCard event={e} />)}</div>
+        ) : (
+          <p class="svh-empty">Aktuell sind keine Termine eingetragen.</p>
+        )
+      }
+      <p class="svh-note svh-note--info svh-mt-3"><Icon name="info" /><span>Weitere Termine wie Feste, Turniere oder die Mitgliederversammlung werden hier und im Amtsblatt veröffentlicht. Die Maiwanderung am 1. Mai findet jedes Jahr statt.</span></p>
+    </div>
+  </section>
+
+  <section class="svh-section svh-section--soft" id="training">
+    <div class="svh-container">
+      <SectionHeader eyebrow="Training" title="Wochenplan" lead="Regelmäßige Trainingszeiten aller Abteilungen. In Ferien und an Feiertagen kann es Abweichungen geben." />
+      <WeeklyPlan />
+    </div>
+  </section>
+
+  <EventModal events={events} />
+</BaseLayout>

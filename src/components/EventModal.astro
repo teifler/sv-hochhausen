@@ -1,0 +1,38 @@
+---
+/* Termin-Details als Dialog. Erwartet die Termine der Seite. */
+import Icon from './Icon.astro'
+import { eventMap } from '../lib/eventdata.js'
+
+interface Props {
+  events: any[]
+}
+const { events } = Astro.props
+const data = JSON.stringify(eventMap(events)).replace(/</g, '\\u003c')
+---
+<div class="svh-modal" data-event-modal role="dialog" aria-modal="true" aria-labelledby="svh-modal-title" inert>
+  <div class="svh-modal__card">
+    <div class="svh-modal__head">
+      <span class="svh-badge" data-m-type>Termin</span>
+      <h3 id="svh-modal-title" data-m-title>Termin</h3>
+      <button class="svh-modal__close" type="button" data-m-close aria-label="Schließen"><Icon name="x" /></button>
+    </div>
+    <div class="svh-modal__body">
+      <div class="svh-modal__facts">
+        <div><Icon name="calendar" /><span data-m-date></span></div>
+        <div><Icon name="clock" /><span data-m-time></span></div>
+        <div><Icon name="map-pin" /><span data-m-location></span></div>
+      </div>
+      <p data-m-desc></p>
+      <p class="svh-note svh-note--info" data-m-note hidden><Icon name="info" /><span></span></p>
+      <div class="svh-actions">
+        <button class="svh-btn svh-btn--primary svh-btn--sm" type="button" data-m-ics><Icon name="calendar" />In Kalender speichern</button>
+        <a class="svh-btn svh-btn--outline svh-btn--sm" href="/kontakt/" target="_blank" rel="noopener noreferrer" data-m-route hidden><Icon name="navigation" />Route</a>
+        <a class="svh-btn svh-btn--outline svh-btn--sm" href="/fussball/" target="_blank" rel="noopener noreferrer" data-m-link hidden>fussball.de<Icon name="external" /></a>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="application/json" id="svh-events-data" is:inline set:html={data}></script>
+<script>
+  import '../scripts/modal.js'
+</script>

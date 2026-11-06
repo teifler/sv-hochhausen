@@ -1,0 +1,98 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import PageHero from '../components/PageHero.astro'
+import Icon from '../components/Icon.astro'
+import SectionHeader from '../components/SectionHeader.astro'
+import DocumentCard from '../components/cards/DocumentCard.astro'
+import FollowBand from '../components/FollowBand.astro'
+import { documents } from '../data/documents.js'
+import { contact } from '../data/site.js'
+import { membershipFees } from '../data/membership.js'
+
+const antrag = documents.find((d) => d.id === 'mitgliedsantrag')
+const steps = [
+  { icon: 'download', title: 'Antrag herunterladen', text: 'Den Mitgliedsantrag als PDF öffnen und ausdrucken – das SEPA-Lastschriftmandat für den Jahresbeitrag ist gleich dabei.' },
+  { icon: 'file-text', title: 'Ausfüllen & unterschreiben', text: 'Persönliche Angaben eintragen, gewünschte Abteilung angeben und unterschreiben.' },
+  { icon: 'send', title: 'Abgeben', text: 'Per E-Mail, per Post oder direkt bei der Abteilungsleitung – fertig. Willkommen im Verein!' },
+]
+---
+<BaseLayout title="Mitglied werden" description="Mitglied im SV Hochhausen 1946 werden: Aufnahmeantrag herunterladen, ausfüllen und per E-Mail, Post oder über die Abteilungsleitung abgeben.">
+  <PageHero title="Mitglied werden" eyebrow="Mitmachen" lead="In drei Schritten zum SVH – in einer oder gleich mehreren Abteilungen." theme="team" seed={4} />
+
+  <section class="svh-section">
+    <div class="svh-container">
+      <div class="svh-grid svh-grid--3">
+        {
+          steps.map((s, i) => (
+            <div class="svh-info-card svh-reveal" data-delay={String(i)}>
+              <span class="svh-info-card__icon"><Icon name={s.icon} /></span>
+              <h3>{i + 1}. {s.title}</h3>
+              <p>{s.text}</p>
+            </div>
+          ))
+        }
+      </div>
+      <div class="svh-actions svh-actions--center svh-mt-3">
+        {antrag && <a class="svh-btn svh-btn--primary svh-btn--lg" href={antrag.url} target="_blank" rel="noopener noreferrer"><Icon name="download" />Mitgliedsantrag (PDF)</a>}
+        <a class="svh-btn svh-btn--outline svh-btn--lg" href={`mailto:${contact.main.email}?subject=Mitgliedsantrag`}><Icon name="mail" />Antrag per E-Mail senden</a>
+      </div>
+      <p class="svh-form__note svh-center svh-mt-2">Postanschrift: Sportverein 1946 Hochhausen/Tauber e.V., {contact.main.street}, {contact.main.zip} {contact.main.city}</p>
+    </div>
+  </section>
+
+  <section class="svh-section svh-section--soft svh-anchor" id="beitraege">
+    <div class="svh-container">
+      <SectionHeader eyebrow="Mitgliedsbeiträge" title="Fair für alle." lead="Die Jahresbeiträge laut Aufnahmeantrag – bequem per Lastschrift." center />
+      <div class="svh-fees">
+        {
+          membershipFees.map((f, i) => (
+            <div class="svh-fee svh-reveal" data-delay={String(i)}>
+              <span class="svh-fee__label">{f.label}</span>
+              <span class="svh-fee__price">
+                {f.price}
+                <small> €</small>
+              </span>
+              <span class="svh-fee__unit">{f.unit}</span>
+              {f.note && <span class="svh-fee__note">{f.note}</span>}
+            </div>
+          ))
+        }
+      </div>
+      <p class="svh-form__note svh-center svh-mt-2">Stand laut Aufnahmeantrag. Fragen zum Beitrag beantwortet der Kassenwart gern – <a href={`mailto:${contact.main.email}?subject=Mitgliedsbeitrag`}>{contact.main.email}</a>.</p>
+    </div>
+  </section>
+
+  <section class="svh-section svh-anchor" id="downloads">
+    <div class="svh-container svh-container--narrow">
+      <SectionHeader eyebrow="Downloads" title="Satzung & Formulare" />
+      <div class="svh-grid">{documents.map((d) => <DocumentCard doc={d} />)}</div>
+      <p class="svh-note svh-note--info svh-mt-2"><Icon name="info" /><span>Etwas fehlt oder ein Dokument lässt sich nicht öffnen? Schreib uns an <a href={`mailto:${contact.main.email}`}>{contact.main.email}</a>.</span></p>
+    </div>
+  </section>
+
+  <section class="svh-section">
+    <div class="svh-container">
+      <div class="svh-split">
+        <div class="svh-split__content">
+          <span class="svh-eyebrow">Erst mal testen?</span>
+          <h2>Schnuppern ist ausdrücklich erwünscht.</h2>
+          <p>Bevor du Mitglied wirst, kannst du jede Abteilung in Ruhe kennenlernen. Die Trainingszeiten stehen im Wochenplan – oder du meldest dich vorher kurz bei uns.</p>
+          <div class="svh-actions">
+            <a class="svh-btn svh-btn--primary" href="/termine/#training">Zum Wochenplan</a>
+            <a class="svh-btn svh-btn--outline" href="/kontakt/?anliegen=probetraining">Probetraining anfragen</a>
+          </div>
+        </div>
+        <ul class="svh-list-check">
+          <li><Icon name="check" /><span>Sechs Abteilungen – von Fußball bis Wandern</span></li>
+          <li><Icon name="check" /><span>Leihausrüstung im Bogenschießen für den Einstieg</span></li>
+          <li><Icon name="check" /><span>Schnuppertraining im Darts jederzeit möglich</span></li>
+          <li><Icon name="check" /><span>Gemeinschaft im Sportheim und bei der Maiwanderung</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="svh-section svh-section--tight">
+    <div class="svh-container"><FollowBand /></div>
+  </section>
+</BaseLayout>

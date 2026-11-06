@@ -1,0 +1,20 @@
+---
+import Pic from '../Pic.astro'
+import Icon from '../Icon.astro'
+
+interface Props {
+  sport: any
+  small?: boolean
+}
+const { sport: s, small = false } = Astro.props
+---
+<a class:list={['svh-sport-card', small && 'svh-sport-card--sm']} href={s.to}>
+  <div class="svh-sport-card__bg"><Pic theme={s.theme} seed={s.seed} clean width={700} widths={[400, 700]} sizes="(max-width: 560px) 100vw, (max-width: 1000px) 50vw, 33vw" w={900} h={700} /></div>
+  <div class="svh-sport-card__scrim"></div>
+  <span class="svh-sport-card__icon"><Icon name={s.icon} /></span>
+  <div class="svh-sport-card__inner">
+    <h3 class="svh-sport-card__title">{s.name}</h3>
+    <p class="svh-sport-card__text">{s.tagline}</p>
+    <span class="svh-sport-card__link">Mehr erfahren <Icon name="arrow-right" /></span>
+  </div>
+</a>

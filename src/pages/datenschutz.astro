@@ -1,0 +1,89 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import PageHero from '../components/PageHero.astro'
+import Icon from '../components/Icon.astro'
+import { club, contact } from '../data/site.js'
+import { chairs } from '../data/people.js'
+
+const c = contact.main
+---
+<BaseLayout title="Datenschutz" description="Datenschutzerklärung des Sportverein 1946 Hochhausen/Tauber e.V.">
+  <PageHero title="Datenschutzerklärung" eyebrow="Rechtliches" theme="neutral" seed={11} />
+  <section class="svh-section">
+    <div class="svh-container svh-container--narrow svh-prose">
+      <p class="svh-note"><Icon name="info" /><span>Mustertext für diese Website – bitte vor der Veröffentlichung durch den Vorstand prüfen (lassen) und an die tatsächlich genutzten Dienste anpassen.</span></p>
+
+      <h2>1. Verantwortlicher</h2>
+      <p>
+        {club.legalName}, {c.street}, {c.zip} {c.city}<br />
+        vertreten durch den Vorstand ({chairs.map((p) => p.name).join(', ')})<br />
+        E-Mail: <a href={`mailto:${c.email}`}>{c.email}</a> · Telefon: {c.phone}
+      </p>
+
+      <h2>2. Grundsätze</h2>
+      <p>
+        Wir verarbeiten personenbezogene Daten nur, soweit dies für eine funktionsfähige Website sowie unsere Inhalte und Leistungen erforderlich ist. Diese
+        Website verwendet <strong>keine Cookies, kein Tracking und keine Analyse-Dienste</strong>. Externe Inhalte (fussball.de, Facebook) werden nur nach deiner ausdrücklichen Zustimmung geladen.
+      </p>
+
+      <h2>3. Hosting und Server-Logfiles</h2>
+      <p>
+        Die Website wird bei Vercel Inc. (USA) gehostet. Beim Aufruf werden technisch notwendige Daten verarbeitet (z. B. IP-Adresse, Datum und Uhrzeit,
+        aufgerufene Seite, Browsertyp), um die Website auszuliefern und ihre Sicherheit zu gewährleisten. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO.
+        Eine Übermittlung in die USA erfolgt auf Grundlage der Standardvertragsklauseln bzw. des EU-US Data Privacy Framework; mit dem Anbieter ist ein
+        Vertrag zur Auftragsverarbeitung abzuschließen.
+      </p>
+
+      <h2>4. Kontakt- und Spendenformular, E-Mail</h2>
+      <p>
+        Wenn du uns über ein Formular oder per E-Mail kontaktierst, verarbeiten wir deine Angaben (z. B. Name, E-Mail-Adresse, Telefonnummer, Nachricht,
+        bei Spenden ggf. Betrag und Anschrift) ausschließlich zur Bearbeitung deines Anliegens. Die Formulardaten werden per E-Mail an den Verein übermittelt
+        und nicht auf der Website gespeichert. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO (Anfrage/Vertragsanbahnung) bzw. lit. a DSGVO (Einwilligung).
+        Die Daten werden gelöscht, sobald sie nicht mehr erforderlich sind und keine gesetzlichen Aufbewahrungspflichten bestehen.
+      </p>
+
+      <h2 id="fussballde">5. Spielplan und Tabelle von fussball.de</h2>
+      <p>
+        Auf der Fußballseite können Inhalte von fussball.de (Spielplan, Tabelle) eingebunden werden. Diese werden erst geladen, nachdem du aktiv auf
+        „Inhalte laden“ klickst (2-Klick-Lösung). Erst dann werden Daten wie deine IP-Adresse an den Betreiber von fussball.de übertragen; es gilt dessen
+        Datenschutzerklärung. Rechtsgrundlage ist deine Einwilligung (Art. 6 Abs. 1 lit. a DSGVO). Wenn du „Für künftige Besuche merken“ wählst, speichern
+        wir diese Entscheidung lokal in deinem Browser (localStorage, Schlüssel <code>svh-consent-fussballde</code>); du kannst sie jederzeit über die Browser-Einstellungen löschen.
+      </p>
+
+      <h2>6. Instagram und Facebook</h2>
+      <p>
+        Die auf der Website gezeigten Instagram-Bilder werden beim Erstellen der Website von unserem Server geladen und von dort ausgeliefert. Beim Besuch
+        unserer Seiten wird daher keine Verbindung zu Instagram aufgebaut. Links zu unseren Profilen sind einfache Links: Erst wenn du sie anklickst,
+        verarbeitet der jeweilige Anbieter (Meta Platforms Ireland Ltd.) Daten nach seinen eigenen Bestimmungen.
+      </p>
+      <p id="facebook">
+        <strong>Facebook-Seite (2-Klick-Lösung):</strong> Die Beiträge unserer Facebook-Seite werden erst angezeigt, wenn du auf „Beiträge laden“ klickst.
+        Dann wird eine Verbindung zu Meta Platforms Ireland Ltd. aufgebaut und es werden Daten wie deine IP-Adresse übertragen; Meta kann dabei Cookies
+        setzen. Rechtsgrundlage ist deine Einwilligung (Art. 6 Abs. 1 lit. a DSGVO). Es gilt die Datenschutzrichtlinie von Meta. Mit „Für künftige
+        Besuche merken“ speichern wir deine Entscheidung lokal in deinem Browser (localStorage, Schlüssel <code>svh-consent-facebook</code>).
+      </p>
+
+      <h2>7. Schriftarten und Karten</h2>
+      <p>
+        Die Schriftarten werden lokal von unserem Server geladen – es besteht keine Verbindung zu Google Fonts. Karten sind nicht eingebunden; Links zur
+        Routenplanung öffnen Google Maps erst nach deinem Klick in einem neuen Fenster.
+      </p>
+
+      <h2>8. Lokale Speicherung im Browser</h2>
+      <p>
+        Für Komfortfunktionen (z. B. die zuletzt gewählte Kalenderansicht) nutzt die Website den Sitzungsspeicher deines Browsers (sessionStorage). Diese
+        Daten verlassen dein Gerät nicht und werden beim Schließen des Browsers gelöscht.
+      </p>
+
+      <h2>9. Deine Rechte</h2>
+      <p>
+        Du hast das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Datenübertragbarkeit sowie Widerspruch gegen die
+        Verarbeitung. Eine erteilte Einwilligung kannst du jederzeit mit Wirkung für die Zukunft widerrufen. Wende dich dazu an
+        <a href={`mailto:${c.email}`}>{c.email}</a>. Außerdem kannst du dich bei einer Datenschutz-Aufsichtsbehörde beschweren, zum Beispiel beim
+        Landesbeauftragten für den Datenschutz und die Informationsfreiheit Baden-Württemberg.
+      </p>
+
+      <p class="svh-form__note">Stand: Oktober 2026</p>
+    </div>
+  </section>
+</BaseLayout>

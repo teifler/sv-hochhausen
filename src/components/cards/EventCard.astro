@@ -1,0 +1,26 @@
+---
+import Icon from '../Icon.astro'
+import { eventTypes } from '../../data/events.js'
+import { dayNum, monthShort, yearNum, fmtTime, weekdayShort } from '../../lib/format.js'
+
+interface Props {
+  event: any
+}
+const { event: e } = Astro.props
+const type = eventTypes[e.type] || eventTypes.verein
+---
+<button type="button" class="svh-event-card svh-hoverable" data-event-id={e.id} data-filter-cat={e.type} aria-haspopup="dialog">
+  <span class="svh-event-card__date">
+    <span class="d">{dayNum(e.date)}</span>
+    <span class="m">{monthShort(e.date)}</span>
+    <span class="y">{weekdayShort(e.date)} · {yearNum(e.date)}</span>
+  </span>
+  <span class="svh-event-card__body">
+    <span class="svh-badge" style={`background:color-mix(in srgb, ${type.color} 14%, #fff);color:${type.color}`}>{type.label}</span>
+    <span class="svh-event-card__title">{e.title}</span>
+    <span class="svh-event-card__facts">
+      {e.time && <span><Icon name="clock" />{fmtTime(e.time)}</span>}
+      {e.location && <span><Icon name="map-pin" />{e.location}</span>}
+    </span>
+  </span>
+</button>

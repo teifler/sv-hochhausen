@@ -1,0 +1,449 @@
+/* --- Split-Layout (Bild + Inhalt) ----------------------- */
+.svh-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(1.6rem, 4vw, 3.6rem);
+  align-items: center;
+}
+.svh-split--media-lg {
+  grid-template-columns: 1.15fr 0.85fr;
+}
+.svh-split__media .svh-media {
+  box-shadow: var(--svh-shadow);
+}
+.svh-split__content > * + * {
+  margin-top: 1rem;
+}
+.svh-split__content h2 {
+  font-size: clamp(1.8rem, 3.6vw, 2.7rem);
+  text-transform: uppercase;
+}
+.svh-split__content p {
+  color: var(--svh-ink-2);
+  font-size: 1.05rem;
+}
+.svh-section--dark .svh-split__content p {
+  color: rgba(255, 255, 255, 0.82);
+}
+@media (max-width: 860px) {
+  .svh-split,
+  .svh-split--media-lg {
+    grid-template-columns: 1fr;
+  }
+  .svh-split--reverse .svh-split__media {
+    order: -1;
+  }
+}
+
+.svh-list-check {
+  display: grid;
+  gap: 0.6rem;
+  margin-top: 0.4rem;
+}
+.svh-list-check li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  color: var(--svh-ink-2);
+}
+.svh-section--dark .svh-list-check li {
+  color: rgba(255, 255, 255, 0.85);
+}
+.svh-list-check svg {
+  flex: none;
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-top: 0.15rem;
+  color: var(--svh-red);
+}
+.svh-section--dark .svh-list-check svg {
+  color: #ff6b7d;
+}
+
+/* --- Timeline (Vereinsgeschichte) ----------------------- */
+.svh-timeline {
+  position: relative;
+  padding-left: 2.75rem;
+}
+.svh-timeline::before {
+  content: '';
+  position: absolute;
+  left: 10px;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  background: linear-gradient(var(--svh-red), var(--svh-red-tint));
+}
+.svh-tl-item {
+  position: relative;
+  padding-bottom: 1.9rem;
+}
+.svh-tl-item:last-child {
+  padding-bottom: 0;
+}
+.svh-tl-item::before {
+  content: '';
+  position: absolute;
+  left: calc(-2.75rem + 2px);
+  top: 3px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #fff;
+  border: 4px solid var(--svh-red);
+  box-shadow: 0 0 0 4px #fff;
+}
+.svh-tl-item--now::before {
+  background: var(--svh-red);
+}
+.svh-tl-year {
+  font-family: var(--svh-display);
+  font-weight: 700;
+  font-size: 1.6rem;
+  line-height: 1;
+  color: var(--svh-red);
+}
+.svh-tl-title {
+  font-family: var(--svh-display);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  font-size: 1.15rem;
+  color: var(--svh-ink);
+  margin-top: 0.2rem;
+}
+.svh-tl-text {
+  color: var(--svh-ink-2);
+  margin-top: 0.2rem;
+}
+
+/* --- Zitat / Grußwort ----------------------------------- */
+.svh-quote {
+  position: relative;
+  padding: clamp(1.6rem, 4vw, 2.8rem);
+  background: #fff;
+  border: 1px solid var(--svh-line);
+  border-left: 5px solid var(--svh-red);
+  border-radius: var(--svh-radius);
+  box-shadow: var(--svh-shadow);
+}
+.svh-quote__mark {
+  font-family: var(--svh-display);
+  font-size: 4rem;
+  line-height: 0.6;
+  color: var(--svh-red-tint);
+}
+.svh-quote p {
+  font-size: clamp(1.1rem, 2vw, 1.35rem);
+  color: var(--svh-ink);
+  font-style: italic;
+}
+.svh-quote__by {
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+.svh-quote__by b {
+  font-family: var(--svh-display);
+  text-transform: uppercase;
+  color: var(--svh-ink);
+}
+.svh-quote__by span {
+  display: block;
+  color: var(--svh-muted);
+  font-size: 0.9rem;
+}
+.svh-quote--on-dark {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+.svh-quote--on-dark .svh-quote__mark {
+  color: rgba(255, 255, 255, 0.25);
+}
+.svh-quote--on-dark p,
+.svh-quote--on-dark .svh-quote__by b {
+  color: #fff;
+}
+.svh-quote--on-dark .svh-quote__by {
+  justify-content: center;
+}
+
+/* --- Großes CTA-Band ------------------------------------ */
+.svh-cta-band {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--svh-radius-lg);
+  color: #fff;
+  isolation: isolate;
+}
+.svh-cta-band__bg {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+}
+.svh-cta-band__bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.svh-cta-band__scrim {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(120deg, rgba(154, 11, 34, 0.94) 0%, rgba(200, 16, 46, 0.82) 55%, rgba(114, 8, 21, 0.9) 100%);
+}
+.svh-cta-band__scrim--solid {
+  background: linear-gradient(120deg, #9a0b22, #c8102e);
+}
+.svh-cta-band__inner {
+  padding: clamp(2.2rem, 6vw, 4rem);
+  display: grid;
+  grid-template-columns: 1.4fr 0.6fr;
+  align-items: center;
+  gap: 2rem;
+}
+.svh-cta-band__inner h2 {
+  color: #fff;
+  font-size: clamp(1.9rem, 4.5vw, 3.1rem);
+  text-transform: uppercase;
+}
+.svh-cta-band__inner p {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1.08rem;
+  margin-top: 0.7rem;
+  max-width: 52ch;
+}
+.svh-cta-band__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  justify-self: end;
+  width: 100%;
+  max-width: 280px;
+}
+@media (max-width: 780px) {
+  .svh-cta-band__inner {
+    grid-template-columns: 1fr;
+  }
+  .svh-cta-band__actions {
+    justify-self: stretch;
+    max-width: none;
+  }
+}
+
+/* --- Newsletter-Band ------------------------------------ */
+.svh-newsletter {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 1.5rem 2.5rem;
+  padding: clamp(1.8rem, 4vw, 2.8rem);
+  background: var(--svh-ink);
+  color: #fff;
+  border-radius: var(--svh-radius-lg);
+}
+.svh-newsletter h2 {
+  color: #fff;
+  font-size: clamp(1.7rem, 3.5vw, 2.4rem);
+  text-transform: uppercase;
+}
+.svh-newsletter p {
+  color: rgba(255, 255, 255, 0.75);
+  margin-top: 0.4rem;
+}
+.svh-newsletter .svh-eyebrow {
+  color: #fff;
+}
+.svh-newsletter .svh-eyebrow::before {
+  background: #fff;
+}
+.svh-newsletter__form {
+  min-width: min(100%, 380px);
+}
+@media (max-width: 760px) {
+  .svh-newsletter {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* --- Vereinsleben-Mosaik -------------------------------- */
+.svh-mosaic {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: 165px;
+  gap: 0.8rem;
+}
+.svh-mosaic__item {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--svh-radius);
+  isolation: isolate;
+}
+.svh-mosaic__item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--svh-t-slow) var(--svh-ease);
+}
+.svh-mosaic__item:hover img {
+  transform: scale(1.06);
+}
+.svh-mosaic__item--wide {
+  grid-column: span 2;
+}
+.svh-mosaic__item--tall {
+  grid-row: span 2;
+}
+.svh-mosaic__cap {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  padding: 0.9rem 1rem;
+  color: #fff;
+  font-family: var(--svh-display);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  background: linear-gradient(to top, rgba(8, 10, 15, 0.75), transparent);
+}
+@media (max-width: 720px) {
+  .svh-mosaic {
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: 150px;
+  }
+}
+
+/* --- Sportstätten / Venue ------------------------------- */
+.svh-venue {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: #fff;
+  border: 1px solid var(--svh-line);
+  border-radius: var(--svh-radius);
+  overflow: hidden;
+  color: var(--svh-ink);
+  transition:
+    transform var(--svh-t) var(--svh-ease),
+    box-shadow var(--svh-t) var(--svh-ease);
+}
+.svh-venue:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--svh-shadow);
+}
+.svh-venue:hover .svh-zoom img {
+  transform: scale(1.06);
+}
+.svh-venue .svh-media {
+  border-radius: 0;
+}
+.svh-venue__body {
+  padding: 1.15rem 1.25rem 1.3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+}
+.svh-venue__title {
+  font-size: 1.35rem;
+  text-transform: uppercase;
+  color: var(--svh-ink);
+}
+.svh-venue__addr {
+  color: var(--svh-ink-2);
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+}
+.svh-venue__addr svg {
+  flex: none;
+  width: 1.15rem;
+  height: 1.15rem;
+  margin-top: 0.15rem;
+  color: var(--svh-red);
+}
+.svh-venue__foot {
+  margin-top: auto;
+  padding-top: 0.4rem;
+}
+
+/* --- Sportheim-Band ------------------------------------- */
+.svh-sportheim {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  border-radius: var(--svh-radius-lg);
+  overflow: hidden;
+  box-shadow: var(--svh-shadow);
+  background: #fff;
+  color: var(--svh-ink);
+}
+.svh-sportheim__media {
+  min-height: 340px;
+}
+.svh-sportheim__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.svh-sportheim__body {
+  padding: clamp(1.6rem, 4vw, 2.8rem);
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  justify-content: center;
+}
+.svh-sportheim__body h2 {
+  font-size: clamp(1.7rem, 3.5vw, 2.5rem);
+  text-transform: uppercase;
+}
+.svh-sportheim__body p {
+  color: var(--svh-ink-2);
+}
+@media (max-width: 820px) {
+  .svh-sportheim {
+    grid-template-columns: 1fr;
+  }
+  .svh-sportheim__media {
+    min-height: 240px;
+  }
+}
+
+/* --- Intro-Prosa ---------------------------------------- */
+.svh-prose {
+  max-width: 68ch;
+}
+.svh-prose > * + * {
+  margin-top: 1rem;
+}
+.svh-prose h2 {
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  text-transform: uppercase;
+  margin-top: 1.8rem;
+}
+.svh-prose h3 {
+  font-size: 1.3rem;
+  text-transform: uppercase;
+  margin-top: 1.4rem;
+}
+.svh-prose p,
+.svh-prose li {
+  color: var(--svh-ink-2);
+  font-size: 1.04rem;
+}
+.svh-prose ul {
+  display: grid;
+  gap: 0.5rem;
+  padding-left: 1.1rem;
+  list-style: disc;
+}
+.svh-prose a {
+  color: var(--svh-red);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}

@@ -1,0 +1,14 @@
+---
+import { avatar } from '../../lib/placeholder.js'
+
+interface Props {
+  person: any
+}
+const { person: p } = Astro.props
+---
+<div class="svh-person-card">
+  <div class="svh-person-card__avatar"><img src={avatar(p.initials, p.seed)} alt="" width="104" height="104" loading="lazy" decoding="async" /></div>
+  <h3 class="svh-person-card__name">{p.name}</h3>
+  <p class="svh-person-card__role">{p.role}</p>
+  {p.extra && <p class="svh-person-card__contact">{p.extra}</p>}
+</div>

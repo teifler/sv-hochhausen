@@ -1,0 +1,32 @@
+---
+/* Sofort-Weiterleitung für alte bzw. umbenannte Adressen
+   (Liste: src/data/redirects.js). Kein Layout, nicht im Sitemap/Index. */
+import { legacyRedirects } from '../data/redirects.js'
+
+export function getStaticPaths() {
+  return Object.entries(legacyRedirects).map(([legacy, to]) => ({ params: { legacy }, props: { to } }))
+}
+
+const { to } = Astro.props as { to: string }
+const site = Astro.site ?? new URL('https://sv-hochhausen.vercel.app')
+const canonical = new URL(to, site).href
+---
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Weiterleitung – SV Hochhausen 1946</title>
+    <meta name="robots" content="noindex, follow" />
+    <link rel="canonical" href={canonical} />
+    <meta http-equiv="refresh" content={`0; url=${to}`} />
+    <script is:inline set:html={`location.replace(${JSON.stringify(to)})`}></script>
+    <style>
+      body{font:16px/1.5 system-ui,sans-serif;display:grid;place-items:center;min-height:100vh;margin:0;color:#171a20}
+      a{color:#c8102e}
+    </style>
+  </head>
+  <body>
+    <p>Diese Seite ist umgezogen: <a href={to}>weiter zur neuen Seite</a></p>
+  </body>
+</html>

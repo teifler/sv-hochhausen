@@ -1,0 +1,123 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import PageHero from '../components/PageHero.astro'
+import Icon from '../components/Icon.astro'
+import SectionHeader from '../components/SectionHeader.astro'
+import DonationForm from '../components/DonationForm.astro'
+import GiroCode from '../components/GiroCode.astro'
+import { donate, donationPurposes } from '../data/donate.js'
+
+const b = donate.bank
+const rows = [
+  { label: 'Kontoinhaber', value: b.holder },
+  { label: 'IBAN', value: b.iban, copy: b.iban?.replace(/\s/g, '') },
+  { label: 'BIC', value: b.bic, copy: b.bic },
+  { label: 'Bank', value: b.bankName },
+  { label: 'Verwendungszweck', value: b.reference, copy: b.reference },
+].filter((r) => r.value)
+---
+<BaseLayout title="Spenden" description="Unterstütze den SV Hochhausen 1946: Spenden für Leihausrüstung, Sportplatz und Sportheim, Jugend sowie Integration und Inklusion.">
+  <PageHero title="Spenden" eyebrow="Unterstütze den SVH" lead="Seit 1946 lebt der SV Hochhausen vom Engagement seiner Mitglieder. Mit deiner Spende hilfst du, Sport in Hochhausen für alle möglich zu machen." theme="community" seed={7} crumbs={[{ label: 'Verein', to: '/verein/' }]} />
+
+  <section class="svh-section">
+    <div class="svh-container">
+      <SectionHeader eyebrow="Warum wir Spenden brauchen" title="Jeder Euro bleibt im Verein." lead="Mitgliedsbeiträge allein reichen oft nicht: Material, Anlagenpflege und neue Angebote kosten Geld. Deine Spende kommt direkt dort an, wo sie gebraucht wird." />
+      <div class="svh-grid svh-grid--3">
+        {
+          donationPurposes.map((p, i) => (
+            <div class="svh-info-card svh-reveal" data-delay={String(i % 3)}>
+              <span class="svh-info-card__icon"><Icon name={p.icon} /></span>
+              <h3>{p.title}</h3>
+              <p>{p.text}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="svh-section svh-section--soft" id="spenden-formular">
+    <div class="svh-container">
+      <div class="svh-layout-aside">
+        <div class="svh-form-card">
+          <h2>Spende ankündigen</h2>
+          <p>Betrag und Zweck auswählen, Kontaktdaten eintragen – wir melden uns und bestätigen deine Spende. Auf Wunsch gibt es eine Spendenquittung.</p>
+          <DonationForm />
+        </div>
+        <aside class="svh-aside">
+          <div class="svh-bank">
+            <div class="svh-bank__head"><Icon name="landmark" /><h3>Bankverbindung</h3></div>
+            {
+              b.iban ? (
+                <dl class="svh-bank__rows">
+                  {rows.map((r) => (
+                    <div class="svh-bank__row">
+                      <dt>{r.label}</dt>
+                      <dd>{r.value}</dd>
+                      {r.copy ? (
+                        <button class="svh-copy" type="button" data-copy={r.copy} aria-label={`${r.label} kopieren`} title={`${r.label} kopieren`}>
+                          <Icon name="copy" />
+                          <span data-copy-label>Kopieren</span>
+                        </button>
+                      ) : (
+                        <span></span>
+                      )}
+                    </div>
+                  ))}
+                </dl>
+              ) : (
+                <p class="svh-bank__empty">
+                  Die Bankverbindung des Vereins wird hier in Kürze ergänzt. Bis dahin einfach das Formular nutzen – wir melden uns mit den Überweisungsdaten. Oder direkt an{' '}
+                  <a href={`mailto:${donate.contactEmail}?subject=Spende`}>{donate.contactEmail}</a> schreiben.
+                </p>
+              )
+            }
+            {b.iban && <GiroCode />}
+          </div>
+          {
+            donate.paypalUrl && (
+              <a class="svh-btn svh-btn--dark svh-btn--block" href={donate.paypalUrl} target="_blank" rel="noopener noreferrer">
+                Mit PayPal spenden <Icon name="external" />
+              </a>
+            )
+          }
+          <div class="svh-aside-card">
+            <h3>Spendenquittung</h3>
+            <p>Du brauchst eine Zuwendungsbestätigung? Gib es im Formular an – der Kassenwart meldet sich bei dir.</p>
+          </div>
+          <div class="svh-aside-card">
+            <h3>Zeit &amp; Material</h3>
+            <p>Auch Sachspenden und helfende Hände unterstützen den Verein – etwa bei der Platzpflege oder bei Veranstaltungen.</p>
+            <a class="svh-textlink" href="/kontakt/?anliegen=spende">Kontakt aufnehmen <Icon name="arrow-right" /></a>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="svh-section">
+    <div class="svh-container">
+      <SectionHeader eyebrow="Weitere Wege" title="So kannst du noch helfen" center />
+      <div class="svh-grid svh-grid--3">
+        <a class="svh-info-card" href="/mitglied-werden/">
+          <span class="svh-info-card__icon"><Icon name="users" /></span>
+          <h3>Mitglied werden</h3>
+          <p>Jede Mitgliedschaft stärkt den Verein – auch ohne selbst aktiv Sport zu treiben.</p>
+          <span class="svh-textlink">Zum Aufnahmeantrag <Icon name="arrow-right" /></span>
+        </a>
+        <a class="svh-info-card" href="/sponsoren/#sponsor-werden">
+          <span class="svh-info-card__icon"><Icon name="handshake" /></span>
+          <h3>Sponsor werden</h3>
+          <p>Unternehmen aus der Region können den SVH als Sponsor oder Partner unterstützen.</p>
+          <span class="svh-textlink">Sponsoring <Icon name="arrow-right" /></span>
+        </a>
+        <a class="svh-info-card" href="/kontakt/">
+          <span class="svh-info-card__icon"><Icon name="heart" /></span>
+          <h3>Ehrenamt</h3>
+          <p>Ob beim Fest, auf dem Platz oder hinter den Kulissen: Helfende Hände sind immer willkommen.</p>
+          <span class="svh-textlink">Mitmachen <Icon name="arrow-right" /></span>
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

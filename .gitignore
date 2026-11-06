@@ -1,0 +1,30 @@
+# Abhängigkeiten
+node_modules/
+
+# Build-Ausgabe
+dist/
+.vercel/
+.astro/
+
+# Werden beim Build geladen (scripts/prebuild.mjs) – nicht einchecken
+src/assets/photos/pexels-*.jpg
+src/assets/instagram/
+
+# Zugangsdaten – Vorlage ist .env.example
+.env
+.env.*
+!.env.example
+
+# Tests & Tools
+coverage/
+test-results/
+playwright-report/
+*.log
+
+# Editor & System
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea/
+.DS_Store
+Thumbs.db

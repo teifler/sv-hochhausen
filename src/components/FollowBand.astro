@@ -1,0 +1,21 @@
+---
+import Icon from './Icon.astro'
+import { socials } from '../data/site.js'
+
+const live = socials.filter((s) => s.url)
+---
+<div class="svh-newsletter svh-follow">
+  <div>
+    <span class="svh-eyebrow">Dranbleiben</span>
+    <h2>Nichts mehr verpassen.</h2>
+    <p>Spielberichte, Termine und Fotos aus allen Abteilungen – das Neueste zeigen wir auf unseren Kanälen.</p>
+  </div>
+  <div class="svh-actions">
+    {live.map((s, i) => (
+      <a class:list={['svh-btn', i === 0 ? 'svh-btn--on-dark' : 'svh-btn--outline-on-dark']} href={s.url} target="_blank" rel="noopener noreferrer">
+        <Icon name={s.icon} />
+        {s.label}
+      </a>
+    ))}
+  </div>
+</div>

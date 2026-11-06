@@ -1,0 +1,58 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import PageHero from '../components/PageHero.astro'
+import Icon from '../components/Icon.astro'
+import { galleryItems, galleryCategories } from '../lib/gallery.js'
+import { instagram } from '../data/site.js'
+
+const items = await galleryItems()
+const categories = galleryCategories(items)
+const hasInsta = items.some((i) => i.category === 'Instagram')
+---
+<BaseLayout title="Galerie" description="Bilder aus allen Abteilungen und dem Vereinsleben des SV Hochhausen 1946.">
+  <PageHero title="Galerie" eyebrow="Bilder" lead="Eindrücke aus allen Abteilungen und dem Vereinsleben." theme="gallery" seed={6} />
+
+  <section class="svh-section">
+    <div class="svh-container svh-container--wide">
+      <p class="svh-note svh-note--info" style="margin-bottom:1.4rem">
+        <Icon name="camera" /><span>{hasInsta ? 'Neue Bilder kommen automatisch von unserem Instagram-Kanal, dazu Fotos aus dem Vereinsarchiv.' : 'Fotos aus dem Vereinsarchiv.'} Du hast schöne Vereinsfotos? <a href="/kontakt/">Schick sie uns</a> oder folge uns auf <a href={instagram.url} target="_blank" rel="noopener noreferrer">Instagram</a>.</span>
+      </p>
+      <div class="svh-gallery-filter" data-filter-group data-filter-target="#gallery" role="group" aria-label="Nach Kategorie filtern">
+        {
+          categories.map((c, i) => (
+            <button class:list={['svh-chip', i === 0 && 'is-active']} type="button" data-filter-value={i === 0 ? 'alle' : c} aria-pressed={i === 0 ? 'true' : 'false'}>
+              {c}
+            </button>
+          ))
+        }
+      </div>
+      {items.length === 0 && <p class="svh-empty">Noch keine Fotos – <a href="/kontakt/">schick uns deine Bilder</a>.</p>}
+      <div class="svh-gallery" id="gallery" data-gallery>
+        {
+          items.map((g) => (
+            <button class="svh-gallery__item" type="button" data-filter-cat={g.category} data-gallery-item data-full={g.full} data-title={g.title} data-cat={`${g.category}${g.date ? ` · ${g.date.slice(0, 4)}` : ''}`} data-desc={g.caption || undefined} data-href={g.href || undefined} aria-label={`Bild vergrößern: ${g.title}`}>
+              <img class="svh-img" src={g.src} srcset={g.srcset || undefined} sizes="(max-width: 480px) 50vw, (max-width: 1000px) 33vw, 25vw" width={g.width} height={g.height} alt={g.caption || g.title} loading="lazy" decoding="async" />
+              <span class="svh-gallery__tag svh-badge svh-badge--muted">{g.category}</span>
+              <span class="svh-gallery__cap">{g.title}</span>
+            </button>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <div class="svh-lightbox" data-lightbox role="dialog" aria-modal="true" aria-label="Bildansicht" inert>
+    <span class="svh-lightbox__count" data-lb-count></span>
+    <button class="svh-lightbox__btn svh-lightbox__close" type="button" data-lb-close aria-label="Schließen"><Icon name="x" /></button>
+    <button class="svh-lightbox__btn svh-lightbox__btn--prev" type="button" data-lb-prev aria-label="Vorheriges Bild"><Icon name="chevron-left" /></button>
+    <figure class="svh-lightbox__stage">
+      <img class="svh-lightbox__img" data-lb-img src="data:image/gif;base64,R0lGODlhAQABAAAAACw=" alt="" />
+      <figcaption class="svh-lightbox__cap"><b data-lb-title></b><span data-lb-cat></span><span class="svh-lightbox__desc" data-lb-desc></span><a class="svh-lightbox__link" data-lb-link href={instagram.url} target="_blank" rel="noopener noreferrer" hidden>Auf Instagram ansehen <Icon name="external" /></a></figcaption>
+    </figure>
+    <button class="svh-lightbox__btn svh-lightbox__btn--next" type="button" data-lb-next aria-label="Nächstes Bild"><Icon name="chevron-right" /></button>
+  </div>
+
+  <script>
+    import '../scripts/gallery.js'
+  </script>
+</BaseLayout>

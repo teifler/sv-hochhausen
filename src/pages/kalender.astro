@@ -1,0 +1,112 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import PageHero from '../components/PageHero.astro'
+import EventModal from '../components/EventModal.astro'
+import Icon from '../components/Icon.astro'
+import { eventsSorted, eventTypes } from '../data/events.js'
+import { trainingSlots } from '../data/sports.js'
+import { MONTHS, dayNum, monthShort, fmtTime, todayKey, weekdayShort } from '../lib/format.js'
+
+const today = todayKey()
+const upcoming = eventsSorted.filter((e) => e.date >= today)
+
+/* Liste: nach Monat gruppiert */
+const groups: { key: string; label: string; items: any[] }[] = []
+for (const e of upcoming) {
+  const key = e.date.slice(0, 7)
+  let g = groups.find((x) => x.key === key)
+  if (!g) {
+    g = { key, label: `${MONTHS[Number(key.slice(5, 7)) - 1]} ${key.slice(0, 4)}`, items: [] }
+    groups.push(g)
+  }
+  g.items.push(e)
+}
+
+const usedTypes = Object.keys(eventTypes).filter((t) => t === 'training' || eventsSorted.some((e) => e.type === t))
+const calData = JSON.stringify({
+  today,
+  events: eventsSorted.map((e) => ({ id: e.id, title: e.title, date: e.date, time: e.time || '', type: e.type })),
+  trainings: trainingSlots.map((t) => ({ day: t.day, time: t.time, sport: t.sport, to: t.to })),
+  types: Object.fromEntries(Object.entries(eventTypes).map(([k, v]: any) => [k, { label: v.label, color: v.color }])),
+}).replace(/</g, '\\u003c')
+---
+<BaseLayout title="Vereinskalender" description="Alle Termine des SV Hochhausen 1946 als Liste und Monatsansicht – mit Trainingszeiten und Kalender-Export.">
+  <PageHero title="Vereinskalender" eyebrow="Termine" lead="Alle Veranstaltungen und Spiele als Liste oder Monatsansicht – inklusive der regelmäßigen Trainings." theme="club" seed={5} crumbs={[{ label: 'Termine', to: '/termine/' }]} />
+
+  <section class="svh-section" data-cal>
+    <div class="svh-container">
+      <div class="svh-cal-toolbar">
+        <div class="svh-cal-views" role="group" aria-label="Ansicht wählen" data-cal-views hidden>
+          <button type="button" class="is-active" data-view="list" aria-pressed="true">Liste</button>
+          <button type="button" data-view="month" aria-pressed="false">Monat</button>
+        </div>
+        <div class="svh-cal-monthnav" data-cal-monthnav hidden>
+          <button class="svh-iconbtn" type="button" data-cal-prev aria-label="Vorheriger Monat"><Icon name="chevron-left" /></button>
+          <strong data-cal-label aria-live="polite"></strong>
+          <button class="svh-iconbtn" type="button" data-cal-next aria-label="Nächster Monat"><Icon name="chevron-right" /></button>
+        </div>
+      </div>
+
+      <div class="svh-cal-filters" data-filter-group data-filter-target="#cal-list" data-filter-empty="#cal-empty" role="group" aria-label="Nach Kategorie filtern">
+        <button class="svh-chip is-active" type="button" data-filter-value="alle" aria-pressed="true">Alle</button>
+        {
+          usedTypes.map((t) => (
+            <button class="svh-chip" type="button" data-filter-value={t} aria-pressed="false" style={`--chip-accent:${eventTypes[t].color}`}>
+              <span class="svh-chip__dot"></span>
+              {eventTypes[t].label}
+            </button>
+          ))
+        }
+      </div>
+
+      <!-- Listenansicht (funktioniert auch ohne JavaScript) -->
+      <div id="cal-list" data-cal-list>
+        {
+          groups.map((g) => (
+            <div class="svh-cal-group" data-filter-section>
+              <h2 class="svh-cal-monthlabel">{g.label}</h2>
+              {g.items.map((e) => (
+                <button class="svh-cal-row" type="button" data-event-id={e.id} data-filter-cat={e.type} aria-haspopup="dialog">
+                  <span class="svh-cal-row__date">
+                    <span class="d">{dayNum(e.date)}</span>
+                    <span class="m">{weekdayShort(e.date)} · {monthShort(e.date)}</span>
+                  </span>
+                  <span class="svh-cal-row__main">
+                    <span class="svh-cal-row__title">{e.title}</span>
+                    <span class="svh-cal-row__facts">
+                      {e.time && <span><Icon name="clock" />{fmtTime(e.time)}</span>}
+                      {e.location && <span><Icon name="map-pin" />{e.location}</span>}
+                    </span>
+                  </span>
+                  <span class="svh-badge" style={`background:color-mix(in srgb, ${eventTypes[e.type].color} 14%, #fff);color:${eventTypes[e.type].color}`}>{eventTypes[e.type].label}</span>
+                </button>
+              ))}
+            </div>
+          ))
+        }
+      </div>
+      <p class="svh-empty" id="cal-empty" hidden>Für diese Auswahl sind in der Liste keine Termine eingetragen. Trainings stehen im <a href="/termine/#training">Wochenplan</a> und in der Monatsansicht.</p>
+      {groups.length === 0 && <p class="svh-empty">Aktuell sind keine Termine eingetragen.</p>}
+
+      <!-- Monatsansicht (per JavaScript) -->
+      <div data-cal-month hidden>
+        <div class="svh-cal-scroll">
+          <div class="svh-cal-grid">
+            <div class="svh-cal-grid__head">{['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'].map((d) => <span>{d}</span>)}</div>
+            <div class="svh-cal-grid__body" data-cal-body></div>
+          </div>
+        </div>
+        <p class="svh-note svh-note--info svh-cal-hint" data-cal-hint hidden><Icon name="info" /><span></span></p>
+        <div class="svh-cal-legend">
+          {usedTypes.map((t) => <span style={`--dot:${eventTypes[t].color}`}><i></i>{eventTypes[t].label}</span>)}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script type="application/json" id="svh-cal-data" is:inline set:html={calData}></script>
+  <EventModal events={eventsSorted} />
+  <script>
+    import '../scripts/calendar.js'
+  </script>
+</BaseLayout>

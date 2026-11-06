@@ -1,0 +1,687 @@
+/* =========================================================
+   Motion & Micro-Interactions
+   Dezent, performant (nur transform/opacity) und mit
+   prefers-reduced-motion abschaltbar (siehe base.css).
+   ========================================================= */
+
+/* --- Seitenwechsel (Cross-Document View Transitions) ----- */
+@view-transition {
+  navigation: auto;
+}
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.28s;
+  animation-timing-function: var(--svh-ease);
+}
+.svh-header {
+  view-transition-name: svh-header;
+}
+@media (prefers-reduced-motion: reduce) {
+  @view-transition {
+    navigation: none;
+  }
+}
+
+/* --- Bilder weich einblenden ----------------------------- */
+.js .svh-img {
+  transition:
+    opacity 0.7s var(--svh-ease),
+    transform var(--svh-t-slow) var(--svh-ease);
+}
+/* Bis zum Laden unsichtbar. Sicherheitsnetz: nach 2,5 s auf jeden Fall
+   sichtbar. Bewusst :not(.is-loaded) statt „animation: none“, damit
+   danach z. B. der Ken-Burns-Effekt im Hero greifen kann. */
+.js .svh-img:not(.is-loaded) {
+  opacity: 0;
+  animation: svh-show 0s 2.5s forwards;
+}
+@keyframes svh-show {
+  to {
+    opacity: 1;
+  }
+}
+
+/* --- Hero: Einstieg, Ken-Burns, Scroll-Hinweis ----------- */
+@keyframes svh-up {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.svh-hero__content > * {
+  animation: svh-up 0.8s var(--svh-ease) both;
+}
+.svh-hero__content > :nth-child(2) {
+  animation-delay: 0.08s;
+}
+.svh-hero__content > :nth-child(3) {
+  animation-delay: 0.16s;
+}
+.svh-hero__content > :nth-child(4) {
+  animation-delay: 0.24s;
+}
+.svh-hero__content > :nth-child(5) {
+  animation-delay: 0.32s;
+}
+.svh-hero__content > :nth-child(6) {
+  animation-delay: 0.4s;
+}
+@keyframes svh-kenburns {
+  from {
+    transform: scale(1.03);
+  }
+  to {
+    transform: scale(1.11) translate3d(-1.2%, -0.8%, 0);
+  }
+}
+.svh-hero__bg img {
+  animation: svh-kenburns 24s ease-in-out infinite alternate;
+}
+.svh-pagehero__bg img {
+  transform: scale(1.06);
+  animation: svh-kenburns 30s ease-in-out infinite alternate;
+}
+.svh-hero__title span {
+  background: linear-gradient(90deg, #ffb3bd 0%, #fff 45%, #ffb3bd 90%) 0 0 / 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: svh-shine 6s ease-in-out 1.2s infinite;
+}
+@keyframes svh-shine {
+  0%,
+  60% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: -120% 0;
+  }
+}
+/* rechts unten, bündig mit dem Inhaltsraster – überlappt so nie die
+   linksbündigen Hero-Inhalte (Buttons, Abteilungs-Chips) */
+.svh-hero__scroll {
+  position: absolute;
+  right: calc(max(0px, (100% - var(--svh-container-wide)) / 2) + var(--svh-gutter));
+  bottom: 1.4rem;
+  animation: svh-up 0.8s var(--svh-ease) 0.7s both;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.45rem;
+  color: rgba(255, 255, 255, 0.78);
+  font-family: var(--svh-display);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 0.7rem;
+  transition: color var(--svh-t) var(--svh-ease);
+}
+.svh-hero__scroll:hover {
+  color: #fff;
+}
+.svh-hero__scroll i {
+  position: relative;
+  width: 22px;
+  height: 34px;
+  border: 2px solid currentColor;
+  border-radius: 12px;
+}
+.svh-hero__scroll i::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 6px;
+  width: 4px;
+  height: 7px;
+  margin-left: -2px;
+  border-radius: 2px;
+  background: currentColor;
+  animation: svh-wheel 1.8s var(--svh-ease) infinite;
+}
+@keyframes svh-wheel {
+  0% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+@media (max-width: 999px) {
+  .svh-hero__scroll {
+    display: none;
+  }
+}
+
+/* --- Sport-Ticker unter dem Hero ------------------------- */
+.svh-ticker {
+  position: relative;
+  overflow: hidden;
+  background: var(--svh-red);
+  color: #fff;
+}
+/* weiche Kanten: Text läuft ins Rot aus, das Band bleibt vollflächig */
+.svh-ticker::before,
+.svh-ticker::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 1;
+  width: clamp(2rem, 8vw, 7rem);
+  pointer-events: none;
+}
+.svh-ticker::before {
+  left: 0;
+  background: linear-gradient(90deg, var(--svh-red), rgba(200, 16, 46, 0));
+}
+.svh-ticker::after {
+  right: 0;
+  background: linear-gradient(270deg, var(--svh-red), rgba(200, 16, 46, 0));
+}
+.svh-ticker__track {
+  display: flex;
+  align-items: center;
+  gap: 1.6rem;
+  width: max-content;
+  padding-block: 0.85rem;
+  animation: svh-ticker 42s linear infinite;
+}
+.svh-ticker:hover .svh-ticker__track {
+  animation-play-state: paused;
+}
+.svh-ticker span {
+  font-family: var(--svh-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: clamp(1.05rem, 2.3vw, 1.55rem);
+  white-space: nowrap;
+}
+.svh-ticker span:nth-of-type(even) {
+  color: transparent;
+  -webkit-text-stroke: 1.2px rgba(255, 255, 255, 0.9);
+}
+.svh-ticker b {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.55);
+  flex: none;
+}
+@keyframes svh-ticker {
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+/* --- Scroll-Fortschritt im Header ------------------------ */
+.svh-progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 3px;
+  background: var(--svh-tricolor);
+  transform-origin: 0 50%;
+  transform: scaleX(var(--svh-p, 0));
+  pointer-events: none;
+}
+
+/* --- Nach-oben-Button mit Fortschrittsring --------------- */
+.svh-totop .svh-totop__ring {
+  position: absolute;
+  inset: -5px;
+  width: calc(100% + 10px);
+  height: calc(100% + 10px);
+  max-width: none;
+  transform: rotate(-90deg);
+  pointer-events: none;
+}
+.svh-totop__ring circle {
+  fill: none;
+  stroke: var(--svh-red);
+  stroke-width: 2.5;
+  stroke-dasharray: 100;
+  stroke-dashoffset: calc(100 - var(--svh-p, 0) * 100);
+  stroke-linecap: round;
+  opacity: 0.55;
+}
+
+/* --- Buttons: Lichtkante beim Hover ---------------------- */
+.svh-btn {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.svh-btn--primary::after,
+.svh-btn--dark::after,
+.svh-btn--on-dark::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(115deg, transparent 25%, rgba(255, 255, 255, 0.28) 50%, transparent 75%);
+  transform: translateX(-120%);
+  transition: transform 0.75s var(--svh-ease);
+}
+.svh-btn--on-dark::after {
+  background: linear-gradient(115deg, transparent 25%, rgba(200, 16, 46, 0.12) 50%, transparent 75%);
+}
+.svh-btn:hover::after {
+  transform: translateX(120%);
+}
+
+/* --- Karten: Spotlight, Pfeile, Unterstreichung ---------- */
+.svh-info-card,
+.svh-partner-card,
+.svh-person-card,
+a.svh-contact-item,
+.svh-week__day {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+.svh-info-card::before,
+.svh-partner-card::before,
+.svh-person-card::before,
+a.svh-contact-item::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: radial-gradient(360px circle at var(--mx, 50%) var(--my, 0%), rgba(200, 16, 46, 0.09), transparent 60%);
+  opacity: 0;
+  transition: opacity 0.35s var(--svh-ease);
+  pointer-events: none;
+}
+.svh-info-card:hover::before,
+.svh-partner-card:hover::before,
+.svh-person-card:hover::before,
+a.svh-contact-item:hover::before {
+  opacity: 1;
+}
+.svh-info-card__icon,
+.svh-contact-item__icon,
+.svh-doc__icon {
+  transition:
+    transform var(--svh-t) var(--svh-ease),
+    background var(--svh-t) var(--svh-ease),
+    color var(--svh-t) var(--svh-ease);
+}
+a.svh-info-card:hover .svh-info-card__icon,
+a.svh-contact-item:hover .svh-contact-item__icon,
+.svh-doc:hover .svh-doc__icon {
+  transform: translateY(-2px) rotate(-6deg);
+  background: var(--svh-red);
+  color: #fff;
+}
+.svh-card:hover .svh-textlink svg,
+a.svh-info-card:hover .svh-textlink svg,
+.svh-partner-card:hover .svh-partner-card__link svg,
+.svh-venue:hover .svh-textlink:first-child svg {
+  transform: translateX(4px);
+}
+.svh-person-card__avatar img {
+  transition: transform var(--svh-t-slow) var(--svh-ease);
+}
+.svh-person-card:hover .svh-person-card__avatar img {
+  transform: scale(1.08);
+}
+
+/* Sport-Kacheln */
+.svh-sport-card__icon {
+  transition:
+    transform var(--svh-t) var(--svh-ease),
+    background var(--svh-t) var(--svh-ease),
+    border-color var(--svh-t) var(--svh-ease);
+}
+.svh-sport-card:hover .svh-sport-card__icon,
+.svh-sport-card:focus-visible .svh-sport-card__icon {
+  transform: rotate(-8deg) scale(1.08);
+  background: var(--svh-red);
+  border-color: transparent;
+}
+.svh-sport-card__title {
+  align-self: flex-start;
+  padding-bottom: 5px;
+  background: var(--svh-tricolor) left bottom / 0 3px no-repeat;
+  transition: background-size 0.5s var(--svh-ease);
+}
+.svh-sport-card:hover .svh-sport-card__title,
+.svh-sport-card:focus-visible .svh-sport-card__title {
+  background-size: 100% 3px;
+}
+.svh-sport-card__scrim {
+  transition: opacity var(--svh-t) var(--svh-ease);
+}
+.svh-sport-card:hover .svh-sport-card__scrim {
+  opacity: 0.85;
+}
+
+/* News, Termine, Spiel */
+.svh-news-card .svh-media__badge {
+  transition: transform var(--svh-t) var(--svh-ease);
+}
+.svh-news-card:hover .svh-media__badge {
+  transform: translateY(-2px) scale(1.05);
+}
+.svh-event-card__date {
+  transition: background var(--svh-t) var(--svh-ease);
+}
+.svh-event-card__date .d {
+  transition: transform var(--svh-t) var(--svh-ease);
+}
+.svh-event-card:hover .svh-event-card__date .d {
+  transform: scale(1.12);
+}
+.svh-match__crest {
+  transition: transform var(--svh-t-slow) var(--svh-ease);
+}
+.svh-match:hover .svh-match__team:first-child .svh-match__crest {
+  transform: translateY(-4px) rotate(-4deg);
+}
+.svh-match:hover .svh-match__team:last-child .svh-match__crest {
+  transform: translateY(-4px) rotate(4deg);
+}
+.svh-countdown {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.75rem;
+  border-radius: var(--svh-radius-pill);
+  background: var(--svh-red-soft);
+  color: var(--svh-red-dark);
+  font-family: var(--svh-display);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 0.8rem;
+}
+.svh-countdown:empty {
+  display: none;
+}
+.svh-countdown::before {
+  content: '';
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--svh-red);
+  animation: svh-pulse 1.6s ease-in-out infinite;
+}
+@keyframes svh-pulse {
+  50% {
+    transform: scale(0.6);
+    opacity: 0.4;
+  }
+}
+
+/* Mosaik-Bildunterschriften */
+.svh-mosaic__cap {
+  transition: padding-bottom var(--svh-t) var(--svh-ease);
+}
+.svh-mosaic__item:hover .svh-mosaic__cap {
+  padding-bottom: 1.3rem;
+}
+.svh-mosaic__cap::after {
+  content: ' →';
+  opacity: 0;
+  transition: opacity var(--svh-t) var(--svh-ease);
+}
+.svh-mosaic__item:hover .svh-mosaic__cap::after {
+  opacity: 1;
+}
+
+/* Wochenplan: heutiger Tag */
+.svh-week__day.is-today {
+  box-shadow: 0 0 0 2px var(--svh-red);
+}
+.svh-week__day.is-today .svh-week__label {
+  background: var(--svh-red);
+}
+.svh-week__day.is-today .svh-week__label span {
+  background: #fff;
+  color: var(--svh-red);
+}
+.svh-week__day.is-today .svh-week__label::after {
+  content: 'Heute';
+  margin-left: auto;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  padding: 0.2rem 0.55rem;
+  border-radius: var(--svh-radius-pill);
+  background: rgba(255, 255, 255, 0.22);
+}
+
+/* Galerie & Instagram: weicher Zoom + Lichtkante */
+.svh-insta__item::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 0 rgba(255, 255, 255, 0.6);
+  transition: box-shadow var(--svh-t) var(--svh-ease);
+  pointer-events: none;
+}
+.svh-insta__item:hover::before {
+  box-shadow: inset 0 0 0 3px rgba(255, 255, 255, 0.65);
+}
+
+/* Sanftes Parallax (per JS gesetzt; Startwert = gleiche Vergrößerung,
+   damit beim ersten Scrollen nichts springt) */
+@media (prefers-reduced-motion: no-preference) {
+  .js [data-parallax] {
+    transform: scale(1.12);
+    will-change: transform;
+  }
+}
+
+/* Reveal: leichtes Skalieren für Bildkacheln */
+.js .svh-reveal.svh-reveal--zoom {
+  transform: translateY(22px) scale(0.98);
+}
+.js .svh-reveal.svh-reveal--zoom.is-visible {
+  transform: none;
+}
+
+/* --- Social-Bereich -------------------------------------- */
+.svh-social-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  gap: clamp(1.2rem, 3vw, 2rem);
+  align-items: start;
+}
+.svh-social-grid .svh-insta__grid {
+  grid-template-columns: repeat(3, 1fr);
+}
+.svh-social-grid--single {
+  grid-template-columns: 1fr;
+}
+.svh-social-grid--single .svh-insta__grid {
+  grid-template-columns: repeat(4, 1fr);
+}
+@media (max-width: 900px) {
+  .svh-social-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.svh-fbfeed {
+  background: #fff;
+  border: 1px solid var(--svh-line);
+  border-radius: var(--svh-radius-lg);
+  padding: 1.1rem;
+  color: var(--svh-ink);
+  box-shadow: var(--svh-shadow-sm);
+}
+.svh-fbfeed__head {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+.svh-fbfeed__head > div {
+  flex: 1;
+  min-width: 10rem;
+  display: flex;
+  flex-direction: column;
+}
+.svh-fbfeed__head b {
+  font-family: var(--svh-display);
+  text-transform: uppercase;
+  font-size: 1.15rem;
+}
+.svh-fbfeed__head span {
+  color: var(--svh-muted);
+  font-size: 0.88rem;
+}
+.svh-fbfeed__icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  background: #1d4fb8;
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.svh-fbfeed__icon svg {
+  width: 24px;
+  height: 24px;
+}
+.svh-fbfeed .svh-consent {
+  margin-top: 1rem;
+}
+.svh-fbfeed__slot {
+  display: flex;
+  justify-content: center;
+}
+.svh-fbfeed__slot iframe {
+  margin-top: 1rem;
+  border-radius: var(--svh-radius-sm);
+  background: var(--svh-bg-soft);
+}
+
+.svh-match__note {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem 0.8rem;
+}
+.svh-totop {
+  overflow: visible;
+}
+.svh-totop > svg:not(.svh-totop__ring) {
+  position: relative;
+}
+
+/* Instagram-Teaser ohne Feed */
+.svh-insta-teaser {
+  position: relative;
+}
+.svh-insta-teaser .svh-insta__item::after {
+  opacity: 0.35;
+}
+.svh-insta-teaser__card {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: min(320px, 86%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 1.3rem 1.2rem 1.4rem;
+  border-radius: var(--svh-radius-lg);
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(8px);
+  box-shadow: var(--svh-shadow-lg);
+  text-align: center;
+  color: var(--svh-ink);
+  transition: transform var(--svh-t) var(--svh-ease);
+}
+.svh-insta-teaser__card:hover {
+  transform: translate(-50%, calc(-50% - 4px));
+}
+.svh-insta-teaser__card b {
+  font-family: var(--svh-display);
+  font-size: 1.45rem;
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
+}
+.svh-insta-teaser__card > span:not(.svh-btn):not(.svh-insta-cta__icon) {
+  color: var(--svh-ink-2);
+  font-size: 0.92rem;
+}
+.svh-insta-teaser__card .svh-btn {
+  margin-top: 0.35rem;
+}
+@media (max-width: 560px) {
+  .svh-insta-teaser__card {
+    position: static;
+    transform: none;
+    width: auto;
+    margin-top: 0.8rem;
+    box-shadow: var(--svh-shadow-sm);
+  }
+  .svh-insta-teaser__card:hover {
+    transform: translateY(-3px);
+  }
+}
+
+/* Reduzierte Bewegung: Hero-Inhalte sofort zeigen (keine Verzögerung) */
+@media (prefers-reduced-motion: reduce) {
+  .svh-hero__content > *,
+  .svh-hero__scroll,
+  .svh-hero__bg img,
+  .svh-pagehero__bg img,
+  .svh-hero__title span,
+  .svh-ticker__track {
+    animation: none !important;
+  }
+}
+
+/* Abdunklungen 2 px überstehen lassen (werden vom Rahmen abgeschnitten):
+   verhindert 1-px-Blitzer des skalierten/parallaxen Bildes an den Kanten */
+.svh-hero__scrim,
+.svh-pagehero__scrim,
+.svh-cta-band__scrim,
+.svh-sport-card__scrim {
+  inset: -2px;
+}
+/* Abgerundete Box + bewegtes Bild (Parallax): Chrome beschneidet die
+   Bildebene bei krummen Pixelhöhen sonst 1 px zu großzügig (Blitzer an
+   der Unterkante). clip-path schneidet exakt. */
+.svh-cta-band {
+  clip-path: inset(0 round var(--svh-radius-lg));
+}
+
+/* Mannschaftsfoto (Fußballseite) */
+.svh-teamphoto {
+  max-width: 900px;
+  margin: 0 auto clamp(1.6rem, 4vw, 2.6rem);
+  border-radius: var(--svh-radius-lg);
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid var(--svh-line);
+  box-shadow: var(--svh-shadow);
+}
+.svh-teamphoto img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.svh-teamphoto figcaption {
+  padding: 0.75rem 1rem;
+  font-size: 0.88rem;
+  color: var(--svh-muted);
+}

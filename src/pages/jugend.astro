@@ -1,0 +1,69 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import PageHero from '../components/PageHero.astro'
+import Media from '../components/Media.astro'
+import Icon from '../components/Icon.astro'
+import SectionHeader from '../components/SectionHeader.astro'
+import NewsCard from '../components/cards/NewsCard.astro'
+import { newsSorted } from '../data/news.js'
+
+const archeryNews = newsSorted.filter((n) => n.category === 'Bogenschießen').slice(0, 2)
+---
+<BaseLayout title="Jugend" description="Kinder und Jugendliche beim SV Hochhausen 1946: Bogenschießen mit Leihausrüstung, Turniere wie der KIDS Cup und Jugendleiter Martin Michel als Ansprechpartner.">
+  <PageHero title="Jugend" eyebrow="Kinder & Jugendliche" lead="Beim SVH ist der Nachwuchs herzlich willkommen – besonders im Bogenschießen sind viele Jugendliche aktiv." theme="youth" seed={7} />
+
+  <section class="svh-section">
+    <div class="svh-container">
+      <div class="svh-split">
+        <div class="svh-split__content svh-reveal">
+          <span class="svh-eyebrow">Jugendarbeit</span>
+          <h2>Früh übt sich – mit Bogen, Ball und Gemeinschaft.</h2>
+          <p>Die Jugendarbeit ist im Vorstand fest verankert: Jugendleiter Martin Michel ist Ansprechpartner für alle Fragen rund um Kinder und Jugendliche im Verein.</p>
+          <p>Besonders gefragt ist das Bogenschießen: 2016 waren dort über 20 Jugendliche aktiv. Einsteiger brauchen keine eigene Ausrüstung – Bogen, Pfeile sowie Arm- und Handschutz können beim Verein ausgeliehen werden, solange der Vorrat reicht.</p>
+          <div class="svh-actions">
+            <a class="svh-btn svh-btn--primary" href="/sport/bogenschiessen/">Zum Bogenschießen <Icon name="arrow-right" class="svh-arrow" /></a>
+            <a class="svh-btn svh-btn--outline" href="/kontakt/?anliegen=probetraining">Schnuppern anfragen</a>
+          </div>
+        </div>
+        <div class="svh-split__media svh-reveal" data-delay="1"><Media theme="archery" seed={71} ratio="4x3" width={900} sizes="(max-width: 860px) 100vw, 50vw" /></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="svh-section svh-section--soft">
+    <div class="svh-container">
+      <SectionHeader eyebrow="Angebote" title="Was Kinder & Jugendliche beim SVH erwartet" center />
+      <div class="svh-grid svh-grid--3">
+        <a class="svh-info-card svh-reveal" href="/sport/bogenschiessen/">
+          <span class="svh-info-card__icon"><Icon name="bow" /></span>
+          <h3>Bogenschießen</h3>
+          <p>Training auf dem Vereinsgelände, Leihausrüstung für den Einstieg und Turniere wie der KIDS Cup in Bad Mergentheim.</p>
+          <span class="svh-textlink">Mehr erfahren <Icon name="arrow-right" /></span>
+        </a>
+        <a class="svh-info-card svh-reveal" data-delay="1" href="/sport/wandern/">
+          <span class="svh-info-card__icon"><Icon name="mountain" /></span>
+          <h3>Mit der Familie unterwegs</h3>
+          <p>Die Maiwanderung am 1. Mai ist offen für alle – mit Ausklang im Sportheim, Getränken und Gegrilltem.</p>
+          <span class="svh-textlink">Zur Wandergruppe <Icon name="arrow-right" /></span>
+        </a>
+        <a class="svh-info-card svh-reveal" data-delay="2" href="/kontakt/?anliegen=probetraining">
+          <span class="svh-info-card__icon"><Icon name="ball" /></span>
+          <h3>Fußball &amp; mehr</h3>
+          <p>Fragen zu Kinder- und Jugendfußball oder anderen Angeboten? Jugendleiter Martin Michel hilft weiter.</p>
+          <span class="svh-textlink">Kontakt aufnehmen <Icon name="arrow-right" /></span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  {
+    archeryNews.length > 0 && (
+      <section class="svh-section">
+        <div class="svh-container">
+          <SectionHeader eyebrow="Aus dem Archiv" title="Nachwuchs am Start" />
+          <div class="svh-grid svh-grid--3">{archeryNews.map((n) => <NewsCard item={n} />)}</div>
+        </div>
+      </section>
+    )
+  }
+</BaseLayout>

@@ -1,0 +1,18 @@
+/* Design-System SV Hochhausen – zentrale Stil-Einstiegsdatei */
+@import './variables.css';
+@import './base.css';
+@import './layout.css';
+@import './parts/buttons.css';
+@import './parts/header.css';
+@import './parts/nav.css';
+@import './parts/hero.css';
+@import './parts/media.css';
+@import './parts/cards.css';
+@import './parts/sections.css';
+@import './parts/gallery.css';
+@import './parts/calendar.css';
+@import './parts/forms.css';
+@import './parts/footer.css';
+@import './parts/pages.css';
+@import './parts/extras.css';
+@import './parts/motion.css';

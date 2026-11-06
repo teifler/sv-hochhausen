@@ -1,0 +1,107 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import PageHero from '../components/PageHero.astro'
+import Icon from '../components/Icon.astro'
+import SectionHeader from '../components/SectionHeader.astro'
+import FussballDe from '../components/FussballDe.astro'
+import MatchCard from '../components/cards/MatchCard.astro'
+import NewsCard from '../components/cards/NewsCard.astro'
+import { getSport } from '../data/sports.js'
+import { fussballde } from '../data/fussballde.js'
+import { nextMatch } from '../data/teams.js'
+import { newsSorted } from '../data/news.js'
+import { ownPhotos, optimizeOwn, usedOnPage } from '../lib/photos.js'
+import { photoInfo } from '../data/gallery.js'
+
+const s = getSport('fussball')
+const match = nextMatch()
+const news = newsSorted.filter((n) => n.category === 'Fußball').slice(0, 3)
+
+/* aktuelles Mannschaftsfoto (neueste „football-…-poster“-Datei) */
+const teamEntry = ownPhotos()
+  .filter((p) => p.name.startsWith('football-') && p.poster)
+  .sort((a, b) => (photoInfo[b.name]?.date || '').localeCompare(photoInfo[a.name]?.date || ''))[0]
+const teamPhoto = teamEntry ? await optimizeOwn(teamEntry.meta, { width: 1000, widths: [560, 1000] }) : null
+const teamInfo = teamEntry ? photoInfo[teamEntry.name] || {} : {}
+if (teamEntry) usedOnPage(Astro.request)?.add(`own:${teamEntry.name}`)
+---
+<BaseLayout title="Fußball" description="Fußball beim SV Hochhausen 1946: SpG Hochhausen/Tauberbischofsheim 3 in der Kreisklasse B Tauberbischofsheim – Spielplan, Tabelle und Training.">
+  <PageHero title="Fußball" eyebrow="SpG Hochhausen/Tauberbischofsheim" lead={s.intro} theme="football" seed={5} crumbs={[{ label: 'Sport', to: '/sport/' }]} />
+
+  <section class="svh-section">
+    <div class="svh-container">
+      <SectionHeader eyebrow={`Saison ${fussballde.season}`} title="Unsere Mannschaft" lead="Spielplan, Ergebnisse und Tabelle kommen direkt von fussball.de." />
+      {
+        teamPhoto && (
+          <figure class="svh-teamphoto svh-reveal">
+            <img class="svh-img" src={teamPhoto.src} srcset={teamPhoto.srcset || undefined} sizes="(max-width: 1040px) 100vw, 1000px" width={teamPhoto.width} height={teamPhoto.height} alt={teamInfo.caption || 'Mannschaftsfoto'} loading="lazy" decoding="async" />
+            <figcaption>
+              {teamInfo.caption || 'Mannschaftsfoto'}
+              {teamInfo.source && <span> · Foto: {teamInfo.source}</span>}
+            </figcaption>
+          </figure>
+        )
+      }
+      <FussballDe />
+    </div>
+  </section>
+
+  <section class="svh-section svh-section--soft">
+    <div class="svh-container">
+      <div class="svh-grid svh-grid--2" style="align-items:start">
+        <div class="svh-reveal">
+          <MatchCard match={match} />
+        </div>
+        <div class="svh-grid svh-reveal" data-delay="1">
+          <div class="svh-info-card">
+            <span class="svh-info-card__icon"><Icon name="clock" /></span>
+            <h3>Training</h3>
+            <p>Während der Saison dienstags und freitags um 19:00 Uhr auf dem Sportgelände in Hochhausen. Neue Spieler sind jederzeit willkommen.</p>
+          </div>
+          <div class="svh-info-card">
+            <span class="svh-info-card__icon"><Icon name="handshake" /></span>
+            <h3>Spielgemeinschaft</h3>
+            <p>Seit der Saison 2000/01 spielt der SVH gemeinsam mit dem <a class="svh-textlink" href={fussballde.partner.url} target="_blank" rel="noopener noreferrer">TSV 1863 Tauberbischofsheim</a>. Zum Saisonende 2011/12 gelang der SpG der Aufstieg in die Kreisklasse A.</p>
+          </div>
+          <div class="svh-info-card">
+            <span class="svh-info-card__icon"><Icon name="user" /></span>
+            <h3>Ansprechpartner</h3>
+            <p>Abteilungsleiter Fußball: {s.lead.name}. Erreichbar über <a class="svh-textlink" href="mailto:info@sportverein-hochhausen.de">info@sportverein-hochhausen.de</a>.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {
+    news.length > 0 && (
+      <section class="svh-section">
+        <div class="svh-container">
+          <div class="svh-head-row">
+            <SectionHeader eyebrow="Aktuelles" title="Fußball-News" />
+            <a class="svh-textlink" href="/aktuelles/">Alle Nachrichten <Icon name="arrow-right" /></a>
+          </div>
+          <div class="svh-grid svh-grid--3">{news.map((n) => <NewsCard item={n} />)}</div>
+        </div>
+      </section>
+    )
+  }
+
+  <section class="svh-section svh-section--tight">
+    <div class="svh-container">
+      <div class="svh-cta-band">
+        <div class="svh-cta-band__scrim svh-cta-band__scrim--solid"></div>
+        <div class="svh-cta-band__inner">
+          <div>
+            <h2>Lust mitzukicken?</h2>
+            <p>Ob Wiedereinsteiger oder neu im Ort: Komm einfach zum Training vorbei – dienstags und freitags um 19 Uhr.</p>
+          </div>
+          <div class="svh-cta-band__actions">
+            <a class="svh-btn svh-btn--on-dark" href="/kontakt/?anliegen=probetraining">Probetraining anfragen</a>
+            <a class="svh-btn svh-btn--outline-on-dark" href="/termine/">Alle Trainingszeiten</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

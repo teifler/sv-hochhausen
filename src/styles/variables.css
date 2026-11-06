@@ -1,0 +1,77 @@
+/* =========================================================
+   SV Hochhausen – Design Tokens
+   Eigenes, kleines Design-System. Alle Werte als CSS-Variablen,
+   damit Farben, Radien und Abstände zentral steuerbar sind.
+   ========================================================= */
+:root {
+  color-scheme: light;
+
+  /* --- Markenfarben ------------------------------------- */
+  --svh-red: #c8102e;
+  --svh-red-dark: #9a0b22;
+  --svh-red-darker: #720815;
+  --svh-red-soft: #fdecef;
+  --svh-red-tint: #f7d6dc;
+  --svh-white: #ffffff;
+  --svh-black: #14161b;
+  /* Vereinsfarben laut fussball.de: Blau / Schwarz / Rot */
+  --svh-blue: #1d4fb8;
+  --svh-blue-dark: #153a8a;
+  --svh-tricolor: linear-gradient(90deg, var(--svh-blue) 0 33.34%, var(--svh-black) 33.34% 66.67%, var(--svh-red) 66.67% 100%);
+
+  /* --- Text & Flächen ---------------------------------- */
+  --svh-ink: #171a20;
+  --svh-ink-2: #3c424d;
+  --svh-muted: #697180;
+  --svh-gray: #697180;
+  --svh-line: #e7e9ee;
+  --svh-line-2: #eff1f5;
+  --svh-bg: #ffffff;
+  --svh-bg-soft: #f4f6f9;
+  --svh-bg-softer: #fafbfc;
+  --svh-dark: #12141a;
+  --svh-dark-2: #1a1d26;
+  --svh-dark-line: rgba(255, 255, 255, 0.12);
+
+  /* --- Layout ------------------------------------------ */
+  --svh-container: 1200px;
+  --svh-container-wide: 1360px;
+  --svh-container-narrow: 820px;
+  --svh-gutter: clamp(1.1rem, 4vw, 2.5rem);
+
+  /* --- Radius ------------------------------------------ */
+  --svh-radius: 16px;
+  --svh-radius-sm: 10px;
+  --svh-radius-lg: 26px;
+  --svh-radius-pill: 999px;
+
+  /* --- Schatten ---------------------------------------- */
+  --svh-shadow-sm: 0 2px 10px -6px rgba(16, 20, 30, 0.35);
+  --svh-shadow: 0 10px 30px -16px rgba(16, 20, 30, 0.32);
+  --svh-shadow-lg: 0 26px 64px -28px rgba(16, 20, 30, 0.45);
+
+  /* --- Typografie (Schriften lokal gehostet, kein Google-Server) --- */
+  --svh-font: 'Inter Variable', 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --svh-display: 'Barlow Condensed', 'Arial Narrow', 'Inter Variable', system-ui, sans-serif;
+
+  /* --- Header ------------------------------------------ */
+  --svh-header-h: 84px;
+  --svh-header-h-min: 62px;
+
+  /* --- Motion ------------------------------------------ */
+  --svh-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --svh-t: 0.28s;
+  --svh-t-slow: 0.5s;
+
+  /* --- Abteilungs-Akzente (dezent, für Karten/Filter) --- */
+  --svh-acc-fussball: #1f6feb;
+  --svh-acc-bogen: #0e9f6e;
+  --svh-acc-darts: #b45309;
+  --svh-acc-gym: #7c3aed;
+  --svh-acc-nordic: #0891b2;
+  --svh-acc-wandern: #4d7c0f;
+  --svh-acc-jugend: #e07a1f;
+  --svh-acc-verein: var(--svh-red);
+  --svh-acc-fest: #d6a400;
+  --svh-acc-training: #64748b;
+}

@@ -1,0 +1,122 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import PageHero from '../components/PageHero.astro'
+import Media from '../components/Media.astro'
+import Pic from '../components/Pic.astro'
+import Icon from '../components/Icon.astro'
+import SectionHeader from '../components/SectionHeader.astro'
+import FollowBand from '../components/FollowBand.astro'
+import { club } from '../data/site.js'
+import { todayKey } from '../lib/format.js'
+
+const years = Number(todayKey().slice(0, 4)) - club.founded
+const themes = [
+  {
+    theme: 'sportheim',
+    seed: 81,
+    icon: 'home',
+    kicker: 'Treffpunkt',
+    title: 'Treffpunkt Sportheim',
+    text: 'Direkt am Sportplatz: Nach Training und Spiel trifft man sich im Sportheim – zum Austausch, zum Feiern, zum Zusammensein.',
+    link: { to: '/verein/#sportstaetten', label: 'Sportstätten' },
+  },
+  {
+    theme: 'hiking',
+    seed: 82,
+    icon: 'mountain',
+    kicker: 'Tradition',
+    title: 'Maiwanderung',
+    text: 'Jedes Jahr am 1. Mai: rund drei Stunden unterwegs rund um Hochhausen, danach Ausklang im Sportheim mit kühlen Getränken und Gegrilltem.',
+    link: { to: '/sport/wandern/', label: 'Zur Wandergruppe' },
+  },
+  {
+    theme: 'community',
+    seed: 83,
+    icon: 'handshake',
+    kicker: 'Werte',
+    title: 'Integration & Inklusion',
+    text: 'Der SVH engagiert sich für die Integration von Geflüchteten und für den Sport mit Menschen mit Behinderung. Sport verbindet.',
+    link: { to: '/spenden/', label: 'Unterstützen' },
+  },
+  {
+    theme: 'archery',
+    seed: 84,
+    icon: 'medal',
+    kicker: 'Sport',
+    title: 'Turniere & Wettkämpfe',
+    text: 'Ob Parcours in Collenberg, KIDS Cup in Bad Mergentheim oder Punktspiele der SpG: Unsere Sportlerinnen und Sportler sind regelmäßig im Einsatz.',
+    link: { to: '/sport/', label: 'Sportangebote' },
+  },
+  {
+    theme: 'pitch',
+    seed: 85,
+    icon: 'users',
+    kicker: 'Engagement',
+    title: 'Ehrenamt',
+    text: 'Drei Vorsitzende, Vorstandsteam, Abteilungsleitungen, Platzwart und viele Helfer: Ohne Ehrenamt gäbe es keinen Verein.',
+    link: { to: '/verein/#vorstand', label: 'Zum Vorstand' },
+  },
+  {
+    theme: 'fest',
+    seed: 86,
+    icon: 'sparkles',
+    kicker: 'Jubiläum',
+    title: `${years} Jahre SVH`,
+    text: 'Seit 1946 gehört der Sportverein zu Hochhausen – heute als größter Verein im Ort mit rund 280 Mitgliedern.',
+    link: { to: '/verein/#geschichte', label: 'Zur Geschichte' },
+  },
+]
+---
+<BaseLayout title="Vereinsleben" description="Sportheim, Maiwanderung, Ehrenamt, Integration und Inklusion: das Vereinsleben beim SV Hochhausen 1946.">
+  <PageHero title="Vereinsleben" eyebrow="Gemeinschaft" lead="Was den SV Hochhausen ausmacht, passiert oft neben dem Sportplatz: Treffpunkte, Traditionen und viele helfende Hände." theme="community" seed={4} />
+
+  <section class="svh-section">
+    <div class="svh-container">
+      <div class="svh-grid svh-grid--3">
+        {
+          themes.map((t, i) => (
+            <article class="svh-card svh-reveal" data-delay={String(i % 3)}>
+              <Media theme={t.theme} seed={t.seed} ratio="16x9" width={700} />
+              <div class="svh-card__body">
+                <div class="svh-card__meta"><Icon name={t.icon} />{t.kicker}</div>
+                <h2 class="svh-card__title">{t.title}</h2>
+                <p class="svh-card__text">{t.text}</p>
+                <a class="svh-card__foot svh-textlink" href={t.link.to}>{t.link.label} <Icon name="arrow-right" /></a>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="svh-section svh-section--dark">
+    <div class="svh-container svh-container--narrow svh-center">
+      <span class="svh-eyebrow">Unser Anspruch</span>
+      <p class="svh-section-title svh-mt-2" style="font-family:var(--svh-display)">Sport. Gemeinschaft. Hochhausen.</p>
+      <p class="svh-section-lead svh-mt-2" style="margin-inline:auto">Sechs Abteilungen, rund 280 Mitglieder und ein Ziel: dass in Hochhausen jede und jeder einen Platz im Verein findet.</p>
+      <div class="svh-actions svh-actions--center svh-mt-3">
+        <a class="svh-btn svh-btn--on-dark" href="/mitglied-werden/">Mitglied werden</a>
+        <a class="svh-btn svh-btn--outline-on-dark" href="/kontakt/">Mitmachen im Ehrenamt</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="svh-section">
+    <div class="svh-container">
+      <SectionHeader eyebrow="Eindrücke" title="Momente aus dem Vereinsleben" />
+      <div class="svh-mosaic">
+        <a class="svh-mosaic__item svh-mosaic__item--wide svh-mosaic__item--tall" href="/galerie/"><Pic theme="community" seed={91} clean width={900} w={900} h={700} /><span class="svh-mosaic__cap">Gemeinsam feiern</span></a>
+        <a class="svh-mosaic__item" href="/galerie/"><Pic theme="darts" seed={92} clean width={600} w={800} h={600} /><span class="svh-mosaic__cap">Darts-Abend</span></a>
+        <a class="svh-mosaic__item" href="/galerie/"><Pic theme="nordic" seed={93} clean width={600} w={800} h={600} /><span class="svh-mosaic__cap">Nordic Walking</span></a>
+        <a class="svh-mosaic__item svh-mosaic__item--wide" href="/galerie/"><Pic theme="football" seed={94} clean width={900} w={900} h={500} /><span class="svh-mosaic__cap">Spieltag</span></a>
+        <a class="svh-mosaic__item" href="/galerie/"><Pic theme="gym" seed={95} clean width={600} w={800} h={600} /><span class="svh-mosaic__cap">Gymnastik</span></a>
+        <a class="svh-mosaic__item" href="/galerie/"><Pic theme="hiking" seed={96} clean width={600} w={800} h={600} /><span class="svh-mosaic__cap">Unterwegs</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="svh-section svh-section--tight">
+    <div class="svh-container"><FollowBand /></div>
+  </section>
+</BaseLayout>

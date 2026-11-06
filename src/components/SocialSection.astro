@@ -1,0 +1,36 @@
+---
+/* Social Media: Instagram-Bilder + Facebook-Timeline (2-Klick) */
+import Icon from './Icon.astro'
+import SectionHeader from './SectionHeader.astro'
+import InstagramFeed from './InstagramFeed.astro'
+import FacebookFeed from './FacebookFeed.astro'
+import { socials, instagram } from '../data/site.js'
+
+interface Props {
+  soft?: boolean
+}
+const { soft = false } = Astro.props
+const live = socials.filter((s) => s.url)
+const hasFb = live.some((s) => s.id === 'facebook')
+---
+<section class:list={['svh-section', soft && 'svh-section--soft']} id="social">
+  <div class="svh-container">
+    <div class="svh-head-row">
+      <SectionHeader eyebrow="Social Media" title="Folge dem SVH" lead={`Spieltage, Turniere, Wanderungen und Vereinsleben – auf Instagram @${instagram.handle} und Facebook.`} />
+      <div class="svh-actions">
+        {
+          live.map((s, i) => (
+            <a class:list={['svh-btn', 'svh-btn--sm', i === 0 ? 'svh-btn--primary' : 'svh-btn--outline']} href={s.url} target="_blank" rel="noopener noreferrer">
+              <Icon name={s.icon} />
+              {s.label}
+            </a>
+          ))
+        }
+      </div>
+    </div>
+    <div class:list={['svh-social-grid', !hasFb && 'svh-social-grid--single']}>
+      <div class="svh-reveal"><InstagramFeed limit={hasFb ? 6 : 8} /></div>
+      {hasFb && <div class="svh-reveal" data-delay="1"><FacebookFeed /></div>}
+    </div>
+  </div>
+</section>

@@ -1,0 +1,17 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import Icon from '../../components/Icon.astro'
+---
+<BaseLayout title="Nachricht gesendet" noindex>
+  <section class="svh-section svh-404">
+    <div class="svh-container svh-container--narrow">
+      <div class="svh-404__big" aria-hidden="true"><Icon name="check-circle" size={96} /></div>
+      <h1 class="svh-section-title svh-mt-2">Danke für deine Nachricht!</h1>
+      <p class="svh-section-lead svh-mt-2" style="margin-inline:auto">Deine Anfrage ist angekommen. Wir melden uns so bald wie möglich bei dir.</p>
+      <div class="svh-actions svh-actions--center svh-mt-3">
+        <a class="svh-btn svh-btn--primary" href="/">Zur Startseite</a>
+        <a class="svh-btn svh-btn--outline" href="/termine/">Termine &amp; Training</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

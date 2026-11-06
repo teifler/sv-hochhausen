@@ -1,0 +1,43 @@
+---
+/* Bild: eigenes Foto/Stockfoto (optimiert) oder SVG-Platzhalter */
+import { optimizedPhoto, usedOnPage } from '../lib/photos.js'
+import { placeholder } from '../lib/placeholder.js'
+
+interface Props {
+  theme: string
+  seed?: number
+  alt?: string
+  width?: number
+  widths?: number[]
+  sizes?: string
+  class?: string
+  eager?: boolean
+  w?: number
+  h?: number
+  /** true = Bild liegt unter Text / ist Hintergrund → keine Fotos mit eingebrannter Schrift */
+  clean?: boolean
+  /** false = immer die gezeichnete Grafik (z. B. für echte Orte ohne eigenes Foto) */
+  photo?: boolean
+  /** Mindestgröße des Fotos relativ zu width (Standard 0.6; kleiner = auch kleine Archivfotos) */
+  minScale?: number
+}
+const { theme, seed = 1, alt = '', width = 1200, widths, sizes = '100vw', class: cls, eager = false, w = 1200, h = 800, clean = false, photo: usePhoto = true, minScale = 0.6 } = Astro.props
+const photo = usePhoto ? await optimizedPhoto(theme, seed, { width, widths, clean, minScale, avoid: usedOnPage(Astro.request) }) : null
+const ph = !photo || photo.hotlink ? placeholder(theme, { w, h, seed }) : null
+const src = photo ? photo.src : ph
+/* Vorschau mit CDN-Bildern: bei Ladefehler auf Platzhalter zurückfallen */
+const onerror = photo?.hotlink ? `this.onerror=null;this.removeAttribute('srcset');this.src='${ph.replace(/'/g, '%27')}'` : undefined
+---
+<img
+  class:list={['svh-img', cls]}
+  src={src}
+  srcset={photo?.srcset || undefined}
+  sizes={photo?.srcset ? sizes : undefined}
+  width={photo ? photo.width : w}
+  height={photo ? photo.height : h}
+  alt={alt}
+  loading={eager ? 'eager' : 'lazy'}
+  decoding={eager ? 'sync' : 'async'}
+  fetchpriority={eager ? 'high' : undefined}
+  onerror={onerror}
+/>

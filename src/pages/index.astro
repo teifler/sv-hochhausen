@@ -1,0 +1,352 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import Pic from '../components/Pic.astro'
+import Media from '../components/Media.astro'
+import Icon from '../components/Icon.astro'
+import SectionHeader from '../components/SectionHeader.astro'
+import NewsCard from '../components/cards/NewsCard.astro'
+import InstaCard from '../components/cards/InstaCard.astro'
+import EventCard from '../components/cards/EventCard.astro'
+import SportCard from '../components/cards/SportCard.astro'
+import MatchCard from '../components/cards/MatchCard.astro'
+import WeeklyPlan from '../components/WeeklyPlan.astro'
+import SocialSection from '../components/SocialSection.astro'
+import SponsorCard from '../components/cards/SponsorCard.astro'
+import { sponsors } from '../data/partners.js'
+import EventModal from '../components/EventModal.astro'
+import { club, contact, routeUrl, instagram } from '../data/site.js'
+import { newsSorted } from '../data/news.js'
+import { upcomingEvents } from '../data/events.js'
+import { sports } from '../data/sports.js'
+import { nextMatch } from '../data/teams.js'
+import { galleryItems } from '../lib/gallery.js'
+import { todayKey } from '../lib/format.js'
+
+const today = todayKey()
+const yearAgo = `${Number(today.slice(0, 4)) - 1}${today.slice(4)}`
+
+/* News: aktuelle Beiträge, Lücken mit Instagram-Kachel bzw. Archiv füllen */
+const recent = newsSorted.filter((n) => n.date >= yearAgo).slice(0, 3)
+const slots: any[] = recent.map((item) => ({ kind: 'news', item }))
+if (slots.length < 3) slots.push({ kind: 'insta' })
+for (const item of newsSorted.filter((n) => n.date < yearAgo)) {
+  if (slots.length >= 3) break
+  slots.push({ kind: 'news', item })
+}
+
+const events = upcomingEvents(today)
+const match = nextMatch(today)
+const years = Number(today.slice(0, 4)) - club.founded
+const stats = [
+  { num: String(years), label: 'Jahre SVH · seit 1946' },
+  { num: '280', label: 'Mitglieder (ca.)' },
+  { num: '6', label: 'Abteilungen' },
+  { num: '3', label: 'Vorsitzende im Team' },
+]
+/* 12 Rasterfelder (4 × 3) – alle sechs Abteilungen sind vertreten */
+const mosaic = [
+  { theme: 'community', seed: 51, label: 'Gemeinschaft', to: '/vereinsleben/', cls: 'svh-mosaic__item--wide svh-mosaic__item--tall' },
+  { theme: 'hiking', seed: 52, label: 'Maiwanderung', to: '/sport/wandern/', cls: '' },
+  { theme: 'archery', seed: 53, label: 'Bogensport', to: '/sport/bogenschiessen/', cls: '' },
+  { theme: 'sportheim', seed: 54, label: 'Treffpunkt Sportheim', to: '/verein/#sportstaetten', cls: 'svh-mosaic__item--wide' },
+  { theme: 'darts', seed: 55, label: 'Darts-Abende', to: '/sport/darts/', cls: '' },
+  { theme: 'football', seed: 56, label: 'Spieltag', to: '/fussball/', cls: '' },
+  { theme: 'gym', seed: 57, label: 'Damengymnastik', to: '/sport/damengymnastik/', cls: '' },
+  { theme: 'nordic', seed: 58, label: 'Nordic Walking', to: '/sport/nordic-walking/', cls: '' },
+]
+/* echte Vereinsfotos (+ Instagram); Bereich nur ab 4 Fotos */
+const thumbs = await galleryItems({ limit: 8, thumbWidth: 500 })
+const c = contact.main
+---
+<BaseLayout description={`${club.legalName} – ${club.tagline} Der größte Verein in Hochhausen.`}>
+  <!-- Hero -->
+  <section class="svh-hero">
+    <div class="svh-hero__bg" data-parallax><Pic theme="hero" seed={0} clean eager width={1920} widths={[960, 1440, 1920]} sizes="100vw" w={1600} h={900} /></div>
+    <div class="svh-hero__scrim"></div>
+    <div class="svh-container svh-container--wide svh-hero__inner">
+      <div class="svh-hero__content">
+        <p class="svh-hero__eyebrow"><Icon name="shield" />Sportverein · Hochhausen/Tauber</p>
+        <h1 class="svh-hero__title">SV Hochhausen <span>1946 e.V.</span></h1>
+        <p class="svh-hero__sub">{club.claim}</p>
+        <p class="svh-hero__text">Fußball, Bogenschießen, Darts, Damengymnastik, Nordic Walking und Wandern – seit 1946 der größte Verein in Hochhausen.</p>
+        <div class="svh-hero__actions">
+          <a class="svh-btn svh-btn--primary svh-btn--lg" href="/sport/">Sportangebote entdecken <Icon name="arrow-right" class="svh-arrow" /></a>
+          <a class="svh-btn svh-btn--outline-on-dark svh-btn--lg" href="/mitglied-werden/">Mitglied werden</a>
+        </div>
+        <div class="svh-hero__kicker">
+          <span class="svh-hero__kicker-label">Abteilungen</span>
+          {sports.map((s) => <a class="svh-hero__pill" href={s.to}>{s.name}</a>)}
+        </div>
+      </div>
+    </div>
+    <a class="svh-hero__scroll" href="#start-inhalt" aria-label="Weiter zum Inhalt"><i></i>Scrollen</a>
+  </section>
+
+  <!-- Sport-Ticker -->
+  <div class="svh-ticker" aria-hidden="true">
+    <div class="svh-ticker__track">
+      {
+        [0, 1].map(() =>
+          [...sports.map((s) => s.name), 'Seit 1946', 'Hochhausen/Tauber'].map((t) => (
+            <>
+              <span>{t}</span>
+              <b></b>
+            </>
+          )),
+        )
+      }
+    </div>
+  </div>
+
+  <!-- Kennzahlen -->
+  <section class="svh-stats-band svh-anchor" id="start-inhalt" aria-label="Der Verein in Zahlen">
+    <div class="svh-container svh-stats">
+      {
+        stats.map((s, i) => (
+          <div class="svh-fact svh-reveal" data-delay={String(i)}>
+            <div class="svh-fact__num" data-count={s.num}>{s.num}</div>
+            <div class="svh-fact__label">{s.label}</div>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- Aktuelles -->
+  <section class="svh-section">
+    <div class="svh-container">
+      <div class="svh-head-row">
+        <SectionHeader eyebrow="Aktuelles" title="Neues aus dem Verein" />
+        <a class="svh-textlink" href="/aktuelles/">Alle Nachrichten <Icon name="arrow-right" /></a>
+      </div>
+      <div class="svh-grid svh-grid--3">
+        {
+          slots.map((s, i) => (
+            <div class="svh-reveal" data-delay={String(i)}>
+              {s.kind === 'news' ? <NewsCard item={s.item} /> : <InstaCard />}
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Fußball & Termine -->
+  <section class="svh-section svh-section--soft">
+    <div class="svh-container">
+      <div class="svh-grid svh-grid--2" style="align-items:start">
+        <div class="svh-reveal">
+          <SectionHeader eyebrow="Fußball" title="Nächstes Spiel" lead="SpG Hochhausen/Tauberbischofsheim 3 · Kreisklasse B Tauberbischofsheim" />
+          <MatchCard match={match} />
+        </div>
+        <div class="svh-reveal" data-delay="1">
+          <SectionHeader eyebrow="Termine" title="Was steht an?" lead="Veranstaltungen und Spiele – die regelmäßigen Trainings findest du im Wochenplan." />
+          <div class="svh-grid">
+            {events.slice(0, 3).map((e) => <EventCard event={e} />)}
+            {events.length === 0 && <p class="svh-empty">Aktuell sind keine Termine eingetragen. <a href="/termine/">Zum Wochenplan</a></p>}
+          </div>
+          <div class="svh-actions svh-mt-3">
+            <a class="svh-btn svh-btn--dark" href="/kalender/">Vereinskalender <Icon name="calendar" /></a>
+            <a class="svh-btn svh-btn--outline" href="/termine/">Alle Termine</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Mehr als Fußball -->
+  <section class="svh-section svh-section--dark">
+    <div class="svh-container">
+      <div class="svh-head-row">
+        <SectionHeader eyebrow="Sportangebote" title="Mehr als Fußball." lead="Sechs Abteilungen, ein Verein: Beim SV Hochhausen findet jede und jeder den passenden Sport – vom Wettkampf bis zur gemütlichen Runde an der frischen Luft." />
+        <a class="svh-btn svh-btn--outline-on-dark" href="/sport/">Alle Angebote</a>
+      </div>
+      <div class="svh-grid svh-grid--3">
+        {
+          sports.map((s, i) => (
+            <div class="svh-reveal" data-delay={String(i % 3)}>
+              <SportCard sport={s} />
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Wochenplan -->
+  <section class="svh-section">
+    <div class="svh-container">
+      <div class="svh-head-row">
+        <SectionHeader eyebrow="Training" title="Wann trainiert wer?" lead="Alle regelmäßigen Trainingszeiten auf einen Blick. Einfach vorbeikommen und mitmachen – Schnuppern ist jederzeit möglich." />
+        <a class="svh-textlink" href="/termine/">Termine &amp; Training <Icon name="arrow-right" /></a>
+      </div>
+      <div class="svh-reveal"><WeeklyPlan /></div>
+    </div>
+  </section>
+
+  <!-- Vereinsleben -->
+  <section class="svh-section svh-section--soft">
+    <div class="svh-container">
+      <div class="svh-head-row">
+        <SectionHeader eyebrow="Vereinsleben" title="Gemeinsam ist mehr drin." lead="Ehrenamt, Feste und Treffpunkte: Was den SVH ausmacht, passiert oft neben dem Sportplatz." />
+        <a class="svh-textlink" href="/vereinsleben/">Vereinsleben entdecken <Icon name="arrow-right" /></a>
+      </div>
+      <div class="svh-mosaic svh-reveal svh-reveal--zoom">
+        {
+          mosaic.map((m) => (
+            <a class:list={['svh-mosaic__item', m.cls]} href={m.to}>
+              <Pic theme={m.theme} seed={m.seed} photo={false} width={800} widths={[400, 800]} sizes="(max-width: 720px) 50vw, 33vw" w={800} h={600} />
+              <span class="svh-mosaic__cap">{m.label}</span>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Sportheim -->
+  <section class="svh-section">
+    <div class="svh-container">
+      <div class="svh-sportheim svh-reveal">
+        <div class="svh-sportheim__media"><Pic theme="sportheim" seed={15} width={900} widths={[500, 900]} sizes="(max-width: 820px) 100vw, 50vw" w={900} h={700} /></div>
+        <div class="svh-sportheim__body">
+          <span class="svh-eyebrow">Treffpunkt</span>
+          <h2>Unser Sportheim</h2>
+          <p>Direkt am Sportplatz in Hochhausen: Hier trifft sich der Verein nach dem Training und nach dem Spiel – und hier endet jedes Jahr die Maiwanderung mit kühlen Getränken und Gegrilltem.</p>
+          <ul class="svh-list-check">
+            <li><Icon name="map-pin" /><span>{c.street}, {c.zip} {c.city}</span></li>
+            <li><Icon name="phone" /><span>{c.phone} (Sportheim)</span></li>
+          </ul>
+          <div class="svh-actions">
+            <a class="svh-btn svh-btn--primary" href={`tel:${c.phoneHref}`}><Icon name="phone" />Anrufen</a>
+            <a class="svh-btn svh-btn--outline" href={routeUrl('Zum Sportplatz 10, 97941 Tauberbischofsheim')} target="_blank" rel="noopener noreferrer"><Icon name="navigation" />Route planen</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Galerie (nur echte Fotos) -->
+  {
+    thumbs.length >= 4 && (
+      <section class="svh-section svh-section--soft">
+        <div class="svh-container">
+          <div class="svh-head-row">
+            <SectionHeader eyebrow="Galerie" title="Momente aus dem Verein" />
+            <a class="svh-textlink" href="/galerie/">Zur Galerie <Icon name="arrow-right" /></a>
+          </div>
+          <div class="svh-thumbs svh-reveal svh-reveal--zoom">
+            {thumbs.map((g) => (
+              <a class="svh-hoverable" href="/galerie/" aria-label={`Galerie: ${g.title}`}>
+                <div class="svh-media svh-media--r-1x1 svh-zoom">
+                  <img class="svh-img" src={g.src} srcset={g.srcset || undefined} sizes="(max-width: 560px) 50vw, (max-width: 820px) 33vw, 25vw" width={g.width} height={g.height} alt={g.caption || g.title} loading="lazy" decoding="async" />
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <!-- Social Media -->
+  <SocialSection />
+
+  <!-- Mitmachen & unterstützen -->
+  <section class="svh-section svh-section--soft">
+    <div class="svh-container">
+      <SectionHeader eyebrow="Mitmachen" title="Dabei sein. Unterstützen." center />
+      <div class="svh-grid svh-grid--3">
+        <a class="svh-info-card svh-reveal" href="/mitglied-werden/">
+          <span class="svh-info-card__icon"><Icon name="users" /></span>
+          <h3>Mitglied werden</h3>
+          <p>Antrag ausfüllen, abgeben, mitmachen – in einer oder gleich mehreren Abteilungen.</p>
+          <span class="svh-textlink">So geht's <Icon name="arrow-right" /></span>
+        </a>
+        <a class="svh-info-card svh-reveal" data-delay="1" href="/spenden/">
+          <span class="svh-info-card__icon"><Icon name="heart" /></span>
+          <h3>Spenden</h3>
+          <p>Leihausrüstung, Sportplatz, Jugend, Inklusion: Jede Spende bleibt im Verein und kommt direkt dem Sport zugute.</p>
+          <span class="svh-textlink">Jetzt unterstützen <Icon name="arrow-right" /></span>
+        </a>
+        <a class="svh-info-card svh-reveal" data-delay="2" href="/sponsoren/#sponsor-werden">
+          <span class="svh-info-card__icon"><Icon name="handshake" /></span>
+          <h3>Sponsor werden</h3>
+          <p>Werbung am Sportplatz, auf der Website und im Vereinsleben – sprich uns an.</p>
+          <span class="svh-textlink">Sponsor werden <Icon name="arrow-right" /></span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sponsoren -->
+  {
+    sponsors.length > 0 && (
+      <section class="svh-section svh-section--tight">
+        <div class="svh-container">
+          <div class="svh-head-row">
+            <SectionHeader eyebrow="Sponsoren" title="Danke an unsere Sponsoren" />
+            <a class="svh-textlink" href="/sponsoren/">
+              Alle Sponsoren <Icon name="arrow-right" />
+            </a>
+          </div>
+          <div class="svh-sponsor-strip svh-reveal">
+            {sponsors.map((sp) => (
+              <SponsorCard sponsor={sp} compact />
+            ))}
+            <a class="svh-sponsor svh-sponsor--invite svh-sponsor--compact" href="/sponsoren/#sponsor-werden">
+              <span class="svh-sponsor__logo">
+                <span class="svh-sponsor__invite">
+                  <Icon name="handshake" />
+                  Ihr Logo hier?
+                </span>
+              </span>
+            </a>
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <!-- CTA -->
+  <section class="svh-section">
+    <div class="svh-container">
+      <div class="svh-cta-band svh-reveal">
+        <div class="svh-cta-band__bg" data-parallax><Pic theme="team" seed={2} clean width={1400} widths={[700, 1400]} sizes="100vw" w={1400} h={600} /></div>
+        <div class="svh-cta-band__scrim"></div>
+        <div class="svh-cta-band__inner">
+          <div>
+            <h2>Werde Teil des SV Hochhausen.</h2>
+            <p>Ob Schnuppertraining, Mitgliedschaft oder Ehrenamt: Wir freuen uns auf dich – in jedem Alter und auf jedem Level.</p>
+          </div>
+          <div class="svh-cta-band__actions">
+            <a class="svh-btn svh-btn--on-dark" href="/mitglied-werden/">Mitglied werden</a>
+            <a class="svh-btn svh-btn--outline-on-dark" href="/kontakt/?anliegen=probetraining">Probetraining anfragen</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Kontakt -->
+  <section class="svh-section svh-section--tight">
+    <div class="svh-container">
+      <div class="svh-grid svh-grid--3">
+        <a class="svh-contact-item" href={routeUrl('Zum Sportplatz 10, 97941 Tauberbischofsheim')} target="_blank" rel="noopener noreferrer">
+          <span class="svh-contact-item__icon"><Icon name="map-pin" /></span>
+          <div><h3>Adresse</h3><p>{c.street}<br />{c.zip} {c.city}</p></div>
+        </a>
+        <a class="svh-contact-item" href={`tel:${c.phoneHref}`}>
+          <span class="svh-contact-item__icon"><Icon name="phone" /></span>
+          <div><h3>Telefon</h3><p>{c.phone} (Sportheim)</p></div>
+        </a>
+        <a class="svh-contact-item" href="/kontakt/">
+          <span class="svh-contact-item__icon"><Icon name="mail" /></span>
+          <div><h3>E-Mail &amp; Formular</h3><p>{c.email}</p></div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <EventModal events={events} />
+</BaseLayout>

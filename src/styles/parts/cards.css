@@ -1,0 +1,702 @@
+/* --- Karten (Basis) ------------------------------------- */
+.svh-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: #fff;
+  border: 1px solid var(--svh-line);
+  border-radius: var(--svh-radius);
+  overflow: hidden;
+  transition:
+    transform var(--svh-t) var(--svh-ease),
+    box-shadow var(--svh-t) var(--svh-ease),
+    border-color var(--svh-t) var(--svh-ease);
+}
+.svh-card.svh-hoverable:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--svh-shadow);
+  border-color: transparent;
+}
+.svh-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  padding: 1.15rem 1.25rem 1.3rem;
+  flex: 1;
+}
+.svh-card__meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.7rem;
+  color: var(--svh-muted);
+  font-size: 0.85rem;
+}
+.svh-card__meta time {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+.svh-card__meta svg {
+  width: 1rem;
+  height: 1rem;
+}
+.svh-card__title {
+  font-size: 1.4rem;
+  text-transform: uppercase;
+  line-height: 1.06;
+  color: var(--svh-ink);
+  transition: color var(--svh-t) var(--svh-ease);
+}
+.svh-card.svh-hoverable:hover .svh-card__title {
+  color: var(--svh-red);
+}
+.svh-card__text {
+  color: var(--svh-ink-2);
+  font-size: 0.98rem;
+}
+.svh-card__foot {
+  margin-top: auto;
+  padding-top: 0.35rem;
+}
+
+/* --- News-Karte ----------------------------------------- */
+.svh-news-card .svh-media {
+  border-radius: 0;
+}
+
+/* --- Event-Karte (Button) -------------------------------- */
+.svh-event-card {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  gap: 0;
+  width: 100%;
+  text-align: left;
+  background: #fff;
+  border: 1px solid var(--svh-line);
+  border-radius: var(--svh-radius);
+  overflow: hidden;
+  transition:
+    transform var(--svh-t) var(--svh-ease),
+    box-shadow var(--svh-t) var(--svh-ease),
+    border-color var(--svh-t) var(--svh-ease);
+}
+.svh-event-card.svh-hoverable:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--svh-shadow);
+  border-color: transparent;
+}
+.svh-event-card__date {
+  flex: none;
+  width: 92px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.1rem;
+  padding: 0.9rem 0.5rem;
+  background: linear-gradient(160deg, var(--svh-red) 0%, var(--svh-red-dark) 100%);
+  color: #fff;
+  text-align: center;
+}
+.svh-event-card__date .d {
+  font-family: var(--svh-display);
+  font-weight: 700;
+  font-size: 2rem;
+  line-height: 1;
+}
+.svh-event-card__date .m {
+  font-family: var(--svh-display);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.82rem;
+}
+.svh-event-card__date .y {
+  font-size: 0.72rem;
+  opacity: 0.8;
+}
+.svh-event-card__date--tba {
+  background: linear-gradient(160deg, #4a5160 0%, #2c313c 100%);
+}
+.svh-event-card__date--tba .big {
+  font-family: var(--svh-display);
+  font-weight: 700;
+  font-size: 1.5rem;
+  line-height: 1;
+}
+.svh-event-card__body {
+  padding: 0.95rem 1.15rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  flex: 1;
+  min-width: 0;
+}
+.svh-event-card__title {
+  display: block;
+  font-family: var(--svh-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 1.28rem;
+  line-height: 1.05;
+  color: var(--svh-ink);
+}
+.svh-event-card__facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1rem;
+  color: var(--svh-muted);
+  font-size: 0.88rem;
+}
+.svh-event-card__facts > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+.svh-event-card__facts svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+/* --- Sport-Karte ---------------------------------------- */
+.svh-sport-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border-radius: var(--svh-radius);
+  overflow: hidden;
+  color: #fff;
+  isolation: isolate;
+  min-height: 260px;
+  border: none;
+  transition:
+    transform var(--svh-t) var(--svh-ease),
+    box-shadow var(--svh-t) var(--svh-ease);
+}
+.svh-sport-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--svh-shadow);
+}
+.svh-sport-card__bg {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+}
+.svh-sport-card__bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--svh-t-slow) var(--svh-ease);
+}
+.svh-sport-card:hover .svh-sport-card__bg img {
+  transform: scale(1.07);
+}
+.svh-sport-card__scrim {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(to top, rgba(8, 10, 15, 0.86) 6%, rgba(8, 10, 15, 0.35) 55%, rgba(8, 10, 15, 0.12) 100%);
+}
+.svh-sport-card__inner {
+  margin-top: auto;
+  padding: 1.2rem 1.25rem 1.3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.svh-sport-card__icon {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  width: 48px;
+  height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+}
+.svh-sport-card__icon svg {
+  width: 26px;
+  height: 26px;
+  color: #fff;
+}
+.svh-sport-card__title {
+  font-family: var(--svh-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 1.5rem;
+  line-height: 1.02;
+  color: #fff;
+}
+.svh-sport-card__text {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.95rem;
+}
+.svh-sport-card__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.35rem;
+  font-family: var(--svh-display);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.9rem;
+  color: #fff;
+}
+.svh-sport-card__link svg {
+  width: 1.05em;
+  height: 1.05em;
+  transition: transform var(--svh-t) var(--svh-ease);
+}
+.svh-sport-card:hover .svh-sport-card__link svg {
+  transform: translateX(3px);
+}
+.svh-sport-card--sm {
+  min-height: 200px;
+}
+
+/* --- Team-Karte ----------------------------------------- */
+.svh-team-card .svh-media {
+  border-radius: 0;
+}
+.svh-team-card .svh-card__body {
+  gap: 0.4rem;
+}
+.svh-team-card__league {
+  font-family: var(--svh-display);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--svh-red);
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+/* --- Personen-Karte ------------------------------------- */
+.svh-person-card {
+  text-align: center;
+  background: #fff;
+  border: 1px solid var(--svh-line);
+  border-radius: var(--svh-radius);
+  padding: 1.4rem 1.15rem 1.3rem;
+  height: 100%;
+  transition:
+    transform var(--svh-t) var(--svh-ease),
+    box-shadow var(--svh-t) var(--svh-ease);
+}
+.svh-person-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--svh-shadow);
+}
+.svh-person-card__avatar {
+  width: 104px;
+  height: 104px;
+  margin: 0 auto 0.9rem;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid var(--svh-red-soft);
+}
+.svh-person-card__avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.svh-person-card__name {
+  font-family: var(--svh-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 1.25rem;
+  line-height: 1.05;
+  color: var(--svh-ink);
+}
+.svh-person-card__role {
+  color: var(--svh-red);
+  font-weight: 600;
+  font-size: 0.92rem;
+  margin-top: 0.15rem;
+}
+.svh-person-card__contact {
+  margin-top: 0.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  font-size: 0.88rem;
+  color: var(--svh-muted);
+  overflow-wrap: anywhere;
+}
+.svh-person-card__contact a:hover {
+  color: var(--svh-red);
+}
+
+/* --- Match-/Spiel-Karte --------------------------------- */
+.svh-match {
+  background: #fff;
+  border: 1px solid var(--svh-line);
+  border-radius: var(--svh-radius-lg);
+  overflow: hidden;
+  box-shadow: var(--svh-shadow);
+}
+.svh-match__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.9rem 1.35rem;
+  background: var(--svh-ink);
+  color: #fff;
+}
+.svh-match__head .svh-badge {
+  background: var(--svh-red);
+  color: #fff;
+}
+.svh-match__competition {
+  font-family: var(--svh-display);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.75);
+}
+.svh-match__teams {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.6rem 1.35rem;
+}
+.svh-match__team {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.7rem;
+  text-align: center;
+}
+.svh-match__crest {
+  width: 78px;
+  height: 78px;
+}
+.svh-match__team b {
+  font-family: var(--svh-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 1.15rem;
+  line-height: 1.05;
+  color: var(--svh-ink);
+}
+.svh-match__vs {
+  font-family: var(--svh-display);
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: var(--svh-muted);
+}
+.svh-match__info {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6rem 1.4rem;
+  padding: 0 1.35rem 1.2rem;
+  color: var(--svh-ink-2);
+}
+.svh-match__info span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-weight: 500;
+}
+.svh-match__info svg {
+  width: 1.1rem;
+  height: 1.1rem;
+  color: var(--svh-red);
+}
+.svh-match__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+  padding: 0 1.35rem 1.4rem;
+}
+
+/* --- Partner-Karte -------------------------------------- */
+.svh-partner-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1.2rem;
+  height: 100%;
+  background: #fff;
+  border: 1px solid var(--svh-line);
+  border-radius: var(--svh-radius);
+  transition:
+    transform var(--svh-t) var(--svh-ease),
+    box-shadow var(--svh-t) var(--svh-ease),
+    border-color var(--svh-t) var(--svh-ease);
+}
+.svh-partner-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--svh-shadow);
+  border-color: transparent;
+}
+.svh-partner-card__logo {
+  height: 66px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--svh-radius-sm);
+  background: var(--svh-bg-soft);
+  font-family: var(--svh-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--svh-ink);
+  font-size: 1.1rem;
+  padding: 0.5rem;
+  text-align: center;
+}
+.svh-partner-card__name {
+  font-weight: 600;
+  color: var(--svh-ink);
+}
+.svh-partner-card__cat {
+  font-size: 0.82rem;
+  color: var(--svh-muted);
+}
+.svh-partner-card__link {
+  margin-top: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--svh-red);
+  font-weight: 600;
+  font-size: 0.88rem;
+}
+.svh-partner-card__link svg {
+  width: 0.95em;
+  height: 0.95em;
+}
+
+/* --- Info-/Fakten-Kacheln ------------------------------- */
+.svh-info-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 1.5rem 1.4rem;
+  background: #fff;
+  border: 1px solid var(--svh-line);
+  border-radius: var(--svh-radius);
+  height: 100%;
+  color: var(--svh-ink);
+}
+.svh-info-card__icon {
+  width: 50px;
+  height: 50px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  background: var(--svh-red-soft);
+  color: var(--svh-red);
+}
+.svh-info-card__icon svg {
+  width: 26px;
+  height: 26px;
+}
+.svh-info-card h3 {
+  font-size: 1.3rem;
+  text-transform: uppercase;
+  /* weiße Karte – auch in dunklen Sektionen dunkle Überschrift */
+  color: var(--svh-ink);
+}
+.svh-info-card p {
+  color: var(--svh-ink-2);
+  font-size: 0.96rem;
+}
+a.svh-info-card {
+  transition:
+    transform var(--svh-t) var(--svh-ease),
+    box-shadow var(--svh-t) var(--svh-ease);
+}
+a.svh-info-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--svh-shadow);
+}
+
+.svh-fact {
+  text-align: center;
+  padding: 0.5rem;
+}
+.svh-fact__num {
+  font-family: var(--svh-display);
+  font-weight: 700;
+  font-size: clamp(2.2rem, 5vw, 3.2rem);
+  line-height: 1;
+  color: var(--svh-red);
+}
+.svh-fact__label {
+  margin-top: 0.35rem;
+  font-family: var(--svh-display);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.86rem;
+  color: var(--svh-ink-2);
+}
+.svh-section--dark .svh-fact__num {
+  color: #fff;
+}
+.svh-section--dark .svh-fact__label {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+@media (max-width: 460px) {
+  .svh-event-card__date {
+    width: 76px;
+  }
+  .svh-match__teams {
+    gap: 0.5rem;
+  }
+  .svh-match__crest {
+    width: 62px;
+    height: 62px;
+  }
+}
+
+/* --- Sponsoren -------------------------------------------- */
+.svh-sponsor-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr));
+  gap: 1rem;
+}
+.svh-sponsor {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: #fff;
+  border: 1px solid var(--svh-line);
+  border-radius: var(--svh-radius);
+  overflow: hidden;
+  color: var(--svh-ink);
+  transition:
+    transform var(--svh-t) var(--svh-ease),
+    box-shadow var(--svh-t) var(--svh-ease),
+    border-color var(--svh-t) var(--svh-ease);
+}
+.svh-sponsor:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--svh-shadow);
+  border-color: transparent;
+}
+.svh-sponsor__logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 132px;
+  padding: 1.1rem 1.4rem;
+  background: #fff;
+  border-bottom: 1px solid var(--svh-line);
+}
+.svh-sponsor__logo img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  transition: transform var(--svh-t-slow) var(--svh-ease);
+}
+.svh-sponsor:hover .svh-sponsor__logo img {
+  transform: scale(1.05);
+}
+/* Schriftkachel, solange kein Logo vorliegt (neutral, kein Markenlogo) */
+.svh-sponsor__wordmark {
+  font-family: var(--svh-display);
+  font-weight: 700;
+  font-size: clamp(1.35rem, 2.4vw, 1.7rem);
+  line-height: 1.05;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--svh-ink);
+}
+.svh-sponsor__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 1rem 1.15rem 1.15rem;
+  flex: 1;
+}
+.svh-sponsor__name {
+  font-weight: 700;
+}
+.svh-sponsor__meta {
+  font-size: 0.86rem;
+  color: var(--svh-muted);
+}
+.svh-sponsor__link {
+  margin-top: auto;
+  padding-top: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--svh-red);
+  font-weight: 600;
+  font-size: 0.88rem;
+}
+.svh-sponsor__link svg {
+  width: 0.95em;
+  height: 0.95em;
+  transition: transform var(--svh-t) var(--svh-ease);
+}
+.svh-sponsor:hover .svh-sponsor__link svg {
+  transform: translateX(3px);
+}
+.svh-sponsor--invite {
+  border-style: dashed;
+  border-width: 2px;
+  background: var(--svh-bg-soft);
+}
+.svh-sponsor--invite .svh-sponsor__logo {
+  background: transparent;
+  color: var(--svh-red);
+  border-bottom-style: dashed;
+}
+.svh-sponsor--invite .svh-sponsor__logo svg {
+  width: 44px;
+  height: 44px;
+}
+/* kompakt: Logo-Leiste auf der Startseite */
+.svh-sponsor--compact {
+  height: auto;
+}
+.svh-sponsor--compact .svh-sponsor__logo {
+  height: 110px;
+  border-bottom: 0;
+}
+.svh-sponsor-strip {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+}
+.svh-sponsor-strip > * {
+  flex: 0 1 260px;
+}
+.svh-sponsor__invite {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--svh-display);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 0.95rem;
+  color: var(--svh-ink-2);
+}
+.svh-sponsor--compact.svh-sponsor--invite .svh-sponsor__logo svg {
+  width: 34px;
+  height: 34px;
+  color: var(--svh-red);
+}

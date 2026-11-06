@@ -1,0 +1,101 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import PageHero from '../../components/PageHero.astro'
+import Media from '../../components/Media.astro'
+import Icon from '../../components/Icon.astro'
+import SportCard from '../../components/cards/SportCard.astro'
+import { sports } from '../../data/sports.js'
+import { getVenue } from '../../data/venues.js'
+import { routeUrl } from '../../data/site.js'
+import { fmtTime, WEEKDAYS } from '../../lib/format.js'
+
+export function getStaticPaths() {
+  return sports.filter((s) => s.slug !== 'fussball').map((s) => ({ params: { slug: s.slug }, props: { sport: s } }))
+}
+
+const { sport: s } = Astro.props
+const venue = s.venueId ? getVenue(s.venueId) : null
+const others = sports.filter((o) => o.slug !== s.slug)
+---
+<BaseLayout title={s.name} description={`${s.name} beim SV Hochhausen 1946: ${s.intro}`}>
+  <PageHero title={s.name} eyebrow={s.tagline} lead={s.intro} theme={s.theme} seed={s.seed} crumbs={[{ label: 'Sport', to: '/sport/' }]} />
+
+  <section class="svh-section">
+    <div class="svh-container">
+      <div class="svh-layout-aside">
+        <div>
+          <div class="svh-prose">
+            {s.body.map((p: string) => <p>{p}</p>)}
+          </div>
+          <ul class="svh-list-check svh-mt-3">
+            {s.highlights.map((h: string) => (
+              <li><Icon name="check" /><span>{h}</span></li>
+            ))}
+          </ul>
+
+          <h2 class="svh-subhead svh-mt-3" style="margin-top:2.2rem">Trainingszeiten</h2>
+          {
+            s.schedule.length ? (
+              <ul class="svh-sched" style={`--acc:${s.accent}`}>
+                {s.schedule.map((t: any) => (
+                  <li>
+                    <b>{WEEKDAYS[t.day]}</b>
+                    <span>
+                      {fmtTime(t.time)}
+                      {t.note && ` · ${t.note}`}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p class="svh-empty">Die Termine werden {s.scheduleText} angesetzt und im <a href="/kalender/">Vereinskalender</a> angekündigt.</p>
+            )
+          }
+          {s.scheduleNote && <p class="svh-form__note svh-mt-1">{s.scheduleNote}</p>}
+          {s.confirm && <p class="svh-note svh-mt-2"><Icon name="info" /><span>Die Zeiten stammen aus einer älteren Angabe. Bitte vor dem ersten Besuch kurz beim Verein nachfragen.</span></p>}
+
+          <div class="svh-grid svh-grid--3 svh-mt-3">
+            {[0, 1, 2].map((i) => <Media theme={s.theme} seed={s.seed * 10 + i} ratio="4x3" width={500} minScale={0.45} sizes="(max-width: 560px) 100vw, 260px" />)}
+          </div>
+        </div>
+
+        <aside class="svh-aside">
+          <div class="svh-aside-card">
+            <h2>Auf einen Blick</h2>
+            <dl class="svh-roles" style="border:none">
+              <div><dt>Für</dt><dd>{s.audience}</dd></div>
+              <div><dt>Ort</dt><dd>{s.place}</dd></div>
+              {s.since && <div><dt>Seit</dt><dd>{s.since}</dd></div>}
+              {s.lead && <div><dt>{s.lead.role}</dt><dd>{s.lead.name}</dd></div>}
+              {s.trainer && <div><dt>Trainerin</dt><dd>{s.trainer}</dd></div>}
+            </dl>
+          </div>
+          <div class="svh-aside-card">
+            <h2>Mitmachen</h2>
+            <p>Neugierig? Komm zum Schnuppern vorbei oder schreib uns vorher kurz.</p>
+            <a class="svh-btn svh-btn--primary svh-btn--block" href="/kontakt/?anliegen=probetraining">Probetraining anfragen</a>
+            <a class="svh-btn svh-btn--outline svh-btn--block" href="/mitglied-werden/">Mitglied werden</a>
+          </div>
+          {
+            venue && (
+              <div class="svh-aside-card">
+                <h2>{venue.name}</h2>
+                <p class="svh-venue__addr"><Icon name="map-pin" /><span>{venue.address}</span></p>
+                <a class="svh-textlink" href={routeUrl(venue.maps)} target="_blank" rel="noopener noreferrer">Route planen <Icon name="navigation" /></a>
+              </div>
+            )
+          }
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="svh-section svh-section--soft">
+    <div class="svh-container">
+      <div class="svh-section-head"><span class="svh-eyebrow">Mehr als Fußball</span><h2 class="svh-section-title">Weitere Abteilungen</h2></div>
+      <div class="svh-grid svh-grid--3">
+        {others.map((o) => <SportCard sport={o} small />)}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

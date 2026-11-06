@@ -1,0 +1,62 @@
+---
+import Logo from './Logo.astro'
+import Icon from './Icon.astro'
+import { nav, mobileExtra, socials } from '../data/site.js'
+
+const path = Astro.url.pathname.replace(/\/?$/, '/')
+const active = (to: string) => !to.includes('#') && (to === '/' ? path === '/' : path === to)
+const live = socials.filter((s) => s.url)
+---
+<div class="svh-mnav" id="svh-mnav" data-mnav inert>
+  <div class="svh-mnav__backdrop" data-mnav-close></div>
+  <div class="svh-mnav__panel" role="dialog" aria-modal="true" aria-label="Menü">
+    <div class="svh-mnav__head">
+      <a class="svh-brand" href="/">
+        <Logo class="svh-brand__logo" size={40} title="" />
+        <span class="svh-brand__name"><b>SV Hochhausen</b><span>Seit 1946 · Tauber</span></span>
+      </a>
+      <button class="svh-mnav__close" type="button" data-mnav-close aria-label="Menü schließen"><Icon name="x" /></button>
+    </div>
+    <nav class="svh-mnav__body" aria-label="Mobile Navigation">
+      {
+        nav.map((item, i) => (
+          <div class="svh-mnav__group">
+            <div class="svh-mnav__row">
+              <a class:list={['svh-mnav__link', active(item.to) && 'is-active']} href={item.to}>{item.label}</a>
+              {item.children && (
+                <button class="svh-mnav__toggle" type="button" aria-expanded="false" aria-controls={`svh-mnav-sub-${i}`} aria-label={`Untermenü ${item.label}`} data-mnav-toggle>
+                  <Icon name="chevron-down" />
+                </button>
+              )}
+            </div>
+            {item.children && (
+              <div class="svh-mnav__sub" id={`svh-mnav-sub-${i}`} inert>
+                {item.children.map((c) => (
+                  <a class:list={['svh-mnav__sublink', active(c.to) && 'is-active']} href={c.to}>{c.label}</a>
+                ))}
+              </div>
+            )}
+          </div>
+        ))
+      }
+      {
+        mobileExtra.map((item) => (
+          <div class="svh-mnav__group">
+            <div class="svh-mnav__row">
+              <a class:list={['svh-mnav__link', active(item.to) && 'is-active']} href={item.to}>{item.label}</a>
+            </div>
+          </div>
+        ))
+      }
+      <div class="svh-mnav__foot">
+        <a class="svh-btn svh-btn--primary svh-btn--block" href="/mitglied-werden/">Mitglied werden</a>
+        <a class="svh-btn svh-btn--outline svh-btn--block" href="/kontakt/">Kontakt</a>
+      </div>
+      <div class="svh-mnav__social svh-social">
+        {live.map((s) => (
+          <a href={s.url} target="_blank" rel="noopener noreferrer" aria-label={`${s.label} (öffnet neues Fenster)`}><Icon name={s.icon} /></a>
+        ))}
+      </div>
+    </nav>
+  </div>
+</div>

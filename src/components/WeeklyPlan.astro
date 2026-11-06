@@ -1,0 +1,39 @@
+---
+/* Wochenplan: alle regelmäßigen Trainingszeiten */
+import Icon from './Icon.astro'
+import { weeklyPlan, getSport } from '../data/sports.js'
+import { fmtTime } from '../lib/format.js'
+
+const wandern = getSport('wandern')
+---
+<div class="svh-week">
+  {
+    weeklyPlan.map((d) => (
+      <div class="svh-week__day" data-weekday={String(d.day)}>
+        <h3 class="svh-week__label">
+          <span aria-hidden="true">{d.short}</span>
+          {d.label}
+        </h3>
+        <ul class="svh-week__slots">
+          {d.slots.map((s) => (
+            <li>
+              <a class="svh-week__slot" href={s.to} style={`--acc:${s.accent}`}>
+                <span class="svh-week__time">{fmtTime(s.time)}</span>
+                <span class="svh-week__sport">
+                  <Icon name={s.icon} />
+                  {s.sport}
+                </span>
+                <span class="svh-week__place">
+                  {s.place}
+                  {s.note && ` · ${s.note}`}
+                  {s.confirm && ' · bitte vorher anmelden'}
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))
+  }
+</div>
+<p class="svh-week__foot"><Icon name="info" /><span>Wandern: {wandern?.scheduleText} – Touren stehen im Vereinskalender. In Ferien und an Feiertagen kann es Abweichungen geben.</span></p>
