@@ -1,8 +1,9 @@
 /* Plausibilitätschecks für die Inhalte in src/data/ – fangen Tippfehler ab, bevor sie live gehen. */
-import { readdirSync, readFileSync } from 'node:fs'
+import { existsSync, readdirSync, readFileSync } from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { describe, expect, it } from 'vitest'
+import { documents } from '../src/data/documents.js'
 import { donate } from '../src/data/donate.js'
 import { fussballde } from '../src/data/fussballde.js'
 import { news } from '../src/data/news.js'
@@ -10,7 +11,8 @@ import { legacyRedirects } from '../src/data/redirects.js'
 import { sports, trainingSlots } from '../src/data/sports.js'
 import { nextMatch, upcomingFixtures } from '../src/data/teams.js'
 
-const PAGES = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../src/pages')
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
+const PAGES = path.join(ROOT, 'src/pages')
 
 /* Statische Seiten: Route → Quelldatei (z. B. '/kontakt/' → 'kontakt/index.astro') */
 function staticRoutes(dir = PAGES, base = '') {
@@ -58,6 +60,12 @@ describe('Links & Weiterleitungen', () => {
         const source = readFileSync(path.join(PAGES, routes.get(route)), 'utf8')
         expect(source, `Anker #${anchor} fehlt in ${routes.get(route)}`).toContain(`id="${anchor}"`)
       }
+    }
+  })
+
+  it('lokale Downloads liegen in public/', () => {
+    for (const d of documents.filter((x) => x.url.startsWith('/'))) {
+      expect(existsSync(path.join(ROOT, 'public', decodeURIComponent(d.url))), d.url).toBe(true)
     }
   })
 
