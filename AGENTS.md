@@ -283,6 +283,10 @@ Link-Check: keine `href="#"`, alle internen Links/Anker existieren.
   (liest `.env` + Schlüssel, zeigt keine Werte). Der Workflow gibt keine Verbindungsdaten aus (Regel 1).
 - `--delete` entfernt auf dem Webspace alles, was nicht in `dist/` liegt – vor dem ersten Deploy Webroot prüfen.
 - HTTPS-Zwang + HSTS erst einschalten (`src/data/hosting.js → forceHttps`), wenn das SSL-Zertifikat aktiv ist.
+- Hauptadresse `https://www.sportverein-hochhausen.de` (`SITE` in `astro.config.mjs`, wie die alte Vereinsseite); die
+  `.htaccess` leitet die Adresse ohne `www` per 301 dorthin (Host-Regel vor der HTTPS-Regel → nur ein Sprung).
+- Domain-Umzug: nur A/AAAA (Domain + `www`) beim Domain-Anbieter ändern, MX (E-Mail) bleibt. Formular-Mails gehen per
+  `mail()` vom Webspace raus – Zustellung ins Vereinspostfach nach jeder Änderung an Mail/DNS testen.
 
 ## 10. Typische Aufgaben
 

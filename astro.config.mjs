@@ -7,7 +7,8 @@ import { hosting } from './src/data/hosting.js'
 import { ASSETS_HTACCESS, buildHtaccess } from './src/lib/htaccess.js'
 
 // Öffentliche Adresse der Website (Canonical-Links, Open Graph, Sitemap).
-const SITE = process.env.SITE_URL || 'https://sportverein-hochhausen.de'
+// Hauptadresse mit www (wie die bisherige Vereinsseite); die Adresse ohne www leitet per .htaccess dorthin.
+const SITE = process.env.SITE_URL || 'https://www.sportverein-hochhausen.de'
 
 /* .htaccess für den Apache-Webspace: echte 301-Weiterleitungen, 404-Seite, Caching, Sicherheits-Header */
 function htaccess() {
@@ -15,7 +16,10 @@ function htaccess() {
     name: 'svh-htaccess',
     hooks: {
       'astro:build:done': async ({ dir }) => {
-        await writeFile(new URL('.htaccess', dir), buildHtaccess({ redirects: legacyRedirects, ...hosting }))
+        await writeFile(
+          new URL('.htaccess', dir),
+          buildHtaccess({ redirects: legacyRedirects, canonicalHost: new URL(SITE).hostname, ...hosting }),
+        )
         await mkdir(new URL('_astro/', dir), { recursive: true })
         await writeFile(new URL('_astro/.htaccess', dir), ASSETS_HTACCESS)
       },

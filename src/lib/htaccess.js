@@ -16,7 +16,22 @@ const DENY = [
   '  </IfModule>',
 ]
 
-export function buildHtaccess({ redirects = {}, forceHttps = false } = {}) {
+/* canonicalHost: Hauptadresse (z. B. www.beispiel.de) – die Variante mit/ohne www leitet per 301 dorthin */
+function hostRules(canonicalHost, forceHttps) {
+  if (!canonicalHost) return []
+  const bare = canonicalHost.replace(/^www\./, '')
+  const other = canonicalHost.startsWith('www.') ? bare : `www.${bare}`
+  const scheme = forceHttps ? 'https' : '%{REQUEST_SCHEME}'
+  return [
+    '',
+    `  # Einheitliche Adresse: ${other} → ${canonicalHost}`,
+    `  RewriteCond %{HTTP_HOST} ^${regexEscape(other)}$ [NC]`,
+    '  RewriteCond %{REQUEST_URI} !^/\\.well-known/',
+    `  RewriteRule ^ ${scheme}://${canonicalHost}%{REQUEST_URI} [R=301,L,NE]`,
+  ]
+}
+
+export function buildHtaccess({ redirects = {}, forceHttps = false, canonicalHost = '' } = {}) {
   const rules = Object.entries(redirects).map(([from, to]) => {
     if (/\s/.test(from) || /\s/.test(to)) throw new Error(`Weiterleitung mit Leerzeichen: ${from} → ${to}`)
     return `  RewriteRule ^${regexEscape(from.replace(/^\/|\/$/g, ''))}/?$ ${to} [R=301,L,NE]`
@@ -44,6 +59,7 @@ export function buildHtaccess({ redirects = {}, forceHttps = false } = {}) {
     '<IfModule mod_rewrite.c>',
     '  RewriteEngine On',
     '  RewriteBase /',
+    ...hostRules(canonicalHost, forceHttps),
     ...(forceHttps
       ? [
           '',

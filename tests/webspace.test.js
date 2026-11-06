@@ -55,6 +55,20 @@ describe('buildHtaccess', () => {
     expect(https).toContain('Strict-Transport-Security')
   })
 
+  it('leitet die Adresse ohne www in einem Schritt auf die Hauptadresse um', () => {
+    const http = buildHtaccess({ canonicalHost: 'www.sportverein-hochhausen.de' })
+    expect(http).toContain('RewriteCond %{HTTP_HOST} ^sportverein-hochhausen\\.de$ [NC]')
+    expect(http).toContain('RewriteRule ^ %{REQUEST_SCHEME}://www.sportverein-hochhausen.de%{REQUEST_URI} [R=301,L,NE]')
+    const https = buildHtaccess({ canonicalHost: 'www.sportverein-hochhausen.de', forceHttps: true })
+    expect(https).toContain('RewriteRule ^ https://www.sportverein-hochhausen.de%{REQUEST_URI} [R=301,L,NE]')
+    // Host-Regel steht vor der HTTPS-Regel → kein doppelter Sprung
+    expect(https.indexOf('HTTP_HOST} ^sportverein')).toBeLessThan(https.indexOf('%{HTTPS} !=on'))
+    // umgekehrt: Hauptadresse ohne www
+    expect(buildHtaccess({ canonicalHost: 'sportverein-hochhausen.de' })).toContain(
+      'RewriteCond %{HTTP_HOST} ^www\\.sportverein-hochhausen\\.de$ [NC]',
+    )
+  })
+
   it('lehnt Weiterleitungen mit Leerzeichen ab', () => {
     expect(() => buildHtaccess({ redirects: { 'alte seite': '/neu/' } })).toThrow()
   })

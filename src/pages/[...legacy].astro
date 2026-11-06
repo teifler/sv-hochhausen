@@ -8,7 +8,7 @@ export function getStaticPaths() {
 }
 
 const { to } = Astro.props as { to: string }
-const site = Astro.site ?? new URL('https://sportverein-hochhausen.de')
+const site = Astro.site ?? new URL('https://www.sportverein-hochhausen.de')
 const canonical = new URL(to, site).href
 ---
 
