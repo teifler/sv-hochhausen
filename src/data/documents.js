@@ -28,7 +28,7 @@ export const documents = [
     category: 'Verein',
     desc: 'Die ausführliche Chronik des SV Hochhausen mit Bildern (Word-Dokument, ca. 30 MB).',
     fileType: 'DOC',
-    url: 'https://www.sportverein-hochhausen.de/der-verein/chronik/',
+    url: '/downloads/chronik-sv-hochhausen-1946-2006.doc',
   },
 ]
 

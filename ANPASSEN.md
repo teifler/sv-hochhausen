@@ -179,8 +179,8 @@ und die „Heute“-Markierung im Wochenplan berechnen sich von selbst.
 - **Wappen:** Das Original-Wappen ist eingebaut (`src/assets/wappen.png`, 201 × 240 px, von der alten Vereinsseite).
   Falls es eine größere Datei oder eine Vektorversion (SVG/PDF) gibt: einfach ersetzen – Favicon und Vorschaubild
   (`public/favicon*.png`, `public/og.jpg`) baue ich dann neu.
-- **Downloads:** Mitgliedsantrag und Satzung sind übernommen (`public/downloads/`). Offen: die Vereinschronik
-  (Word, ca. 30 MB) liegt noch auf der alten Website – vor dem Abschalten sichern.
+- **Downloads:** Mitgliedsantrag, Satzung und die Vereinschronik (Word, ca. 30 MB) sind von der alten Website
+  übernommen (`public/downloads/`).
 - **Domain & SSL:** Beim Domain-Anbieter **nur die A-/AAAA-Einträge** für die Domain und für `www` auf den Webspace
   umstellen – die **MX-Einträge (E-Mail) nicht anfassen**. Danach in der Hosting-Verwaltung das kostenlose
   SSL-Zertifikat für beide Namen (mit und ohne `www`) aktivieren und in `src/data/hosting.js` `forceHttps: true` setzen.
