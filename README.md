@@ -65,17 +65,18 @@ Technische Doku für Entwickler und KI-Assistenten: [`AGENTS.md`](AGENTS.md).
 
 ## Entwicklung
 
-| Befehl                | Zweck                                                    |
-| --------------------- | -------------------------------------------------------- |
-| `npm run validate`    | alles, was die CI prüft: Prettier, ESLint, Unit-Tests    |
-| `npm run format`      | Code mit Prettier formatieren                            |
-| `npm run lint:fix`    | ESLint (JavaScript, Astro, Barrierefreiheit) mit Fixes   |
-| `npm test`            | Unit-Tests mit Vitest (`test:watch`, `test:coverage`)    |
-| `npm run test:e2e`    | E2E-Tests mit Playwright gegen den Build (`test:e2e:ui`) |
-| `npm run build:local` | Build ohne Downloads – muss fehlerfrei durchlaufen       |
+| Befehl                | Zweck                                                                                                      |
+| --------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `npm run validate`    | alles, was die CI prüft: Prettier, ESLint, Unit-Tests                                                      |
+| `npm run format`      | Code mit Prettier formatieren                                                                              |
+| `npm run lint:fix`    | ESLint (JavaScript, Astro, Barrierefreiheit) mit Fixes                                                     |
+| `npm test`            | Unit-Tests mit Vitest (`test:watch`, `test:coverage`)                                                      |
+| `npm run test:e2e`    | E2E-Tests mit Playwright gegen den Build: Seiten, Links, Barrierefreiheit (axe), Formulare (`test:e2e:ui`) |
+| `npm run build:local` | Build ohne Downloads – muss fehlerfrei durchlaufen                                                         |
 
-- **Git-Hooks (Husky):** Vor jedem Commit formatiert und lintet `lint-staged` die geänderten Dateien, commitlint prüft die
-  Nachricht, vor dem Push laufen die Tests. Die Hooks richtet `npm install` automatisch ein.
+- **Git-Hooks (Husky):** Vor jedem Commit blockiert ein Wächter Zugangsdaten (`.env`, Schlüssel, Werte aus der lokalen
+  `.env`, Dateien > 50 MB), `lint-staged` formatiert und lintet die geänderten Dateien, commitlint prüft die Nachricht,
+  vor dem Push laufen die Tests. Die Hooks richtet `npm install` automatisch ein.
 - **Commit-Nachrichten** nach [Conventional Commits](https://www.conventionalcommits.org/de/v1.0.0/), z. B.
   `feat(termine): Sommerfest 2027 eintragen` oder `fix(kalender): ICS-Export korrigieren`.
 - **CI:** GitHub Actions prüft jeden Push und Pull Request (Format, Lint, Tests, Build). Dependabot hält die Pakete aktuell.

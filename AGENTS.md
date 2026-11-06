@@ -38,7 +38,9 @@ Nordic Walking, Wandern) gleichwertig darstellen.
    den Namen an (`${{ secrets.DEPLOY_HOST }}`). `.env.example` enthält nur leere Variablen. In Workflows nichts
    ausgeben, was Verbindungsdaten enthält (kein `set -x`, kein `echo`). Ist doch etwas im Repo gelandet: sofort
    melden, Zugang ändern (Passwort/Schlüssel tauschen), Historie bereinigen. Secret Scanning und Push-Schutz sind
-   aktiv, erkennen aber weder Hostnamen noch normale Passwörter – nicht darauf verlassen.
+   aktiv, erkennen aber weder Hostnamen noch normale Passwörter. Lokal blockiert der Husky-Wächter
+   (`scripts/check-staged.mjs`) `.env`-Dateien, private Schlüssel, `passwort = …`-Zeilen, Dateien > 50 MB und **jeden Wert
+   aus der lokalen `.env`** in Dateien und Commit-Nachrichten – trotzdem selbst aufpassen.
 2. **Keine Daten erfinden.** Unbekanntes als Platzhalter markieren (z. B. Bankdaten in `donate.js` = `null`,
    Impressum § 18 MStV = Badge „Bitte ergänzen“). Lieber eine Lücke als eine falsche Telefonnummer.
 3. **Keine fremden Inhalte.** UX-Inspiration: SC Freiburg, Eintracht Frankfurt, FC St. Pauli – aber **kein**
@@ -224,7 +226,9 @@ Parallax `[data-parallax]`.
 - Einblenden beim Scrollen: `.js .svh-reveal` (+ `--zoom`, `data-delay`) per IntersectionObserver. Nur
   `transform`/`opacity` animieren; `prefers-reduced-motion` wird respektiert.
 - Scroll-Hinweis im Hero sitzt rechts unten (ab 1000 px), damit er die linksbündigen Inhalte nie überdeckt.
-- Overlays mit `visibility: hidden` (Suche, Termin-Modal): im `.is-open`-Zustand `visibility 0s` als Transition, sonst
+- Akzentfarben (`--svh-acc-*`) erfüllen 4,5:1 auf Weiß **und** auf ihrer 14-%-Tönung (Plaketten in Terminen) – neue
+  Akzente vorher nachrechnen, `barrierefreiheit.spec.js` prüft es.
+- Overlays mit `visibility: hidden` (Suche, Termin-Modal, Galerie-Lightbox): im `.is-open`-Zustand `visibility 0s` als Transition, sonst
   kann `focus()` beim Öffnen ins Leere gehen (Element noch unsichtbar). Ausblenden darf verzögert bleiben.
 
 ## 8. Qualität & Tooling
@@ -234,8 +238,8 @@ Parallax `[data-parallax]`.
 | Prettier 3 + `prettier-plugin-astro` | `.prettierrc.json`, `.prettierignore`         | keine Semikolons, einfache Anführungszeichen, Breite 120                                                                                               |
 | ESLint 10 (Flat Config)              | `eslint.config.js`                            | `@eslint/js` recommended, `eslint-plugin-astro` + jsx-a11y, TS-Parser fürs Frontmatter, `eslint-config-prettier`                                       |
 | Vitest 5                             | `vitest.config.js`, `tests/*.test.js`         | nur reine Module (kein DOM); Astro-Komponenten prüft der Build                                                                                         |
-| Playwright 1.64                      | `playwright.config.js`, `tests/e2e/*.spec.js` | Chromium, Desktop 1280 px + Handy 360 px; mit PHP `php -S` + `tests/e2e/php-router.php` (wie `.htaccess`, `mail()` → Datei), sonst `scripts/serve.mjs` |
-| Husky 9                              | `.husky/`                                     | `pre-commit` → lint-staged, `commit-msg` → commitlint, `pre-push` → `npm test`                                                                         |
+| Playwright 1.64 + axe-core           | `playwright.config.js`, `tests/e2e/*.spec.js` | Chromium, Desktop 1280 px + Handy 360 px; mit PHP `php -S` + `tests/e2e/php-router.php` (wie `.htaccess`, `mail()` → Datei), sonst `scripts/serve.mjs` |
+| Husky 9                              | `.husky/`                                     | `pre-commit` → Commit-Wächter (`scripts/check-staged.mjs`) + lint-staged, `commit-msg` → Wächter + commitlint, `pre-push` → `npm test`                 |
 | lint-staged                          | `package.json` → `lint-staged`                | ESLint `--fix` + Prettier nur auf gestagte Dateien                                                                                                     |
 | commitlint                           | `commitlint.config.js`                        | Conventional Commits, Groß-/Kleinschreibung des Betreffs frei (Deutsch)                                                                                |
 | EditorConfig / VS Code               | `.editorconfig`, `.vscode/`                   | LF, 2 Leerzeichen; `.cmd`/`.ps1` mit CRLF (`.gitattributes`)                                                                                           |
@@ -248,7 +252,12 @@ Neue reine Logik gehört in `src/lib/` bzw. `src/scripts/` als DOM-freies Modul 
 importiert sie nur.
 
 **E2E** (`tests/e2e/`): `seiten` – jede Seite der Sitemap lädt mit Status 200, Titel, `<h1>`, ohne Konsolenfehler, ohne
-horizontale Scrollbar und **ohne Anfrage an fremde Server**; 404-Seite. `interaktion` – Mobile-Menü (Fokus, Escape),
+horizontale Scrollbar, **ohne Anfrage an fremde Server**, mit `lang="de"`, Beschreibung, Canonical auf die www-Adresse,
+`og:image`, gültigem JSON-LD und ohne kaputte Bilder; 404-Seite. `barrierefreiheit` – axe-core (WCAG 2.1 AA, Stufen
+serious/critical) auf jeder Seite, mit reduzierter Bewegung gemessen. `links` – jeder interne Link und Anker auf jeder
+Seite existiert, keine absoluten Links auf die Vereinsdomain. `komponenten` – Galerie-Lightbox (Pfeiltasten, Escape,
+Fokus), Filter-Chips, Kalender-Monatsansicht, IBAN kopieren, Tastatur-Suche, Suchseite `?q=`, Skip-Link,
+Mobile-Untermenü, „Nach oben“. `interaktion` – Mobile-Menü (Fokus, Escape),
 Suche (ß/ss), Termin-Modal + `.ics`-Download, Facebook erst nach Klick, Weiterleitungen alter Adressen. `formulare`
 (nur mit PHP, in der CI erzwungen per `SVH_E2E_PHP=1`) – Kontakt/Spende mit und ohne JavaScript, Mail-Inhalt,
 Header-Injection, Honeypot, Zeitsperre, Validierung, gesperrte Interna. Neue Seiten deckt die Sitemap automatisch ab.
