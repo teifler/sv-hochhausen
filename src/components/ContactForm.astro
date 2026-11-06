@@ -1,21 +1,11 @@
 ---
-/* Kontaktformular – Versand über /api/contact (SMTP) */
+/* Kontaktformular – Versand über /api/contact.php (PHP auf dem Webspace) */
 import Icon from './Icon.astro'
 import { sports } from '../data/sports.js'
-
-const topics = [
-  ['allgemein', 'Allgemeine Anfrage'],
-  ['mitgliedschaft', 'Mitgliedschaft'],
-  ['probetraining', 'Probetraining / Schnuppern'],
-  ['sponsoring', 'Sponsoring & Werbung'],
-  ['spende', 'Spende'],
-  ['sportheim', 'Sportheim'],
-  ['presse', 'Presse & Medien'],
-  ['website', 'Website'],
-]
+import { contactTopics as topics, formActions } from '../data/forms.js'
 ---
 
-<form class="svh-form" action="/api/contact/" method="post" data-ajax-form>
+<form class="svh-form" action={formActions.contact} method="post" data-ajax-form>
   <div class="svh-form__row">
     <div class="svh-field">
       <label for="cf-name">

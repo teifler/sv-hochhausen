@@ -4,7 +4,7 @@ import { readFileSync } from 'node:fs'
 import path from 'node:path'
 import { expect, test } from '@playwright/test'
 
-const dir = process.env.SVH_STATIC_DIR || '.vercel/output/static'
+const dir = process.env.SVH_STATIC_DIR || 'dist'
 const pages = [...readFileSync(path.join(dir, 'sitemap-0.xml'), 'utf8').matchAll(/<loc>([^<]+)<\/loc>/g)].map(
   (m) => new URL(m[1]).pathname,
 )

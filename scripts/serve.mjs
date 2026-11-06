@@ -6,7 +6,7 @@
    /pfad/ → pfad/index.html, unbekannte Adressen → 404.html mit Status 404.
    Ohne Abhängigkeiten.
 
-   node scripts/serve.mjs [--port 4173] [--dir .vercel/output/static]
+   node scripts/serve.mjs [--port 4173] [--dir dist]
    (Ordner auch per SVH_STATIC_DIR)
    ========================================================= */
 import { createReadStream, existsSync, statSync } from 'node:fs'
@@ -19,7 +19,7 @@ const arg = (name, fallback) => {
   return i >= 0 && args[i + 1] ? args[i + 1] : fallback
 }
 const port = Number(arg('port', process.env.PORT || 4173))
-const root = path.resolve(arg('dir', process.env.SVH_STATIC_DIR || '.vercel/output/static'))
+const root = path.resolve(arg('dir', process.env.SVH_STATIC_DIR || 'dist'))
 
 if (!existsSync(path.join(root, 'index.html'))) {
   console.error(`[serve] Kein Build in ${root} – zuerst \`npm run build:local\` ausführen.`)
