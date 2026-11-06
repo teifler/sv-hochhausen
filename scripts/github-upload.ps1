@@ -87,7 +87,6 @@ if ($LASTEXITCODE -ne 0) {
 chore: Website SV Hochhausen 1946 aktualisieren
 
 Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
-Claude-Session: https://claude.ai/code/session_01GSVdx1e7i4QrVdps669V6s
 "@
   $tmp = [System.IO.Path]::GetTempFileName()
   Set-Content -Path $tmp -Value $msg -Encoding ASCII
