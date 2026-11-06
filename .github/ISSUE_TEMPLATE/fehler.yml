@@ -2,6 +2,9 @@ name: Fehler melden
 description: Etwas auf der Website funktioniert nicht oder sieht kaputt aus.
 labels: [bug]
 body:
+  - type: markdown
+    attributes:
+      value: '⚠️ Dieses Repository ist öffentlich – bitte keine Passwörter, Zugangsdaten oder privaten Kontaktdaten eintragen.'
   - type: input
     id: seite
     attributes:

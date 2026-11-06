@@ -2,6 +2,9 @@ name: Inhalt ändern oder ergänzen
 description: Neuer Termin, News, Trainingszeit, Ansprechpartner, Sponsor, Foto …
 labels: [inhalt]
 body:
+  - type: markdown
+    attributes:
+      value: '⚠️ Dieses Repository ist öffentlich – bitte keine Passwörter, Zugangsdaten oder privaten Kontaktdaten eintragen.'
   - type: dropdown
     id: bereich
     attributes:

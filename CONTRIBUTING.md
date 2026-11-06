@@ -27,6 +27,9 @@ Architektur, Regeln und Stolperfallen (Astro 7, Bilder, Datenschutz) stehen in [
 
 ## Grundregeln
 
+- **Keine Zugangsdaten – das Repository ist öffentlich.** Passwörter, Loginnamen, Server, Ports, Pfade usw. nie
+  committen, auch nicht in Commit-Nachrichten, Issues oder Pull Requests. Dafür gibt es die lokale `.env` und
+  GitHub-Secrets.
 - **Keine Daten erfinden.** Unbekanntes als Platzhalter markieren.
 - **Keine fremden Inhalte**: keine Texte, Bilder oder Logos anderer Vereine oder Websites.
 - **Fotos von Personen** nur mit deren Einverständnis.

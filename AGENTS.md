@@ -30,16 +30,24 @@ Nordic Walking, Wandern) gleichwertig darstellen.
 
 ## 2. Goldene Regeln
 
-1. **Keine Daten erfinden.** Unbekanntes als Platzhalter markieren (z. B. Bankdaten in `donate.js` = `null`,
+1. **Öffentliches Repository – keine Zugangsdaten.** Niemals in Dateien, Commit-Nachrichten, Branch-Namen, Issues,
+   Pull Requests oder Workflow-Ausgaben: Passwörter, Schlüssel, Tokens, Loginnamen, Server-/Hostnamen, IP-Adressen,
+   Ports, Verzeichnispfade oder Account-/Paketnamen von Webspace, FTP/SFTP, Postfach/SMTP und Hosting-Verwaltung.
+   Echte Werte nur in der lokalen `.env` (gitignored) und als GitHub-Secrets; Code und Workflows sprechen sie nur über
+   den Namen an (`${{ secrets.DEPLOY_HOST }}`). `.env.example` enthält nur leere Variablen. In Workflows nichts
+   ausgeben, was Verbindungsdaten enthält (kein `set -x`, kein `echo`). Ist doch etwas im Repo gelandet: sofort
+   melden, Zugang ändern (Passwort/Schlüssel tauschen), Historie bereinigen. Secret Scanning und Push-Schutz sind
+   aktiv, erkennen aber weder Hostnamen noch normale Passwörter – nicht darauf verlassen.
+2. **Keine Daten erfinden.** Unbekanntes als Platzhalter markieren (z. B. Bankdaten in `donate.js` = `null`,
    Impressum § 18 MStV = Badge „Bitte ergänzen“). Lieber eine Lücke als eine falsche Telefonnummer.
-2. **Keine fremden Inhalte.** UX-Inspiration: SC Freiburg, Eintracht Frankfurt, FC St. Pauli – aber **kein**
+3. **Keine fremden Inhalte.** UX-Inspiration: SC Freiburg, Eintracht Frankfurt, FC St. Pauli – aber **kein**
    Code/Text/Bild von dort, **keine** Bilder oder Logos anderer Vereine, **keine** nachgebauten Sponsor-Logos.
-3. **Datenschutz:** Beim Laden einer Seite keine Anfragen an Dritte. Schriften und Bilder lokal; externe Inhalte
+4. **Datenschutz:** Beim Laden einer Seite keine Anfragen an Dritte. Schriften und Bilder lokal; externe Inhalte
    (fussball.de, Facebook) nur per 2-Klick über `scripts/embeds.js`; neue Dienste in der Datenschutzerklärung ergänzen.
-4. **Progressive Enhancement:** Alles muss ohne JavaScript benutzbar sein (Formulare posten auch ohne JS).
-5. **Barrierefreiheit:** semantisches HTML, Fokus sichtbar, `prefers-reduced-motion` respektieren.
+5. **Progressive Enhancement:** Alles muss ohne JavaScript benutzbar sein (Formulare posten auch ohne JS).
+6. **Barrierefreiheit:** semantisches HTML, Fokus sichtbar, `prefers-reduced-motion` respektieren.
    ESLint prüft a11y-Regeln in `.astro`-Dateien.
-6. Vor dem Abschluss einer Aufgabe: `npm run validate` und `npm run build:local`.
+7. Vor dem Abschluss einer Aufgabe: `npm run validate` und `npm run build:local`.
 
 ## 3. Stack
 
@@ -78,7 +86,8 @@ Nordic Walking, Wandern) gleichwertig darstellen.
 | `npm run check`                             | `astro check` (Typen) – derzeit nicht fehlerfrei, siehe Abschnitt 11         |
 
 Build-Ausgabe: `.vercel/output/static` (statisch) + `.vercel/output/functions` (API).
-Umgebungsvariablen: Vorlage `.env.example` (lokal als `.env` kopieren; `.env` ist in `.gitignore`).
+Umgebungsvariablen: Vorlage `.env.example` (lokal als `.env` kopieren; `.env` ist in `.gitignore`). Echte Werte nie
+committen – siehe Regel 1.
 
 ## 5. Projektstruktur
 
@@ -280,7 +289,8 @@ abgebildeten Personen für die übernommenen Vereinsfotos.
 
 **Technisch:**
 
-- Hosting-Umzug von Vercel auf einen Hetzner-Webspace (Upload per SFTP/rsync aus GitHub Actions, Formulare per PHP)
-  ist geplant – danach Abschnitte 3, 4, 6.5 und 6.6 anpassen.
+- Hosting-Umzug von Vercel auf einen Webspace (Upload per SFTP mit eigenem Deploy-Schlüssel aus GitHub Actions,
+  Formulare per PHP) ist geplant. Verbindungsdaten ausschließlich als GitHub-Secrets (Regel 1). Danach Abschnitte 3,
+  4, 6.5 und 6.6 anpassen.
 - `npm run check` (astro check) meldet 28 Typfehler im Bestand (implizite `any`, Index-Zugriffe) – daher nicht in der CI.
 - Spamschutz der Formulare ist bewusst einfach (Honeypot + Zeitsperre); bei Bedarf Rate-Limit ergänzen.

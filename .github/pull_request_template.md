@@ -4,6 +4,7 @@
 
 ## Checkliste
 
+- [ ] Keine Zugangs- oder Serverdaten (Passwörter, Logins, Hosts, Ports, Pfade) in Code, Doku oder Commit-Nachrichten
 - [ ] `npm run validate` (Prettier, ESLint, Tests) läuft durch
 - [ ] `npm run build:local` baut ohne Fehler
 - [ ] Keine Vereinsdaten erfunden – Unbekanntes ist als Platzhalter markiert
