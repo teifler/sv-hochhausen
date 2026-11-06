@@ -64,5 +64,8 @@
       "prettier --write"
     ],
     "*.{css,json,md,yml,yaml}": "prettier --write"
+  },
+  "overrides": {
+    "minimatch": "^11.0.5"
   }
 }
