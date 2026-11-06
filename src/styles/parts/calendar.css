@@ -259,6 +259,10 @@
 .svh-modal.is-open {
   opacity: 1;
   visibility: visible;
+  /* sofort sichtbar, damit focus() auf den Schließen-Knopf nie ins Leere geht; Ausblenden bleibt verzögert */
+  transition:
+    opacity var(--svh-t) var(--svh-ease),
+    visibility 0s;
 }
 .svh-modal__card {
   background: #fff;
