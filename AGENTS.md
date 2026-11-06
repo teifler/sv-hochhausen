@@ -323,5 +323,7 @@ abgebildeten Personen für die übernommenen Vereinsfotos.
 - Livegang auf dem Webspace: Deploy-Schlüssel hinterlegen, Secrets setzen, Webroot prüfen, `DEPLOY_ENABLED` setzen,
   Testmail über beide Formulare (kommt sie im Vereinspostfach an?), DNS der Domain umstellen, SSL aktivieren, dann
   `forceHttps: true`.
+- `package.json → overrides.minimatch` (^11, Sicherheitsfix) entfernen, sobald ESLint/typescript-eslint selbst minimatch
+  11 nutzen.
 - `npm run check` (astro check) meldet 28 Typfehler im Bestand (implizite `any`, Index-Zugriffe) – daher nicht in der CI.
 - Spamschutz der Formulare ist bewusst einfach (Honeypot + Zeitsperre); bei Bedarf Rate-Limit in PHP ergänzen.
