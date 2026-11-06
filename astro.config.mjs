@@ -1,18 +1,31 @@
 // @ts-check
+import { mkdir, writeFile } from 'node:fs/promises'
 import { defineConfig } from 'astro/config'
-import vercel from '@astrojs/vercel'
 import sitemap from '@astrojs/sitemap'
 import { legacyRedirects } from './src/data/redirects.js'
+import { hosting } from './src/data/hosting.js'
+import { ASSETS_HTACCESS, buildHtaccess } from './src/lib/htaccess.js'
 
 // Öffentliche Adresse der Website (Canonical-Links, Open Graph, Sitemap).
-// Auf Vercel als Umgebungsvariable SITE_URL setzen, sobald die echte Domain steht.
-const SITE = process.env.SITE_URL || 'https://sv-hochhausen.vercel.app'
+const SITE = process.env.SITE_URL || 'https://sportverein-hochhausen.de'
+
+/* .htaccess für den Apache-Webspace: echte 301-Weiterleitungen, 404-Seite, Caching, Sicherheits-Header */
+function htaccess() {
+  return {
+    name: 'svh-htaccess',
+    hooks: {
+      'astro:build:done': async ({ dir }) => {
+        await writeFile(new URL('.htaccess', dir), buildHtaccess({ redirects: legacyRedirects, ...hosting }))
+        await mkdir(new URL('_astro/', dir), { recursive: true })
+        await writeFile(new URL('_astro/.htaccess', dir), ASSETS_HTACCESS)
+      },
+    },
+  }
+}
 
 export default defineConfig({
   site: SITE,
-  // Alle Seiten werden statisch gebaut (schnell, kein Server nötig).
-  // Nur die Formular-Endpunkte unter /api laufen als Vercel-Funktion.
-  adapter: vercel(),
+  // Rein statische Website für den Webspace; die Formulare laufen dort als PHP (public/api/*.php).
   integrations: [
     sitemap({
       filter: (page) =>
@@ -21,6 +34,7 @@ export default defineConfig({
           (p) => decodeURIComponent(new URL(page).pathname).replace(/\/$/, '') === `/${p}`,
         ),
     }),
+    htaccess(),
   ],
   trailingSlash: 'ignore',
   build: { format: 'directory' },

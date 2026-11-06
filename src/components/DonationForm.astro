@@ -2,11 +2,12 @@
 /* Spenden-Formular: Spende ankündigen / Spendenquittung anfordern */
 import Icon from './Icon.astro'
 import { donate, donationPurposes } from '../data/donate.js'
+import { formActions } from '../data/forms.js'
 
 const hasBank = Boolean(donate.bank.iban)
 ---
 
-<form class="svh-form" action="/api/spende/" method="post" data-ajax-form data-donation-form>
+<form class="svh-form" action={formActions.donation} method="post" data-ajax-form data-donation-form>
   <fieldset class="svh-fieldset">
     <legend>Betrag</legend>
     <div class="svh-amounts" role="radiogroup" aria-label="Spendenbetrag">
