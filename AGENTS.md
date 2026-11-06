@@ -8,11 +8,12 @@ Menschen. `CLAUDE.md` bindet diese Datei nur ein. Inhaltspflege für Vereinsmitg
 |              |                                                                                                            |
 | ------------ | ---------------------------------------------------------------------------------------------------------- |
 | Projekt      | Website des **Sportverein 1946 Hochhausen/Tauber e.V.**                                                    |
-| Stack        | Astro 7.4 (statisch) · Vanilla-JS · CSS-Custom-Properties · Formular-API als Serverfunktion                |
+| Stack        | Astro 7.4 (rein statisch) · Vanilla-JS · CSS-Custom-Properties · Formulare als PHP auf dem Webspace        |
 | Node         | **24.22.2** laut `.nvmrc` (`nvm use`); erlaubt `>=22.23.4 <23 \|\| >=24.22.1` (Brotli-Fix CVE-2026-111497) |
 | Inhalte      | ausschließlich `src/data/*.js`                                                                             |
 | Qualität     | Prettier · ESLint (inkl. a11y) · Vitest · Husky + lint-staged + commitlint · GitHub Actions                |
 | Fertig heißt | `npm run validate`, `npm run build:local` und `npm run test:e2e` laufen fehlerfrei                         |
+| Hosting      | Apache-Webspace mit PHP; Upload per SFTP aus GitHub Actions (Abschnitt 9)                                  |
 
 ## 1. Was ist das?
 
@@ -51,8 +52,10 @@ Nordic Walking, Wandern) gleichwertig darstellen.
 
 ## 3. Stack
 
-- **Astro 7.4** (Rust-Compiler), Ausgabe statisch; Adapter **@astrojs/vercel 11** für die API-Routen.
-- `@astrojs/sitemap`, `nodemailer` (SMTP), `qrcode` (GiroCode), Fontsource (Inter Variable, Barlow Condensed 500/600/700) –
+- **Astro 7.4** (Rust-Compiler), Ausgabe rein statisch nach `dist/` (kein Adapter). Beim Build entsteht zusätzlich die
+  `.htaccess` (Integration in `astro.config.mjs`, Inhalt aus `src/lib/htaccess.js`).
+- **Webspace:** Apache + PHP (≥ 7.4). Kontakt- und Spendenformular sind PHP-Dateien in `public/api/` (Abschnitt 6.5).
+- `@astrojs/sitemap`, `qrcode` (GiroCode), Fontsource (Inter Variable, Barlow Condensed 500/600/700) –
   Schriften lokal.
 - Kein UI-Framework. Interaktivität = Vanilla-JS-Module in `src/scripts/`, eingebunden über `<script>` in Komponenten
   (Astro bündelt & dedupliziert). Progressive Enhancement: `html.js`-Klasse wird inline im `<head>` gesetzt.
@@ -72,20 +75,20 @@ Nordic Walking, Wandern) gleichwertig darstellen.
 
 ## 4. Befehle
 
-| Befehl                                      | Zweck                                                                        |
-| ------------------------------------------- | ---------------------------------------------------------------------------- |
-| `npm run dev`                               | Dev-Server http://localhost:4321 (API-Routen funktionieren, SMTP aus `.env`) |
-| `npm run build`                             | `prebuild.mjs` (Pexels + Instagram laden) → `astro build`                    |
-| `npm run build:local`                       | Build ohne Downloads (SVG-Platzhalter) – für Sandbox/CI ohne Netz            |
-| `npm run photos`                            | nur Fotos/Instagram laden                                                    |
-| `npm run validate`                          | Prettier-Check + ESLint + Unit-Tests (wie die CI)                            |
-| `npm run format` / `format:check`           | Prettier schreiben / prüfen                                                  |
-| `npm run lint` / `lint:fix`                 | ESLint (JS + Astro + a11y)                                                   |
-| `npm test` / `test:watch` / `test:coverage` | Vitest                                                                       |
-| `npm run test:e2e` / `test:e2e:ui`          | Playwright gegen den fertigen Build (vorher `build:local`)                   |
-| `npm run check`                             | `astro check` (Typen) – derzeit nicht fehlerfrei, siehe Abschnitt 11         |
+| Befehl                                      | Zweck                                                                                        |
+| ------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| `npm run dev`                               | Dev-Server http://localhost:4321 (Formulare brauchen PHP – lokal nur per `test:e2e` mit PHP) |
+| `npm run build`                             | `prebuild.mjs` (Pexels + Instagram laden) → `astro build`                                    |
+| `npm run build:local`                       | Build ohne Downloads (SVG-Platzhalter) – für Sandbox/CI ohne Netz                            |
+| `npm run photos`                            | nur Fotos/Instagram laden                                                                    |
+| `npm run validate`                          | Prettier-Check + ESLint + Unit-Tests (wie die CI)                                            |
+| `npm run format` / `format:check`           | Prettier schreiben / prüfen                                                                  |
+| `npm run lint` / `lint:fix`                 | ESLint (JS + Astro + a11y)                                                                   |
+| `npm test` / `test:watch` / `test:coverage` | Vitest                                                                                       |
+| `npm run test:e2e` / `test:e2e:ui`          | Playwright gegen `dist/` (vorher `build:local`); mit PHP auch die Formulare                  |
+| `npm run check`                             | `astro check` (Typen) – derzeit nicht fehlerfrei, siehe Abschnitt 11                         |
 
-Build-Ausgabe: `.vercel/output/static` (statisch) + `.vercel/output/functions` (API).
+Build-Ausgabe: `dist/` – genau das wird auf den Webspace gespiegelt (inkl. `.htaccess` und `api/*.php`).
 Umgebungsvariablen: Vorlage `.env.example` (lokal als `.env` kopieren; `.env` ist in `.gitignore`). Echte Werte nie
 committen – siehe Regel 1.
 
@@ -94,17 +97,17 @@ committen – siehe Regel 1.
 ```
 src/
   data/         Inhalte – einzige Inhaltsquelle (siehe 6.1)
-  pages/        Seiten + api/contact.js, api/spende.js (Serverfunktionen, prerender = false)
+  pages/        Seiten + api/config.json.js (Einstellungen für die PHP-Formulare)
   components/   Astro-Komponenten (Header, Karten in cards/, Formulare, Widgets …)
   layouts/      BaseLayout.astro (Meta, JSON-LD, Header, Footer)
-  lib/          Build-/Server-Helfer (Bilder, Platzhalter, Datum, Suche, Mail, Formulare)
+  lib/          Build-Helfer (Bilder, Platzhalter, Datum, Suche, .htaccess, Formular-Konfiguration)
   scripts/      Browser-Module (Menü, Suche, Kalender, Galerie, Formulare, Animationen, Einbettungen, ICS)
   styles/       Design-System (variables.css, global.css → parts/*.css, motion.css zuletzt)
   assets/       wappen.png, photos/ (Vereinsfotos), sponsors/, instagram/ (beim Build erzeugt, gitignored)
-tests/          Vitest-Unit-Tests (reine Module + Daten-Plausibilität)
+tests/          Vitest-Unit-Tests (reine Module + Daten-Plausibilität), e2e/ (Playwright + PHP-Router)
 scripts/        prebuild.mjs (Fotos/Instagram laden), github-upload.ps1 (Windows-Upload)
-public/         Favicons, og.jpg, wappen.png (JSON-LD)
-.github/        CI-Workflow, Dependabot, Issue-/PR-Vorlagen, CODEOWNERS
+public/         Favicons, og.jpg, wappen.png (JSON-LD), api/*.php (Formulare)
+.github/        CI, Deploy, Dependabot, Issue-/PR-Vorlagen, CODEOWNERS
 ```
 
 ## 6. Architektur
@@ -181,13 +184,17 @@ Parallax `[data-parallax]`.
   `components/GiroCode.astro` (EPC069-12-QR via `qrcode`, Level M; Payload BCD/002/1/SCT/BIC/Name/IBAN/…/Verwendungszweck,
   steht zusätzlich in `data-girocode`).
 - Formulare: `components/ContactForm.astro`, `DonationForm.astro`, `scripts/forms.js` (fetch mit
-  `Accept: application/json`). API: `pages/api/contact.js`, `pages/api/spende.js` (`prerender = false`), Helfer
-  `lib/formutil.js`, `lib/mail.js`.
-- Antworten: JSON `{ok, error}` (Codes `not_configured` 503, `invalid` 422, `spam` 429, `send_failed` 502) bzw. ohne JS
-  303-Redirect auf `/kontakt/danke/`, `/spenden/danke/`, `/kontakt/fehler/`.
+  `Accept: application/json`). Endpunkte: `public/api/contact.php`, `public/api/spende.php`, Helfer `public/api/_lib.php`
+  (PHP ≥ 7.4, ohne Abhängigkeiten). Ziel-URLs in `data/forms.js → formActions`.
+- Einstellungen: `data/forms.js` (Empfänger, Absender, Anliegen) → `lib/formconfig.js` → `/api/config.json` (beim Build).
+  `config.json` und `_lib.php` sind per `.htaccess` gesperrt. Nur öffentliche Vereinsadressen, keine Zugangsdaten.
+- Versand: `mail()` des Webspace (Klartext, UTF-8, `Reply-To` = Absender des Formulars, `-f` = Vereinsadresse) –
+  kein Postfach-Passwort nötig.
+- Antworten: JSON `{ok, error}` (Codes `invalid` 422, `spam` 429, `send_failed` 502) bzw. ohne JS 303-Redirect auf
+  `/kontakt/danke/`, `/spenden/danke/`, `/kontakt/fehler/`. GET auf einen Endpunkt → 303 zurück zum Formular.
 - Spam: Honeypot `website` (gibt still „ok“ zurück), Zeitsperre `ts` < 3 s. `ts` setzt erst `forms.js` – fehlt es
-  (kein JS), wird bewusst **nicht** geblockt. Header-Injection: einzeilige Felder via `line()`. Alles in
-  `tests/formutil.test.js` abgedeckt.
+  (kein JS), wird bewusst **nicht** geblockt. Header-Injection: einzeilige Felder via `svh_line()`, Namen im `Reply-To`
+  gequotet bzw. RFC-2047-kodiert. Abgedeckt durch `tests/e2e/formulare.spec.js` (läuft mit PHP in der CI).
 
 ### 6.6 Suche, Kalender, Filter, Sponsoren, Weiterleitungen
 
@@ -202,10 +209,9 @@ Parallax `[data-parallax]`.
   `components/cards/SponsorCard.astro` (Logo aus `src/assets/sponsors/<id>.(png|jpg|webp)` → WebP, sonst `logo`-Pfad aus
   `public/`, sonst neutrale Schriftkachel). Startseite: Leiste „Danke an unsere Sponsoren“ (`compact`) +
   Einladungskachel. Suche indexiert Sponsoren.
-- Weiterleitungen: `data/redirects.js` → `pages/[...legacy].astro` erzeugt statische Seiten mit Meta-Refresh +
-  `location.replace` + canonical, `noindex`; aus der Sitemap gefiltert (`astro.config.mjs`). Bewusst **nicht**
-  Astro-`redirects`: die erzeugten Vercel-Routen matchen nur ohne Schrägstrich am Ende (`^/der-verein$`), alte Links
-  haben aber einen.
+- Weiterleitungen: `data/redirects.js` → **`.htaccess`** mit echten 301 (`RewriteRule ^alt/?$ /neu/ [R=301,L,NE]`, mit
+  und ohne Schrägstrich, Anker bleiben erhalten). Zusätzlich erzeugt `pages/[...legacy].astro` statische Seiten mit
+  Meta-Refresh + canonical + `noindex` als Rückfall (z. B. für lokale Server); aus der Sitemap gefiltert.
 
 ## 7. Design-System
 
@@ -223,38 +229,38 @@ Parallax `[data-parallax]`.
 
 ## 8. Qualität & Tooling
 
-| Werkzeug                             | Konfiguration                                 | Hinweise                                                                                                         |
-| ------------------------------------ | --------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
-| Prettier 3 + `prettier-plugin-astro` | `.prettierrc.json`, `.prettierignore`         | keine Semikolons, einfache Anführungszeichen, Breite 120                                                         |
-| ESLint 10 (Flat Config)              | `eslint.config.js`                            | `@eslint/js` recommended, `eslint-plugin-astro` + jsx-a11y, TS-Parser fürs Frontmatter, `eslint-config-prettier` |
-| Vitest 5                             | `vitest.config.js`, `tests/*.test.js`         | nur reine Module (kein DOM); Astro-Komponenten prüft der Build                                                   |
-| Playwright 1.64                      | `playwright.config.js`, `tests/e2e/*.spec.js` | Chromium, Desktop 1280 px + Handy 360 px; Server `scripts/serve.mjs` (wie Webspace: 301 auf `/`, 404.html)       |
-| Husky 9                              | `.husky/`                                     | `pre-commit` → lint-staged, `commit-msg` → commitlint, `pre-push` → `npm test`                                   |
-| lint-staged                          | `package.json` → `lint-staged`                | ESLint `--fix` + Prettier nur auf gestagte Dateien                                                               |
-| commitlint                           | `commitlint.config.js`                        | Conventional Commits, Groß-/Kleinschreibung des Betreffs frei (Deutsch)                                          |
-| EditorConfig / VS Code               | `.editorconfig`, `.vscode/`                   | LF, 2 Leerzeichen; `.cmd`/`.ps1` mit CRLF (`.gitattributes`)                                                     |
-| GitHub Actions                       | `.github/workflows/ci.yml`                    | Prettier, ESLint, Unit-Tests (Node 24.22.2 + 22.23.4), `build:local` + E2E bei Push/PR                           |
-| Dependabot                           | `.github/dependabot.yml`                      | npm wöchentlich (Astro-Pakete gruppiert), Actions monatlich                                                      |
+| Werkzeug                             | Konfiguration                                 | Hinweise                                                                                                                                               |
+| ------------------------------------ | --------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Prettier 3 + `prettier-plugin-astro` | `.prettierrc.json`, `.prettierignore`         | keine Semikolons, einfache Anführungszeichen, Breite 120                                                                                               |
+| ESLint 10 (Flat Config)              | `eslint.config.js`                            | `@eslint/js` recommended, `eslint-plugin-astro` + jsx-a11y, TS-Parser fürs Frontmatter, `eslint-config-prettier`                                       |
+| Vitest 5                             | `vitest.config.js`, `tests/*.test.js`         | nur reine Module (kein DOM); Astro-Komponenten prüft der Build                                                                                         |
+| Playwright 1.64                      | `playwright.config.js`, `tests/e2e/*.spec.js` | Chromium, Desktop 1280 px + Handy 360 px; mit PHP `php -S` + `tests/e2e/php-router.php` (wie `.htaccess`, `mail()` → Datei), sonst `scripts/serve.mjs` |
+| Husky 9                              | `.husky/`                                     | `pre-commit` → lint-staged, `commit-msg` → commitlint, `pre-push` → `npm test`                                                                         |
+| lint-staged                          | `package.json` → `lint-staged`                | ESLint `--fix` + Prettier nur auf gestagte Dateien                                                                                                     |
+| commitlint                           | `commitlint.config.js`                        | Conventional Commits, Groß-/Kleinschreibung des Betreffs frei (Deutsch)                                                                                |
+| EditorConfig / VS Code               | `.editorconfig`, `.vscode/`                   | LF, 2 Leerzeichen; `.cmd`/`.ps1` mit CRLF (`.gitattributes`)                                                                                           |
+| GitHub Actions                       | `.github/workflows/ci.yml`, `deploy.yml`      | CI: Prettier, ESLint, Unit-Tests (Node 24.22.2 + 22.23.4), `build:local`, PHP-Lint, E2E inkl. Formulare. Deploy siehe Abschnitt 9                      |
+| Dependabot                           | `.github/dependabot.yml`                      | npm wöchentlich (Astro-Pakete gruppiert), Actions monatlich                                                                                            |
 
-**Tests** (`tests/`): `format` (Datum/Zeitzone), `searchcore` (Normalisierung, Ranking, Escaping), `formutil` (Spam-
-schutz, Header-Injection, JSON/303), `ics` (Kalenderexport), `data` (IBAN, Links/Weiterleitungen, Slugs, Spielplan).
+**Tests** (`tests/`): `format` (Datum/Zeitzone), `searchcore` (Normalisierung, Ranking, Escaping), `ics` (Kalender-
+export), `data` (IBAN, Links/Weiterleitungen, Slugs, Spielplan), `webspace` (`config.json` für die Formulare, `.htaccess`).
 Neue reine Logik gehört in `src/lib/` bzw. `src/scripts/` als DOM-freies Modul mit Test – DOM-Code (z. B. `modal.js`)
 importiert sie nur.
 
 **E2E** (`tests/e2e/`): `seiten` – jede Seite der Sitemap lädt mit Status 200, Titel, `<h1>`, ohne Konsolenfehler, ohne
 horizontale Scrollbar und **ohne Anfrage an fremde Server**; 404-Seite. `interaktion` – Mobile-Menü (Fokus, Escape),
-Suche (ß/ss), Termin-Modal + `.ics`-Download, Facebook erst nach Klick, Weiterleitungen alter Adressen.
-Neue Seiten sind über die Sitemap automatisch abgedeckt.
+Suche (ß/ss), Termin-Modal + `.ics`-Download, Facebook erst nach Klick, Weiterleitungen alter Adressen. `formulare`
+(nur mit PHP, in der CI erzwungen per `SVH_E2E_PHP=1`) – Kontakt/Spende mit und ohne JavaScript, Mail-Inhalt,
+Header-Injection, Honeypot, Zeitsperre, Validierung, gesperrte Interna. Neue Seiten deckt die Sitemap automatisch ab.
 
 **Ausgabe vergleichen:** Bei Umbauten an Templates/Formatierung den Build vorher/nachher vergleichen
-(`.vercel/output/static` kopieren, neu bauen, `diff -r`). Der statische Build ist deterministisch; im Server-Bundle
-unterscheiden sich nur zufällige Build-Secrets.
+(`dist/` kopieren, neu bauen, `diff -r`). Der statische Build ist deterministisch.
 
 **Zusätzlich manuell geprüft** (beim Relaunch): alle Seiten bei 360/390/768/1024/1280/1536 px ohne Overflow und
 ohne Konsolenfehler; Mobile-Menü inkl. Fokus/Escape, Dropdown, Suche, Modal + ICS, Kalender-Monatsansicht,
 Galerie-Lightbox, Filter, Kopieren, Formular-Logik; Motion (Laufband, keine externen Requests beim Laden, Zähler,
 `--svh-p`, „Heute“, Countdown, Ken Burns, reduzierte Bewegung); Facebook-iframe erst nach Zustimmung.
-API: `astro dev` + lokaler SMTP-Testserver (smtp-server). Link-Check: keine `href="#"`, alle internen Links/Anker existieren.
+Link-Check: keine `href="#"`, alle internen Links/Anker existieren.
 
 ## 9. Git-Workflow
 
@@ -265,6 +271,18 @@ API: `astro dev` + lokaler SMTP-Testserver (smtp-server). Link-Check: keine `hre
 - Hooks nicht mit `--no-verify` umgehen; Fehler beheben.
 - Reine Formatierungs-Commits stehen in `.git-blame-ignore-revs`
   (`git config blame.ignoreRevsFile .git-blame-ignore-revs`).
+
+### Deploy (`.github/workflows/deploy.yml`)
+
+- Läuft **nach erfolgreicher CI auf `main`** (`workflow_run`), **nachts** (kommende Termine, Instagram) und manuell.
+  Baut mit `npm run build` (inkl. Stockfotos/Instagram) und spiegelt `dist/` per **SFTP mit Deploy-Schlüssel**
+  (`lftp mirror --reverse --delete`; `.well-known/` und `cgi-bin/` bleiben unangetastet).
+- Eingeschaltet über die Repository-Variable `DEPLOY_ENABLED = true`. Verbindungsdaten nur als Secrets der Environment
+  `production` (nur `main`): `DEPLOY_HOST`, `DEPLOY_PORT`, `DEPLOY_USER`, `DEPLOY_PATH`, `DEPLOY_SSH_KEY`,
+  `DEPLOY_KNOWN_HOSTS`, optional `INSTAGRAM_FEED_URL`/`INSTAGRAM_TOKEN`. Einrichten: `bash scripts/deploy-secrets.sh`
+  (liest `.env` + Schlüssel, zeigt keine Werte). Der Workflow gibt keine Verbindungsdaten aus (Regel 1).
+- `--delete` entfernt auf dem Webspace alles, was nicht in `dist/` liegt – vor dem ersten Deploy Webroot prüfen.
+- HTTPS-Zwang + HSTS erst einschalten (`src/data/hosting.js → forceHttps`), wenn das SSL-Zertifikat aktiv ist.
 
 ## 10. Typische Aufgaben
 
@@ -281,7 +299,7 @@ API: `astro dev` + lokaler SMTP-Testserver (smtp-server). Link-Check: keine `hre
 ## 11. Offene Punkte
 
 **Vom Verein zu liefern:** Bestätigung Bankverbindung/Kontoinhaber durch den Kassenwart, fussball.de-Widget-Code,
-Instagram-Feed-URL/Token, SMTP-Zugang, verantwortliche Person nach § 18 MStV (Impressum), Wappen als Vektordatei
+Instagram-Feed-URL/Token, verantwortliche Person nach § 18 MStV (Impressum), Wappen als Vektordatei
 (optional), mehr/aktuelle Fotos, aktuelle News/Termine (alte Seiten „Aktuelles“/„Termine“ waren nicht auslesbar),
 Sponsorenliste der alten Seite (WebFetch auf /sponsoren/ scheitert) + Sponsor-Logos, Bestätigung Konradsaal
 Pfarrgasse 1, Prüfung der Datenschutzerklärung, Bogenschießen-Trainingszeiten (Stand 2017), Einverständnis der
@@ -289,8 +307,8 @@ abgebildeten Personen für die übernommenen Vereinsfotos.
 
 **Technisch:**
 
-- Hosting-Umzug von Vercel auf einen Webspace (Upload per SFTP mit eigenem Deploy-Schlüssel aus GitHub Actions,
-  Formulare per PHP) ist geplant. Verbindungsdaten ausschließlich als GitHub-Secrets (Regel 1). Danach Abschnitte 3,
-  4, 6.5 und 6.6 anpassen.
+- Livegang auf dem Webspace: Deploy-Schlüssel hinterlegen, Secrets setzen, Webroot prüfen, `DEPLOY_ENABLED` setzen,
+  Testmail über beide Formulare (kommt sie im Vereinspostfach an?), DNS der Domain umstellen, SSL aktivieren, dann
+  `forceHttps: true`.
 - `npm run check` (astro check) meldet 28 Typfehler im Bestand (implizite `any`, Index-Zugriffe) – daher nicht in der CI.
-- Spamschutz der Formulare ist bewusst einfach (Honeypot + Zeitsperre); bei Bedarf Rate-Limit ergänzen.
+- Spamschutz der Formulare ist bewusst einfach (Honeypot + Zeitsperre); bei Bedarf Rate-Limit in PHP ergänzen.

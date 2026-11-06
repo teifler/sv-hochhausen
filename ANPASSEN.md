@@ -1,7 +1,8 @@
 # Inhalte anpassen – Anleitung für den Verein
 
 Alle Texte und Daten stehen in **`src/data/`**. Datei öffnen (z. B. direkt auf GitHub mit dem Stift-Symbol),
-Text ändern, speichern („Commit changes“) – Vercel baut die Website automatisch neu (1–2 Minuten).
+Text ändern, speichern („Commit changes“) – GitHub prüft die Änderung und veröffentlicht die Website danach automatisch
+(ca. 3–5 Minuten).
 
 > Tipp: Nur den Text zwischen den Anführungszeichen ändern. Kommas und Klammern stehen lassen.
 
@@ -92,7 +93,8 @@ alle einzeln angesehen: keine erkennbaren Personen, keine Logos. Austauschen: Nu
 
 1. Auf [behold.so](https://behold.so) mit dem Instagram-Konto **@sv_hochhausen** anmelden und einen Feed anlegen.
 2. Die **JSON-Feed-URL** kopieren (beginnt mit `https://feeds.behold.so/…`).
-3. In Vercel → _Settings → Environment Variables_: `INSTAGRAM_FEED_URL` = diese URL → _Redeploy_.
+3. In GitHub → _Settings → Environments → production_ → _Add secret_: Name `INSTAGRAM_FEED_URL`, Wert = diese URL.
+   Die Bilder erscheinen beim nächsten Build (spätestens in der Nacht).
 
 **Variante B:** Instagram-API-Token (Business-/Creator-Konto) als `INSTAGRAM_TOKEN` hinterlegen.
 Die Bilder werden beim Build heruntergeladen und von der eigenen Website ausgeliefert (datenschutzfreundlich).
@@ -118,32 +120,18 @@ die `url` auf `null` setzen – Buttons und Timeline verschwinden automatisch; d
    Die Widgets laden erst nach Klick auf „Inhalte laden“ (Datenschutz). Den Tabellenstand-Kasten (`standing`) gelegentlich
    aktualisieren oder entfernen (`standing: null`).
 
-## 7. Kontakt- & Spendenformular aktivieren (E-Mail-Versand)
+## 7. Kontakt- & Spendenformular (E-Mail-Versand)
 
-**Mailjet wird nicht benötigt** – jedes E-Mail-Postfach mit SMTP funktioniert, z. B. das Vereinspostfach
-`info@sportverein-hochhausen.de` beim Webhoster (bei IONOS: Server `smtp.ionos.de`, Port `587`).
-In Vercel unter _Environment Variables_ eintragen:
-
-| Variable      | Beispiel                                                 |
-| ------------- | -------------------------------------------------------- |
-| `SMTP_HOST`   | `smtp.ionos.de`                                          |
-| `SMTP_PORT`   | `587`                                                    |
-| `SMTP_SECURE` | `false` (nur bei Port 465: `true`)                       |
-| `SMTP_USER`   | `info@sportverein-hochhausen.de`                         |
-| `SMTP_PASS`   | Passwort des Postfachs                                   |
-| `MAIL_FROM`   | `SV Hochhausen Website <info@sportverein-hochhausen.de>` |
-| `MAIL_TO`     | Empfänger der Anfragen                                   |
-| `DONATION_TO` | optional: eigener Empfänger für Spendenzusagen           |
-
-Ohne diese Angaben zeigt das Formular freundlich die E-Mail-Adresse als Alternative an.
-Mailjet geht trotzdem: `SMTP_HOST=in-v3.mailjet.com`, `SMTP_USER`=API-Key, `SMTP_PASS`=Secret-Key.
+Die Formulare laufen als kleines PHP-Skript auf dem Webspace und verschicken über dessen Mailfunktion – **es müssen
+keine Zugangsdaten oder Passwörter eingetragen werden.** Empfänger und Absender stehen in `src/data/forms.js`
+(Standard: die Vereinsadresse aus `src/data/site.js`); der Absender muss ein Postfach der Vereinsdomain sein. Dort
+stehen auch die Anliegen, die man im Kontaktformular auswählen kann.
 
 ## 8. Täglicher Neubau (Termine & Instagram aktuell halten)
 
-1. Vercel → _Settings → Git → Deploy Hooks_ → Hook anlegen (Branch `main`) → URL kopieren.
-2. GitHub → Repository → _Settings → Secrets and variables → Actions_ → **New repository secret**:
-   Name `VERCEL_DEPLOY_HOOK`, Wert = Hook-URL.
-   Die Action `.github/workflows/taeglich-neu-bauen.yml` löst dann jede Nacht einen Neubau aus (manuell: _Actions → Run workflow_).
+Läuft automatisch: Der GitHub-Workflow **Deploy** baut die Website jede Nacht neu und lädt sie hoch – „Kommende
+Termine“, das nächste Spiel und Instagram sind so immer aktuell. Sofort neu veröffentlichen: GitHub → _Actions_ →
+_Deploy_ → _Run workflow_.
 
 ## 9. Spenden: Bankverbindung (`src/data/donate.js`)
 
@@ -193,4 +181,7 @@ und die „Heute“-Markierung im Wochenplan berechnen sich von selbst.
   (`public/favicon*.png`, `public/og.jpg`) baue ich dann neu.
 - **Downloads:** Die PDFs liegen noch auf der alten Website. Am besten nach `public/downloads/` kopieren und die Links in
   `src/data/documents.js` auf `/downloads/<datei>.pdf` ändern – sonst funktionieren sie nicht mehr, wenn die alte Seite abgeschaltet wird.
-- **Domain:** In Vercel die Domain verbinden und `SITE_URL` (z. B. `https://www.sportverein-hochhausen.de`) setzen.
+- **Domain & SSL:** DNS der Domain auf den Webspace umstellen, in der Hosting-Verwaltung das kostenlose SSL-Zertifikat
+  aktivieren und danach in `src/data/hosting.js` `forceHttps: true` setzen (leitet dann alles auf https:// um).
+- **Formulare:** Nach dem ersten Upload beide Formulare (Kontakt, Spende) einmal ausprobieren – kommt die Mail im
+  Vereinspostfach an?

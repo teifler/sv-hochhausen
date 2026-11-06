@@ -2,7 +2,7 @@
 #  SV Hochhausen 1946 - Website auf GitHub hochladen (Windows)
 #  Wird von GITHUB-HOCHLADEN.cmd gestartet. Macht alles:
 #  Git + GitHub CLI installieren (winget), anmelden, Repository
-#  anlegen, hochladen und Vercel im Browser oeffnen.
+#  anlegen und hochladen. Veroeffentlicht wird automatisch (GitHub Actions).
 # =============================================================
 $ErrorActionPreference = 'Continue'
 $root = Split-Path -Parent $PSScriptRoot
@@ -129,6 +129,6 @@ if ($LASTEXITCODE -ne 0) {
 Write-Step 'Fertig!'
 Write-Host "Repository: https://github.com/$user/$repo" -ForegroundColor Green
 Write-Host ''
-Write-Host 'Naechster Schritt: Auf Vercel mit GitHub anmelden, das Repository importieren und auf Deploy klicken.'
-Write-Host 'Danach unter Settings > Environment Variables die Werte aus .env.example eintragen (siehe ANPASSEN.md).'
-Start-Process 'https://vercel.com/new'
+Write-Host 'GitHub prueft die Aenderungen und veroeffentlicht die Website danach automatisch (ca. 3-5 Minuten).'
+Write-Host 'Fortschritt: Repository > Actions (CI und Deploy).'
+Start-Process "https://github.com/$user/$repo/actions"
