@@ -69,7 +69,7 @@ const hasInsta = items.some((i) => i.category === 'Instagram')
             data-cat={`${g.category}${g.date ? ` · ${g.date.slice(0, 4)}` : ''}`}
             data-desc={g.caption || undefined}
             data-href={g.href || undefined}
-            aria-label={`Bild vergrößern: ${g.title}`}
+            aria-label={`${g.category} ${g.title} – Bild vergrößern`}
           >
             <img
               class="svh-img"
@@ -99,7 +99,12 @@ const hasInsta = items.some((i) => i.category === 'Instagram')
       <Icon name="chevron-left" />
     </button>
     <figure class="svh-lightbox__stage">
-      <img class="svh-lightbox__img" data-lb-img src="data:image/gif;base64,R0lGODlhAQABAAAAACw=" alt="" />
+      <img
+        class="svh-lightbox__img"
+        data-lb-img
+        src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+        alt=""
+      />
       <figcaption class="svh-lightbox__cap">
         <b data-lb-title></b>
         <span data-lb-cat></span>

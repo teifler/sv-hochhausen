@@ -74,19 +74,19 @@ const rows = [
                   <div class="svh-bank__row">
                     <dt>{r.label}</dt>
                     <dd>{r.value}</dd>
-                    {r.copy ? (
-                      <button
-                        class="svh-copy"
-                        type="button"
-                        data-copy={r.copy}
-                        aria-label={`${r.label} kopieren`}
-                        title={`${r.label} kopieren`}
-                      >
-                        <Icon name="copy" />
-                        <span data-copy-label>Kopieren</span>
-                      </button>
-                    ) : (
-                      <span></span>
+                    {r.copy && (
+                      <dd class="svh-bank__action">
+                        <button
+                          class="svh-copy"
+                          type="button"
+                          data-copy={r.copy}
+                          aria-label={`${r.label} kopieren`}
+                          title={`${r.label} kopieren`}
+                        >
+                          <Icon name="copy" />
+                          <span data-copy-label>Kopieren</span>
+                        </button>
+                      </dd>
                     )}
                   </div>
                 ))}

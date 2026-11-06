@@ -69,12 +69,12 @@
   --svh-t-slow: 0.5s;
 
   /* --- Abteilungs-Akzente (dezent, für Karten/Filter) --- */
-  --svh-acc-fussball: #1f6feb;
-  --svh-acc-bogen: #0e9f6e;
+  --svh-acc-fussball: #1b61ce; /* ≥ 4,5:1 auf Weiß und auf der 14-%-Tönung (WCAG AA) */
+  --svh-acc-bogen: #0a7450; /* ≥ 4,5:1 auf Weiß und auf der 14-%-Tönung (WCAG AA) */
   --svh-acc-darts: #b45309;
   --svh-acc-gym: #7c3aed;
   --svh-acc-nordic: #0891b2;
-  --svh-acc-wandern: #4d7c0f;
+  --svh-acc-wandern: #46700d; /* ≥ 4,5:1 auf Weiß und auf der 14-%-Tönung (WCAG AA) */
   --svh-acc-jugend: #e07a1f;
   --svh-acc-verein: var(--svh-red);
   --svh-acc-fest: #d6a400;

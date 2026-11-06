@@ -46,7 +46,7 @@ const meta = [s.category, s.place].filter(Boolean).join(' · ')
   href={s.url}
   target="_blank"
   rel="noopener noreferrer"
-  aria-label={`${s.name} – Website öffnen`}
+  aria-label={compact ? `${s.name} – Website öffnen` : undefined}
 >
   <span class="svh-sponsor__logo">
     {logo ? (
@@ -69,6 +69,7 @@ const meta = [s.category, s.place].filter(Boolean).join(' · ')
       {meta && <span class="svh-sponsor__meta">{meta}</span>}
       <span class="svh-sponsor__link">
         Website besuchen <Icon name="external" />
+        <span class="svh-visually-hidden"> (öffnet in neuem Fenster)</span>
       </span>
     </span>
   )}
