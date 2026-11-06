@@ -149,7 +149,14 @@ async function instagram() {
       const target = path.join(INSTA_DIR, file)
       try {
         if (!existsSync(target)) await download(p.image, target)
-        kept.push({ id: safeId, file, caption: p.caption.slice(0, 300), permalink: p.permalink, timestamp: p.timestamp, type: p.type })
+        kept.push({
+          id: safeId,
+          file,
+          caption: p.caption.slice(0, 300),
+          permalink: p.permalink,
+          timestamp: p.timestamp,
+          type: p.type,
+        })
       } catch (e) {
         log(`  Instagram-Bild ${p.id} nicht geladen: ${e.message}`)
       }
@@ -160,7 +167,10 @@ async function instagram() {
     for (const f of await readdir(INSTA_DIR)) {
       if (f.startsWith('ig-') && !keep.has(f)) await rm(path.join(INSTA_DIR, f), { force: true })
     }
-    await writeFile(path.join(INSTA_DIR, 'feed.json'), JSON.stringify({ updatedAt: new Date().toISOString(), posts: kept }, null, 2))
+    await writeFile(
+      path.join(INSTA_DIR, 'feed.json'),
+      JSON.stringify({ updatedAt: new Date().toISOString(), posts: kept }, null, 2),
+    )
     log(`Instagram: ${kept.length} Beiträge gespeichert`)
   } catch (e) {
     log(`Instagram: nicht geladen (${e.message}) – „Folge uns"-Kachel wird angezeigt`)

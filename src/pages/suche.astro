@@ -4,20 +4,35 @@ import PageHero from '../components/PageHero.astro'
 import Icon from '../components/Icon.astro'
 import { nav } from '../data/site.js'
 ---
+
 <BaseLayout title="Suche" description="Die Website des SV Hochhausen 1946 durchsuchen." noindex>
   <PageHero title="Suche" eyebrow="Website durchsuchen" theme="neutral" seed={9} />
   <section class="svh-section">
     <div class="svh-container svh-container--narrow">
       <form class="svh-searchpage__field" action="/suche/" method="get" role="search" data-searchpage>
         <Icon name="search" />
-        <input type="search" name="q" placeholder="Suchbegriff eingeben …" aria-label="Suchbegriff" autocomplete="off" />
-        <button class="svh-btn svh-btn--primary svh-btn--sm" type="submit">Suchen</button>
+        <input
+          type="search"
+          name="q"
+          placeholder="Suchbegriff eingeben …"
+          aria-label="Suchbegriff"
+          autocomplete="off"
+        />
+        <button class="svh-btn svh-btn--primary svh-btn--sm" type="submit">
+          Suchen
+        </button>
       </form>
       <p class="svh-form__note svh-mt-1" data-search-count aria-live="polite"></p>
       <div class="svh-result-list" data-search-list></div>
       <noscript>
         <p class="svh-empty svh-mt-2">Die Suche benötigt JavaScript. Hier findest du alle Bereiche der Website:</p>
-        <ul class="svh-list-check svh-mt-2">{nav.map((n) => <li><a href={n.to}>{n.label}</a></li>)}</ul>
+        <ul class="svh-list-check svh-mt-2">
+          {nav.map((n) => (
+            <li>
+              <a href={n.to}>{n.label}</a>
+            </li>
+          ))}
+        </ul>
       </noscript>
     </div>
   </section>

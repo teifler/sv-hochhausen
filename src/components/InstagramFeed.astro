@@ -23,33 +23,69 @@ const tiles = [
   ['community', 68],
 ].slice(0, Math.max(6, Math.min(8, limit)))
 ---
-{
-  posts.length ? (
-    <div class="svh-insta__grid">
-      {posts.map((p) => (
-        <a class="svh-insta__item" href={p.permalink} target="_blank" rel="noopener noreferrer" aria-label={`Instagram-Beitrag öffnen${p.caption ? `: ${short(p.caption)}` : ''}`}>
-          <img class="svh-img" src={p.src} srcset={p.srcset || undefined} sizes="(max-width: 480px) 50vw, (max-width: 1000px) 33vw, 200px" width={p.width} height={p.height} alt="" loading="lazy" decoding="async" />
-          {p.type === 'VIDEO' && <span class="svh-insta__type"><Icon name="play" /></span>}
-          {p.type === 'CAROUSEL_ALBUM' && <span class="svh-insta__type"><Icon name="layers" /></span>}
-          {p.caption && <span class="svh-insta__cap">{short(p.caption)}</span>}
-        </a>
+
+{posts.length ? (
+  <div class="svh-insta__grid">
+    {posts.map((p) => (
+      <a
+        class="svh-insta__item"
+        href={p.permalink}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={`Instagram-Beitrag öffnen${p.caption ? `: ${short(p.caption)}` : ''}`}
+      >
+        <img
+          class="svh-img"
+          src={p.src}
+          srcset={p.srcset || undefined}
+          sizes="(max-width: 480px) 50vw, (max-width: 1000px) 33vw, 200px"
+          width={p.width}
+          height={p.height}
+          alt=""
+          loading="lazy"
+          decoding="async"
+        />
+        {p.type === 'VIDEO' && (
+          <span class="svh-insta__type">
+            <Icon name="play" />
+          </span>
+        )}
+        {p.type === 'CAROUSEL_ALBUM' && (
+          <span class="svh-insta__type">
+            <Icon name="layers" />
+          </span>
+        )}
+        {p.caption && <span class="svh-insta__cap">{short(p.caption)}</span>}
+      </a>
+    ))}
+  </div>
+) : (
+  <div class="svh-insta-teaser">
+    <div class="svh-insta__grid" aria-hidden="true">
+      {tiles.map(([theme, seed]) => (
+        <span class="svh-insta__item">
+          <Pic
+            theme={String(theme)}
+            seed={Number(seed)}
+            photo={false}
+            width={480}
+            widths={[240, 480]}
+            sizes="(max-width: 480px) 50vw, 220px"
+            w={600}
+            h={600}
+          />
+        </span>
       ))}
     </div>
-  ) : (
-    <div class="svh-insta-teaser">
-      <div class="svh-insta__grid" aria-hidden="true">
-        {tiles.map(([theme, seed]) => (
-          <span class="svh-insta__item">
-            <Pic theme={String(theme)} seed={Number(seed)} photo={false} width={480} widths={[240, 480]} sizes="(max-width: 480px) 50vw, 220px" w={600} h={600} />
-          </span>
-        ))}
-      </div>
-      <a class="svh-insta-teaser__card" href={instagram.url} target="_blank" rel="noopener noreferrer">
-        <span class="svh-insta-cta__icon"><Icon name="instagram" /></span>
-        <b>@{instagram.handle}</b>
-        <span>Fotos, Spieltage und Vereinsleben</span>
-        <span class="svh-btn svh-btn--primary svh-btn--sm">Auf Instagram folgen <Icon name="external" /></span>
-      </a>
-    </div>
-  )
-}
+    <a class="svh-insta-teaser__card" href={instagram.url} target="_blank" rel="noopener noreferrer">
+      <span class="svh-insta-cta__icon">
+        <Icon name="instagram" />
+      </span>
+      <b>@{instagram.handle}</b>
+      <span>Fotos, Spieltage und Vereinsleben</span>
+      <span class="svh-btn svh-btn--primary svh-btn--sm">
+        Auf Instagram folgen <Icon name="external" />
+      </span>
+    </a>
+  </div>
+)}

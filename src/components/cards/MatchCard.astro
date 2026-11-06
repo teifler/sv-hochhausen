@@ -12,45 +12,67 @@ const { match: m } = Astro.props
 const team = fussballde.teams[0]
 const url = m?.teamData?.url || team?.url || fussballde.clubUrl
 ---
+
 <article class="svh-match">
   <div class="svh-match__head">
     <span class="svh-badge">{m ? 'Nächstes Spiel' : 'Spielbetrieb'}</span>
     <span class="svh-match__competition">{m ? m.competition : `Saison ${fussballde.season}`}</span>
   </div>
-  {
-    m ? (
-      <>
-        <div class="svh-match__teams">
-          <div class="svh-match__team">
-            {m.isHome ? <Logo class="svh-match__crest" size={78} title="SV Hochhausen" /> : <GuestCrest class="svh-match__crest" label={m.home} />}
-            <b>{m.home}</b>
-          </div>
-          <span class="svh-match__vs">vs</span>
-          <div class="svh-match__team">
-            {m.isHome ? <GuestCrest class="svh-match__crest" label={m.away} /> : <Logo class="svh-match__crest" size={78} title="SV Hochhausen" />}
-            <b>{m.away}</b>
-          </div>
+  {m ? (
+    <>
+      <div class="svh-match__teams">
+        <div class="svh-match__team">
+          {m.isHome ? (
+            <Logo class="svh-match__crest" size={78} title="SV Hochhausen" />
+          ) : (
+            <GuestCrest class="svh-match__crest" label={m.home} />
+          )}
+          <b>{m.home}</b>
         </div>
-        <div class="svh-match__info">
-          <span><Icon name="calendar" />{fmtLongWeekday(m.date)}</span>
-          {m.time && <span><Icon name="clock" />{fmtTime(m.time)}</span>}
-          <span><Icon name="map-pin" />{m.isHome ? 'Sportplatz Hochhausen' : 'Auswärtsspiel'}</span>
+        <span class="svh-match__vs">vs</span>
+        <div class="svh-match__team">
+          {m.isHome ? (
+            <GuestCrest class="svh-match__crest" label={m.away} />
+          ) : (
+            <Logo class="svh-match__crest" size={78} title="SV Hochhausen" />
+          )}
+          <b>{m.away}</b>
         </div>
-        <p class="svh-match__note">
-          <span class="svh-countdown" data-countdown={`${m.date}T${m.time || '00:00'}`}></span>
-          {m.provisional && <span>Vorläufige Ansetzung laut fussball.de – Änderungen möglich.</span>}
-        </p>
-      </>
-    ) : (
-      <div class="svh-match__empty">
-        <b>{team?.name}</b>
-        <span>{team?.league}</span>
-        <p>Alle Spiele, Ergebnisse und die Tabelle findest du tagesaktuell bei fussball.de.</p>
       </div>
-    )
-  }
+      <div class="svh-match__info">
+        <span>
+          <Icon name="calendar" />
+          {fmtLongWeekday(m.date)}
+        </span>
+        {m.time && (
+          <span>
+            <Icon name="clock" />
+            {fmtTime(m.time)}
+          </span>
+        )}
+        <span>
+          <Icon name="map-pin" />
+          {m.isHome ? 'Sportplatz Hochhausen' : 'Auswärtsspiel'}
+        </span>
+      </div>
+      <p class="svh-match__note">
+        <span class="svh-countdown" data-countdown={`${m.date}T${m.time || '00:00'}`}></span>
+        {m.provisional && <span>Vorläufige Ansetzung laut fussball.de – Änderungen möglich.</span>}
+      </p>
+    </>
+  ) : (
+    <div class="svh-match__empty">
+      <b>{team?.name}</b>
+      <span>{team?.league}</span>
+      <p>Alle Spiele, Ergebnisse und die Tabelle findest du tagesaktuell bei fussball.de.</p>
+    </div>
+  )}
   <div class="svh-match__actions">
-    <a class="svh-btn svh-btn--dark svh-btn--sm" href={url} target="_blank" rel="noopener noreferrer">Spielplan auf fussball.de <Icon name="external" /></a>
-    <a class="svh-btn svh-btn--outline svh-btn--sm" href="/fussball/">Zur Fußballseite</a>
+    <a class="svh-btn svh-btn--dark svh-btn--sm" href={url} target="_blank" rel="noopener noreferrer">
+      Spielplan auf fussball.de <Icon name="external" />
+    </a>
+    <a class="svh-btn svh-btn--outline svh-btn--sm" href="/fussball/">
+      Zur Fußballseite
+    </a>
   </div>
 </article>

@@ -6,52 +6,77 @@ import { chairs } from '../data/people.js'
 
 const c = contact.main
 ---
+
 <BaseLayout title="Impressum" description="Impressum des Sportverein 1946 Hochhausen/Tauber e.V.">
   <PageHero title="Impressum" eyebrow="Rechtliches" theme="neutral" seed={10} />
   <section class="svh-section">
     <div class="svh-container svh-container--narrow svh-prose">
       <h2>Angaben gemäß § 5 DDG</h2>
       <p>
-        {club.legalName}<br />
-        {c.street}<br />
+        {club.legalName}
+        <br />
+        {c.street}
+        <br />
         {c.zip} {c.city}
       </p>
 
       <h3>Vertreten durch</h3>
-      <p>Den Vorstand – drei gleichberechtigte Vorsitzende:<br />{chairs.map((p) => p.name).join(', ')}</p>
+      <p>
+        Den Vorstand – drei gleichberechtigte Vorsitzende:
+        <br />
+        {chairs.map((p) => p.name).join(', ')}
+      </p>
 
       <h3>Kontakt</h3>
       <p>
-        Telefon: <a href={`tel:${c.phoneHref}`}>{c.phone}</a> (Sportheim)<br />
+        Telefon: <a href={`tel:${c.phoneHref}`}>{c.phone}</a> (Sportheim)
+        <br />
         E-Mail: <a href={`mailto:${c.email}`}>{c.email}</a>
       </p>
 
       <h3>Registereintrag</h3>
       <p>
-        Eintragung im Vereinsregister<br />
-        Registergericht: {club.register.court}<br />
+        Eintragung im Vereinsregister
+        <br />
+        Registergericht: {club.register.court}
+        <br />
         Registernummer: {club.register.number}
       </p>
 
       <h3>Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV</h3>
-      <p><span class="svh-badge svh-badge--placeholder">Bitte ergänzen</span><br />Name der verantwortlichen Person, Anschrift wie oben</p>
+      <p>
+        <span class="svh-badge svh-badge--placeholder">Bitte ergänzen</span>
+        <br />
+        Name der verantwortlichen Person, Anschrift wie oben
+      </p>
 
       <h3>Verbraucherstreitbeilegung</h3>
-      <p>Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</p>
+      <p>
+        Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle
+        teilzunehmen.
+      </p>
 
       <h3>Haftung für Inhalte und Links</h3>
       <p>
-        Die Inhalte dieser Website wurden mit Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität können wir jedoch keine Gewähr
-        übernehmen. Für Inhalte externer Websites, auf die wir verlinken, sind ausschließlich deren Betreiber verantwortlich. Bei Bekanntwerden von
-        Rechtsverletzungen entfernen wir entsprechende Inhalte oder Links umgehend.
+        Die Inhalte dieser Website wurden mit Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität
+        können wir jedoch keine Gewähr übernehmen. Für Inhalte externer Websites, auf die wir verlinken, sind
+        ausschließlich deren Betreiber verantwortlich. Bei Bekanntwerden von Rechtsverletzungen entfernen wir
+        entsprechende Inhalte oder Links umgehend.
       </p>
 
       <h3>Urheberrecht und Bildnachweis</h3>
       <p>
-        Texte, Grafiken und Gestaltung dieser Website unterliegen dem Urheberrecht. Vereinsfotos und Wappen: SV Hochhausen 1946 e.V.
-        (Vereinsarchiv); Mannschaftsfoto 2024/25 über <a href="https://www.fussball.de" target="_blank" rel="noopener noreferrer">fussball.de</a>.
-        Einzelne Stimmungsfotos ohne Personen stammen von <a href="https://www.pexels.com/license/" target="_blank" rel="noopener noreferrer">Pexels</a> (Pexels-Lizenz).
-        Grafiken in Vereinsfarben sind eigene Darstellungen. Bilder des Instagram-Kanals @sv_hochhausen stammen vom Verein.
+        Texte, Grafiken und Gestaltung dieser Website unterliegen dem Urheberrecht. Vereinsfotos und Wappen: SV
+        Hochhausen 1946 e.V. (Vereinsarchiv); Mannschaftsfoto 2024/25 über{' '}
+        <a href="https://www.fussball.de" target="_blank" rel="noopener noreferrer">
+          fussball.de
+        </a>
+        . Einzelne Stimmungsfotos ohne Personen stammen von{' '}
+        <a href="https://www.pexels.com/license/" target="_blank" rel="noopener noreferrer">
+          Pexels
+        </a>{' '}
+        (Pexels-Lizenz). Grafiken in Vereinsfarben sind eigene Darstellungen. Bilder des Instagram-Kanals @sv_hochhausen
+        stammen vom Verein.
       </p>
     </div>
   </section>

@@ -6,9 +6,12 @@ interface Props {
 }
 const { partner: p } = Astro.props
 ---
+
 <a class="svh-partner-card" href={p.url} target="_blank" rel="noopener noreferrer">
   <span class="svh-partner-card__logo">{p.logo ? <img src={p.logo} alt="" height="48" /> : p.short}</span>
   <span class="svh-partner-card__name">{p.name}</span>
   <span class="svh-partner-card__cat">{p.category}</span>
-  <span class="svh-partner-card__link">Website besuchen <Icon name="external" /></span>
+  <span class="svh-partner-card__link">
+    Website besuchen <Icon name="external" />
+  </span>
 </a>

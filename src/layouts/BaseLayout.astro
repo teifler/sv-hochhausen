@@ -45,6 +45,7 @@ const ld = {
   sameAs: socials.filter((s) => s.url).map((s) => s.url),
 }
 ---
+
 <!doctype html>
 <html lang="de">
   <head>
@@ -67,13 +68,31 @@ const ld = {
     <link rel="icon" href="/favicon-192.png" type="image/png" sizes="192x192" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="sitemap" href="/sitemap-index.xml" />
-    <script is:inline>document.documentElement.classList.add('js')</script>
+    <script is:inline>
+      document.documentElement.classList.add('js')
+    </script>
     <!-- Seitenwechsel-Animation: abgebrochene Übergänge (z. B. schnelles Weiterklicken) still behandeln -->
-    <script is:inline>(function(){var n=function(){};function h(e){var t=e.viewTransition;if(t){t.ready.catch(n);t.finished.catch(n);t.updateCallbackDone.catch(n)}}addEventListener('pagereveal',h);addEventListener('pageswap',h)})()</script>
+    <script is:inline>
+      ;(function () {
+        var n = function () {}
+        function h(e) {
+          var t = e.viewTransition
+          if (t) {
+            t.ready.catch(n)
+            t.finished.catch(n)
+            t.updateCallbackDone.catch(n)
+          }
+        }
+        addEventListener('pagereveal', h)
+        addEventListener('pageswap', h)
+      })()
+    </script>
     <script type="application/ld+json" is:inline set:html={JSON.stringify(ld)}></script>
   </head>
   <body>
-    <a class="svh-skip-link" href="#svh-main">Zum Inhalt springen</a>
+    <a class="svh-skip-link" href="#svh-main">
+      Zum Inhalt springen
+    </a>
     <Header />
     <MobileNav />
     <SearchOverlay />

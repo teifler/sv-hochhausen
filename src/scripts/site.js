@@ -102,7 +102,8 @@ function renderHits(hits, q) {
   activeIndex = -1
   if (!results) return
   if (!q || q.trim().length < 2) {
-    results.innerHTML = '<p class="svh-search__empty">Tippe einen Suchbegriff ein – z. B. „Darts“, „Maiwanderung“ oder „Satzung“.</p>'
+    results.innerHTML =
+      '<p class="svh-search__empty">Tippe einen Suchbegriff ein – z. B. „Darts“, „Maiwanderung“ oder „Satzung“.</p>'
     return
   }
   if (!hits.length) {

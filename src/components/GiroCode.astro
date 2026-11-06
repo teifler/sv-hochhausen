@@ -8,20 +8,44 @@ import { donate } from '../data/donate.js'
 const b = donate.bank
 const iban = (b.iban || '').replace(/\s/g, '').toUpperCase()
 const payload = iban
-  ? ['BCD', '002', '1', 'SCT', b.bic || '', (b.holder || '').slice(0, 70), iban, '', '', '', (b.reference || '').slice(0, 140)].join('\n')
+  ? [
+      'BCD',
+      '002',
+      '1',
+      'SCT',
+      b.bic || '',
+      (b.holder || '').slice(0, 70),
+      iban,
+      '',
+      '',
+      '',
+      (b.reference || '').slice(0, 140),
+    ].join('\n')
   : ''
 const svg = payload
-  ? await QRCode.toString(payload, { type: 'svg', errorCorrectionLevel: 'M', margin: 2, color: { dark: '#171a20', light: '#ffffff' } })
+  ? await QRCode.toString(payload, {
+      type: 'svg',
+      errorCorrectionLevel: 'M',
+      margin: 2,
+      color: { dark: '#171a20', light: '#ffffff' },
+    })
   : ''
 ---
-{
-  svg && (
-    <figure class="svh-girocode" data-girocode={payload}>
-      <div class="svh-girocode__qr" role="img" aria-label={`GiroCode für eine Überweisung an ${b.holder}, IBAN ${b.iban}`} set:html={svg}></div>
-      <figcaption>
-        <b>GiroCode</b>
-        <span>Mit der Banking-App scannen – Empfänger, IBAN und Verwendungszweck sind dann schon ausgefüllt. Betrag selbst eintragen.</span>
-      </figcaption>
-    </figure>
-  )
-}
+
+{svg && (
+  <figure class="svh-girocode" data-girocode={payload}>
+    <div
+      class="svh-girocode__qr"
+      role="img"
+      aria-label={`GiroCode für eine Überweisung an ${b.holder}, IBAN ${b.iban}`}
+      set:html={svg}
+    />
+    <figcaption>
+      <b>GiroCode</b>
+      <span>
+        Mit der Banking-App scannen – Empfänger, IBAN und Verwendungszweck sind dann schon ausgefüllt. Betrag selbst
+        eintragen.
+      </span>
+    </figcaption>
+  </figure>
+)}

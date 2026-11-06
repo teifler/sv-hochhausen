@@ -17,7 +17,12 @@
   /* Vereinsfarben laut fussball.de: Blau / Schwarz / Rot */
   --svh-blue: #1d4fb8;
   --svh-blue-dark: #153a8a;
-  --svh-tricolor: linear-gradient(90deg, var(--svh-blue) 0 33.34%, var(--svh-black) 33.34% 66.67%, var(--svh-red) 66.67% 100%);
+  --svh-tricolor: linear-gradient(
+    90deg,
+    var(--svh-blue) 0 33.34%,
+    var(--svh-black) 33.34% 66.67%,
+    var(--svh-red) 66.67% 100%
+  );
 
   /* --- Text & Flächen ---------------------------------- */
   --svh-ink: #171a20;

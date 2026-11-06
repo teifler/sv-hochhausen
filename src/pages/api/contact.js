@@ -68,7 +68,10 @@ export async function POST({ request }) {
   return respond(
     request,
     200,
-    { ok: true, message: '<strong>Danke, deine Nachricht ist angekommen!</strong> Wir melden uns so bald wie möglich bei dir.' },
+    {
+      ok: true,
+      message: '<strong>Danke, deine Nachricht ist angekommen!</strong> Wir melden uns so bald wie möglich bei dir.',
+    },
     '/kontakt/danke/',
   )
 }

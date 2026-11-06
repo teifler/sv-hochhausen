@@ -28,14 +28,30 @@ const tabs = [
   { id: 'sportstaetten', label: 'Sportstätten' },
 ]
 ---
-<BaseLayout title="Über den Verein" description="Der Sportverein 1946 Hochhausen/Tauber e.V.: rund 280 Mitglieder, sechs Abteilungen, drei gleichberechtigte Vorsitzende – der größte Verein in Hochhausen.">
-  <PageHero title="Über den Verein" eyebrow={club.legalName} lead="Seit 1946 steht der SV Hochhausen für Sport und Gemeinschaft im Ort – heute als größter Verein in Hochhausen mit sechs Abteilungen." theme="club" seed={3} />
+
+<BaseLayout
+  title="Über den Verein"
+  description="Der Sportverein 1946 Hochhausen/Tauber e.V.: rund 280 Mitglieder, sechs Abteilungen, drei gleichberechtigte Vorsitzende – der größte Verein in Hochhausen."
+>
+  <PageHero
+    title="Über den Verein"
+    eyebrow={club.legalName}
+    lead="Seit 1946 steht der SV Hochhausen für Sport und Gemeinschaft im Ort – heute als größter Verein in Hochhausen mit sechs Abteilungen."
+    theme="club"
+    seed={3}
+  />
 
   <div class="svh-subnav">
     <div class="svh-container">
       <nav class="svh-tabs" aria-label="Seitenabschnitte">
-        {tabs.map((t) => <a class="svh-tab" href={`#${t.id}`}>{t.label}</a>)}
-        <a class="svh-tab" href="/mitglied-werden/#downloads">Satzung &amp; Downloads</a>
+        {tabs.map((t) => (
+          <a class="svh-tab" href={`#${t.id}`}>
+            {t.label}
+          </a>
+        ))}
+        <a class="svh-tab" href="/mitglied-werden/#downloads">
+          Satzung &amp; Downloads
+        </a>
       </nav>
     </div>
   </div>
@@ -44,40 +60,65 @@ const tabs = [
   <section class="svh-section svh-anchor" id="ueber">
     <div class="svh-container">
       <div class="svh-split svh-split--media-lg">
-        <div class="svh-split__media svh-reveal"><Media theme="gym" seed={0} ratio="4x3" width={900} sizes="(max-width: 860px) 100vw, 55vw" /></div>
+        <div class="svh-split__media svh-reveal">
+          <Media theme="gym" seed={0} ratio="4x3" width={900} sizes="(max-width: 860px) 100vw, 55vw" />
+        </div>
         <div class="svh-split__content svh-reveal" data-delay="1">
           <span class="svh-eyebrow">Wer wir sind</span>
           <h2>Der größte Verein in Hochhausen.</h2>
-          <p>Der Sportverein 1946 Hochhausen/Tauber e.V. blickt auf eine lange Tradition zurück. Heute zählt er rund 280 Mitglieder und bietet sechs Abteilungen: Fußball, Bogenschießen, Darts, Damengymnastik, Nordic Walking und Wandern.</p>
-          <p>Der Verein ist offen für alle: Er engagiert sich aktiv für die Integration von Geflüchteten und für den Sport mit Menschen mit Behinderung.</p>
-          <p>Geführt wird der SVH von drei gleichberechtigten Vorsitzenden – unterstützt von einem engagierten Vorstandsteam und vielen Ehrenamtlichen.</p>
+          <p>
+            Der Sportverein 1946 Hochhausen/Tauber e.V. blickt auf eine lange Tradition zurück. Heute zählt er rund 280
+            Mitglieder und bietet sechs Abteilungen: Fußball, Bogenschießen, Darts, Damengymnastik, Nordic Walking und
+            Wandern.
+          </p>
+          <p>
+            Der Verein ist offen für alle: Er engagiert sich aktiv für die Integration von Geflüchteten und für den
+            Sport mit Menschen mit Behinderung.
+          </p>
+          <p>
+            Geführt wird der SVH von drei gleichberechtigten Vorsitzenden – unterstützt von einem engagierten
+            Vorstandsteam und vielen Ehrenamtlichen.
+          </p>
         </div>
       </div>
       <div class="svh-stats svh-mt-3">
-        {
-          facts.map((f, i) => (
-            <div class="svh-fact svh-reveal" data-delay={String(i)}>
-              <div class="svh-fact__num">{f.num}</div>
-              <div class="svh-fact__label">{f.label}</div>
-            </div>
-          ))
-        }
+        {facts.map((f, i) => (
+          <div class="svh-fact svh-reveal" data-delay={String(i)}>
+            <div class="svh-fact__num">{f.num}</div>
+            <div class="svh-fact__label">{f.label}</div>
+          </div>
+        ))}
       </div>
       <div class="svh-grid svh-grid--3 svh-mt-3">
         <div class="svh-info-card svh-reveal">
-          <span class="svh-info-card__icon"><Icon name="shield" /></span>
+          <span class="svh-info-card__icon">
+            <Icon name="shield" />
+          </span>
           <h3>Tradition seit 1946</h3>
-          <p>Acht Jahrzehnte Sport im Ort – von den Anfängen bis zu sechs Abteilungen und einer Spielgemeinschaft mit dem TSV Tauberbischofsheim.</p>
+          <p>
+            Acht Jahrzehnte Sport im Ort – von den Anfängen bis zu sechs Abteilungen und einer Spielgemeinschaft mit dem
+            TSV Tauberbischofsheim.
+          </p>
         </div>
         <div class="svh-info-card svh-reveal" data-delay="1">
-          <span class="svh-info-card__icon"><Icon name="handshake" /></span>
+          <span class="svh-info-card__icon">
+            <Icon name="handshake" />
+          </span>
           <h3>Offen für alle</h3>
-          <p>Integration von Geflüchteten und Sport mit Menschen mit Behinderung gehören beim SVH ganz selbstverständlich dazu.</p>
+          <p>
+            Integration von Geflüchteten und Sport mit Menschen mit Behinderung gehören beim SVH ganz selbstverständlich
+            dazu.
+          </p>
         </div>
         <div class="svh-info-card svh-reveal" data-delay="2">
-          <span class="svh-info-card__icon"><Icon name="users" /></span>
+          <span class="svh-info-card__icon">
+            <Icon name="users" />
+          </span>
           <h3>Ehrenamt</h3>
-          <p>Vorstand, Abteilungsleitungen, Platzwart und viele Helferinnen und Helfer: Der Verein lebt vom Engagement seiner Mitglieder.</p>
+          <p>
+            Vorstand, Abteilungsleitungen, Platzwart und viele Helferinnen und Helfer: Der Verein lebt vom Engagement
+            seiner Mitglieder.
+          </p>
         </div>
       </div>
     </div>
@@ -86,43 +127,50 @@ const tabs = [
   <!-- Vorstand -->
   <section class="svh-section svh-section--soft svh-anchor" id="vorstand">
     <div class="svh-container">
-      <SectionHeader eyebrow="Vorstand" title="Drei Vorsitzende, ein Team." lead="Der SV Hochhausen wird von drei gleichberechtigten Vorsitzenden geführt. Sie bilden gemeinsam den vertretungsberechtigten Vorstand." />
+      <SectionHeader
+        eyebrow="Vorstand"
+        title="Drei Vorsitzende, ein Team."
+        lead="Der SV Hochhausen wird von drei gleichberechtigten Vorsitzenden geführt. Sie bilden gemeinsam den vertretungsberechtigten Vorstand."
+      />
       <div class="svh-grid svh-grid--3">
-        {
-          chairs.map((p, i) => (
-            <div class="svh-reveal" data-delay={String(i)}>
-              <PersonCard person={p} />
-            </div>
-          ))
-        }
+        {chairs.map((p, i) => (
+          <div class="svh-reveal" data-delay={String(i)}>
+            <PersonCard person={p} />
+          </div>
+        ))}
       </div>
       <div class="svh-grid svh-grid--2 svh-mt-3" style="align-items:start">
         <div class="svh-reveal">
           <h3 class="svh-subhead">Vorstandsteam</h3>
           <dl class="svh-roles">
-            {
-              officers.map((o) => (
-                <div>
-                  <dt>{o.role}</dt>
-                  <dd>{o.names.join(', ')}</dd>
-                </div>
-              ))
-            }
+            {officers.map((o) => (
+              <div>
+                <dt>{o.role}</dt>
+                <dd>{o.names.join(', ')}</dd>
+              </div>
+            ))}
           </dl>
         </div>
         <div class="svh-reveal" data-delay="1">
           <h3 class="svh-subhead">Abteilungsleitungen</h3>
           <dl class="svh-roles">
-            {
-              departmentHeads.map((d) => (
-                <div>
-                  <dt><a href={d.to}>{d.dept}</a></dt>
-                  <dd>{d.name}</dd>
-                </div>
-              ))
-            }
+            {departmentHeads.map((d) => (
+              <div>
+                <dt>
+                  <a href={d.to}>{d.dept}</a>
+                </dt>
+                <dd>{d.name}</dd>
+              </div>
+            ))}
           </dl>
-          <p class="svh-note svh-note--info svh-mt-2"><Icon name="mail" /><span>Kontakt zum Vorstand und zu allen Abteilungen: <a href="mailto:info@sportverein-hochhausen.de">info@sportverein-hochhausen.de</a> oder über das <a href="/kontakt/">Kontaktformular</a>.</span></p>
+          <p class="svh-note svh-note--info svh-mt-2">
+            <Icon name="mail" />
+            <span>
+              Kontakt zum Vorstand und zu allen Abteilungen:{' '}
+              <a href="mailto:info@sportverein-hochhausen.de">info@sportverein-hochhausen.de</a> oder über das{' '}
+              <a href="/kontakt/">Kontaktformular</a>.
+            </span>
+          </p>
         </div>
       </div>
     </div>
@@ -135,27 +183,39 @@ const tabs = [
         <div>
           <SectionHeader eyebrow="Geschichte" title="Meilensteine seit 1946" />
           <div class="svh-timeline">
-            {
-              milestones.map((m) => (
-                <div class:list={['svh-tl-item', 'svh-reveal', m.now && 'svh-tl-item--now']}>
-                  <div class="svh-tl-year">{m.year}</div>
-                  <div class="svh-tl-title">{m.title}</div>
-                  <p class="svh-tl-text">{m.text}</p>
-                </div>
-              ))
-            }
+            {milestones.map((m) => (
+              <div class:list={['svh-tl-item', 'svh-reveal', m.now && 'svh-tl-item--now']}>
+                <div class="svh-tl-year">{m.year}</div>
+                <div class="svh-tl-title">{m.title}</div>
+                <p class="svh-tl-text">{m.text}</p>
+              </div>
+            ))}
           </div>
         </div>
         <aside class="svh-aside">
           <div class="svh-aside-card">
             <h3>Die Vereinschronik</h3>
             <p>Die ausführliche Chronik des SV Hochhausen mit vielen Bildern dokumentiert die Jahre 1946 bis 2006.</p>
-            {chronik && <a class="svh-btn svh-btn--outline svh-btn--sm" href={chronik.url} target="_blank" rel="noopener noreferrer">Zur Chronik <Icon name="external" /></a>}
+            {chronik && (
+              <a
+                class="svh-btn svh-btn--outline svh-btn--sm"
+                href={chronik.url}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Zur Chronik <Icon name="external" />
+              </a>
+            )}
           </div>
           <div class="svh-aside-card">
             <h3>Fotos aus dem Archiv?</h3>
-            <p>Alte Mannschaftsfotos, Festschriften oder Zeitungsartikel? Wir freuen uns über Material für die Vereinsgeschichte.</p>
-            <a class="svh-textlink" href="/kontakt/">Kontakt aufnehmen <Icon name="arrow-right" /></a>
+            <p>
+              Alte Mannschaftsfotos, Festschriften oder Zeitungsartikel? Wir freuen uns über Material für die
+              Vereinsgeschichte.
+            </p>
+            <a class="svh-textlink" href="/kontakt/">
+              Kontakt aufnehmen <Icon name="arrow-right" />
+            </a>
           </div>
         </aside>
       </div>
@@ -165,15 +225,17 @@ const tabs = [
   <!-- Sportstätten -->
   <section class="svh-section svh-section--soft svh-anchor" id="sportstaetten">
     <div class="svh-container">
-      <SectionHeader eyebrow="Sportstätten" title="Hier sind wir zu Hause" lead="Sportplatz, Sportheim und Konradsaal – dazu die Wege rund um Hochhausen für Nordic Walking und Wandern." />
+      <SectionHeader
+        eyebrow="Sportstätten"
+        title="Hier sind wir zu Hause"
+        lead="Sportplatz, Sportheim und Konradsaal – dazu die Wege rund um Hochhausen für Nordic Walking und Wandern."
+      />
       <div class="svh-grid svh-grid--3">
-        {
-          venues.map((v, i) => (
-            <div class="svh-reveal" data-delay={String(i % 3)}>
-              <VenueCard venue={v} />
-            </div>
-          ))
-        }
+        {venues.map((v, i) => (
+          <div class="svh-reveal" data-delay={String(i % 3)}>
+            <VenueCard venue={v} />
+          </div>
+        ))}
       </div>
     </div>
   </section>

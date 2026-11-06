@@ -6,7 +6,20 @@ const dataEl = document.getElementById('svh-cal-data')
 
 if (root && dataEl) {
   const data = JSON.parse(dataEl.textContent || '{}')
-  const MONTHS = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember']
+  const MONTHS = [
+    'Januar',
+    'Februar',
+    'März',
+    'April',
+    'Mai',
+    'Juni',
+    'Juli',
+    'August',
+    'September',
+    'Oktober',
+    'November',
+    'Dezember',
+  ]
   const views = root.querySelector('[data-cal-views]')
   const monthNav = root.querySelector('[data-cal-monthnav]')
   const list = root.querySelector('[data-cal-list]')
@@ -23,7 +36,8 @@ if (root && dataEl) {
 
   const pad = (n) => String(n).padStart(2, '0')
   const key = (d) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`
-  const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c])
+  const esc = (s) =>
+    String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c])
 
   views.hidden = false
 

@@ -6,7 +6,26 @@ interface Props {
 }
 const { class: cls, label = 'Gastmannschaft' } = Astro.props
 ---
-<svg class:list={['svh-logo', cls]} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label={label}>
+
+<svg
+  class:list={['svh-logo', cls]}
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 64 64"
+  width="64"
+  height="64"
+  role="img"
+  aria-label={label}
+>
   <path d="M32 3 57 11V31c0 15-11 25-25 30C18 56 7 46 7 31V11Z" fill="#eef0f4" stroke="#d3d7de" stroke-width="2" />
-  <text x="32" y="41" text-anchor="middle" font-family="'Barlow Condensed','Arial Narrow',Arial,sans-serif" font-weight="700" font-size="24" fill="#9aa2ae">?</text>
+  <text
+    x="32"
+    y="41"
+    text-anchor="middle"
+    font-family="'Barlow Condensed','Arial Narrow',Arial,sans-serif"
+    font-weight="700"
+    font-size="24"
+    fill="#9aa2ae"
+  >
+    ?
+  </text>
 </svg>

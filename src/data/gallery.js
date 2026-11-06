@@ -24,7 +24,8 @@ export const photoInfo = {
     title: 'Spielgemeinschaft 2020/21',
     category: 'Fußball',
     date: '2020-09-13',
-    caption: 'SpG SV Hochhausen / TSG Impfingen 2 / TSV Tauberbischofsheim 3, Kreisklasse C – aufgenommen am 13. September 2020',
+    caption:
+      'SpG SV Hochhausen / TSG Impfingen 2 / TSV Tauberbischofsheim 3, Kreisklasse C – aufgenommen am 13. September 2020',
     source: 'alte Vereinswebsite',
   },
   archery: {
@@ -48,8 +49,20 @@ export const photoInfo = {
     caption: 'Ein Teil unserer Damengymnastik-Gruppe',
     source: 'alte Vereinswebsite',
   },
-  'gym-2': { title: 'Damengymnastik', category: 'Gymnastik', date: '2013-03', caption: 'Damengymnastik', source: 'alte Vereinswebsite' },
-  'gym-3': { title: 'Damengymnastik', category: 'Gymnastik', date: '2013-03', caption: 'Damengymnastik', source: 'alte Vereinswebsite' },
+  'gym-2': {
+    title: 'Damengymnastik',
+    category: 'Gymnastik',
+    date: '2013-03',
+    caption: 'Damengymnastik',
+    source: 'alte Vereinswebsite',
+  },
+  'gym-3': {
+    title: 'Damengymnastik',
+    category: 'Gymnastik',
+    date: '2013-03',
+    caption: 'Damengymnastik',
+    source: 'alte Vereinswebsite',
+  },
   hiking: {
     title: 'Wanderung 2013',
     category: 'Wandern',
@@ -79,4 +92,15 @@ export const themeCategory = {
 }
 
 /* Reihenfolge der Filter-Chips (nur vorhandene werden angezeigt) */
-export const categoryOrder = ['Instagram', 'Fußball', 'Bogenschießen', 'Darts', 'Gymnastik', 'Nordic Walking', 'Wandern', 'Jugend', 'Vereinsleben', 'Geschichte']
+export const categoryOrder = [
+  'Instagram',
+  'Fußball',
+  'Bogenschießen',
+  'Darts',
+  'Gymnastik',
+  'Nordic Walking',
+  'Wandern',
+  'Jugend',
+  'Vereinsleben',
+  'Geschichte',
+]

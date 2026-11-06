@@ -14,22 +14,38 @@ interface Props {
   class?: string
   [key: string]: any
 }
-const { href, variant = 'primary', size = 'md', icon, iconLeft, external = false, type = 'button', block = false, class: cls, ...rest } = Astro.props
+const {
+  href,
+  variant = 'primary',
+  size = 'md',
+  icon,
+  iconLeft,
+  external = false,
+  type = 'button',
+  block = false,
+  class: cls,
+  ...rest
+} = Astro.props
 const classes = ['svh-btn', `svh-btn--${variant}`, size !== 'md' && `svh-btn--${size}`, block && 'svh-btn--block', cls]
 const iconName = icon || (external ? 'external' : undefined)
 ---
-{
-  href ? (
-    <a class:list={classes} href={href} target={external ? '_blank' : undefined} rel={external ? 'noopener noreferrer' : undefined} {...rest}>
-      {iconLeft && <Icon name={iconLeft} />}
-      <slot />
-      {iconName && <Icon name={iconName} class={iconName === 'arrow-right' ? 'svh-arrow' : undefined} />}
-    </a>
-  ) : (
-    <button class:list={classes} type={type} {...rest}>
-      {iconLeft && <Icon name={iconLeft} />}
-      <slot />
-      {iconName && <Icon name={iconName} class={iconName === 'arrow-right' ? 'svh-arrow' : undefined} />}
-    </button>
-  )
-}
+
+{href ? (
+  <a
+    class:list={classes}
+    href={href}
+    target={external ? '_blank' : undefined}
+    rel={external ? 'noopener noreferrer' : undefined}
+    {...rest}
+  >
+    {iconLeft && <Icon name={iconLeft} />}
+    <slot />
+    {iconName && <Icon name={iconName} class={iconName === 'arrow-right' ? 'svh-arrow' : undefined} />}
+  </a>
+) : (
+  <button class:list={classes} type={type} {...rest}>
+    {iconLeft && <Icon name={iconLeft} />}
+    <slot />
+    {iconName && <Icon name={iconName} class={iconName === 'arrow-right' ? 'svh-arrow' : undefined} />}
+  </button>
+)}

@@ -11,6 +11,7 @@ const { to } = Astro.props as { to: string }
 const site = Astro.site ?? new URL('https://sv-hochhausen.vercel.app')
 const canonical = new URL(to, site).href
 ---
+
 <!doctype html>
 <html lang="de">
   <head>
@@ -22,11 +23,24 @@ const canonical = new URL(to, site).href
     <meta http-equiv="refresh" content={`0; url=${to}`} />
     <script is:inline set:html={`location.replace(${JSON.stringify(to)})`}></script>
     <style>
-      body{font:16px/1.5 system-ui,sans-serif;display:grid;place-items:center;min-height:100vh;margin:0;color:#171a20}
-      a{color:#c8102e}
+      body {
+        font:
+          16px/1.5 system-ui,
+          sans-serif;
+        display: grid;
+        place-items: center;
+        min-height: 100vh;
+        margin: 0;
+        color: #171a20;
+      }
+      a {
+        color: #c8102e;
+      }
     </style>
   </head>
   <body>
-    <p>Diese Seite ist umgezogen: <a href={to}>weiter zur neuen Seite</a></p>
+    <p>
+      Diese Seite ist umgezogen: <a href={to}>weiter zur neuen Seite</a>
+    </p>
   </body>
 </html>

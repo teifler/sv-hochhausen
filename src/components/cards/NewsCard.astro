@@ -11,14 +11,24 @@ interface Props {
 const { item, eager = false } = Astro.props
 const accent = newsCategories[item.category] || 'var(--svh-red)'
 ---
+
 <a class="svh-card svh-news-card svh-hoverable" href={`/aktuelles/${item.slug}/`} data-filter-cat={item.category}>
   <Media theme={item.theme} seed={item.seed} ratio="16x9" zoom eager={eager}>
-    <span class="svh-media__badge svh-badge svh-badge--solid" style={`background:${accent}`}>{item.category}</span>
+    <span class="svh-media__badge svh-badge svh-badge--solid" style={`background:${accent}`}>
+      {item.category}
+    </span>
   </Media>
   <div class="svh-card__body">
-    <div class="svh-card__meta"><time datetime={item.date}><Icon name="calendar" />{fmtLong(item.date)}</time></div>
+    <div class="svh-card__meta">
+      <time datetime={item.date}>
+        <Icon name="calendar" />
+        {fmtLong(item.date)}
+      </time>
+    </div>
     <h3 class="svh-card__title">{item.title}</h3>
     <p class="svh-card__text">{item.excerpt}</p>
-    <span class="svh-card__foot svh-textlink">Weiterlesen <Icon name="arrow-right" /></span>
+    <span class="svh-card__foot svh-textlink">
+      Weiterlesen <Icon name="arrow-right" />
+    </span>
   </div>
 </a>

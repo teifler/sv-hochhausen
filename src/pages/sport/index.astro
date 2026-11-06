@@ -7,26 +7,38 @@ import WeeklyPlan from '../../components/WeeklyPlan.astro'
 import Icon from '../../components/Icon.astro'
 import { sports } from '../../data/sports.js'
 ---
-<BaseLayout title="Sportangebote" description="Fußball, Bogenschießen, Darts, Damengymnastik, Nordic Walking und Wandern: alle Abteilungen des SV Hochhausen 1946 mit Trainingszeiten.">
-  <PageHero title="Sportangebote" eyebrow="Sechs Abteilungen" lead="Mehr als Fußball: Beim SV Hochhausen findest du Wettkampf, Bewegung und Gemeinschaft – drinnen, draußen und für jedes Alter." theme="archery" seed={2} />
+
+<BaseLayout
+  title="Sportangebote"
+  description="Fußball, Bogenschießen, Darts, Damengymnastik, Nordic Walking und Wandern: alle Abteilungen des SV Hochhausen 1946 mit Trainingszeiten."
+>
+  <PageHero
+    title="Sportangebote"
+    eyebrow="Sechs Abteilungen"
+    lead="Mehr als Fußball: Beim SV Hochhausen findest du Wettkampf, Bewegung und Gemeinschaft – drinnen, draußen und für jedes Alter."
+    theme="archery"
+    seed={2}
+  />
 
   <section class="svh-section">
     <div class="svh-container">
       <div class="svh-grid svh-grid--3">
-        {
-          sports.map((s, i) => (
-            <div class="svh-reveal" data-delay={String(i % 3)}>
-              <SportCard sport={s} />
-            </div>
-          ))
-        }
+        {sports.map((s, i) => (
+          <div class="svh-reveal" data-delay={String(i % 3)}>
+            <SportCard sport={s} />
+          </div>
+        ))}
       </div>
     </div>
   </section>
 
   <section class="svh-section svh-section--soft">
     <div class="svh-container">
-      <SectionHeader eyebrow="Training" title="Wochenplan" lead="Alle regelmäßigen Trainingszeiten. Ein Klick auf eine Einheit führt zur jeweiligen Abteilung." />
+      <SectionHeader
+        eyebrow="Training"
+        title="Wochenplan"
+        lead="Alle regelmäßigen Trainingszeiten. Ein Klick auf eine Einheit führt zur jeweiligen Abteilung."
+      />
       <WeeklyPlan />
     </div>
   </section>
@@ -38,11 +50,18 @@ import { sports } from '../../data/sports.js'
         <div class="svh-cta-band__inner">
           <div>
             <h2>Einfach mal reinschnuppern.</h2>
-            <p>Komm zum Training vorbei oder melde dich kurz vorher – Leihausrüstung gibt es zum Beispiel im Bogenschießen.</p>
+            <p>
+              Komm zum Training vorbei oder melde dich kurz vorher – Leihausrüstung gibt es zum Beispiel im
+              Bogenschießen.
+            </p>
           </div>
           <div class="svh-cta-band__actions">
-            <a class="svh-btn svh-btn--on-dark" href="/kontakt/?anliegen=probetraining">Probetraining anfragen</a>
-            <a class="svh-btn svh-btn--outline-on-dark" href="/mitglied-werden/">Mitglied werden <Icon name="arrow-right" class="svh-arrow" /></a>
+            <a class="svh-btn svh-btn--on-dark" href="/kontakt/?anliegen=probetraining">
+              Probetraining anfragen
+            </a>
+            <a class="svh-btn svh-btn--outline-on-dark" href="/mitglied-werden/">
+              Mitglied werden <Icon name="arrow-right" class="svh-arrow" />
+            </a>
           </div>
         </div>
       </div>

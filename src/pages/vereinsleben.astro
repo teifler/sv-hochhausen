@@ -67,25 +67,38 @@ const themes = [
   },
 ]
 ---
-<BaseLayout title="Vereinsleben" description="Sportheim, Maiwanderung, Ehrenamt, Integration und Inklusion: das Vereinsleben beim SV Hochhausen 1946.">
-  <PageHero title="Vereinsleben" eyebrow="Gemeinschaft" lead="Was den SV Hochhausen ausmacht, passiert oft neben dem Sportplatz: Treffpunkte, Traditionen und viele helfende Hände." theme="community" seed={4} />
+
+<BaseLayout
+  title="Vereinsleben"
+  description="Sportheim, Maiwanderung, Ehrenamt, Integration und Inklusion: das Vereinsleben beim SV Hochhausen 1946."
+>
+  <PageHero
+    title="Vereinsleben"
+    eyebrow="Gemeinschaft"
+    lead="Was den SV Hochhausen ausmacht, passiert oft neben dem Sportplatz: Treffpunkte, Traditionen und viele helfende Hände."
+    theme="community"
+    seed={4}
+  />
 
   <section class="svh-section">
     <div class="svh-container">
       <div class="svh-grid svh-grid--3">
-        {
-          themes.map((t, i) => (
-            <article class="svh-card svh-reveal" data-delay={String(i % 3)}>
-              <Media theme={t.theme} seed={t.seed} ratio="16x9" width={700} />
-              <div class="svh-card__body">
-                <div class="svh-card__meta"><Icon name={t.icon} />{t.kicker}</div>
-                <h2 class="svh-card__title">{t.title}</h2>
-                <p class="svh-card__text">{t.text}</p>
-                <a class="svh-card__foot svh-textlink" href={t.link.to}>{t.link.label} <Icon name="arrow-right" /></a>
+        {themes.map((t, i) => (
+          <article class="svh-card svh-reveal" data-delay={String(i % 3)}>
+            <Media theme={t.theme} seed={t.seed} ratio="16x9" width={700} />
+            <div class="svh-card__body">
+              <div class="svh-card__meta">
+                <Icon name={t.icon} />
+                {t.kicker}
               </div>
-            </article>
-          ))
-        }
+              <h2 class="svh-card__title">{t.title}</h2>
+              <p class="svh-card__text">{t.text}</p>
+              <a class="svh-card__foot svh-textlink" href={t.link.to}>
+                {t.link.label} <Icon name="arrow-right" />
+              </a>
+            </div>
+          </article>
+        ))}
       </div>
     </div>
   </section>
@@ -93,11 +106,20 @@ const themes = [
   <section class="svh-section svh-section--dark">
     <div class="svh-container svh-container--narrow svh-center">
       <span class="svh-eyebrow">Unser Anspruch</span>
-      <p class="svh-section-title svh-mt-2" style="font-family:var(--svh-display)">Sport. Gemeinschaft. Hochhausen.</p>
-      <p class="svh-section-lead svh-mt-2" style="margin-inline:auto">Sechs Abteilungen, rund 280 Mitglieder und ein Ziel: dass in Hochhausen jede und jeder einen Platz im Verein findet.</p>
+      <p class="svh-section-title svh-mt-2" style="font-family:var(--svh-display)">
+        Sport. Gemeinschaft. Hochhausen.
+      </p>
+      <p class="svh-section-lead svh-mt-2" style="margin-inline:auto">
+        Sechs Abteilungen, rund 280 Mitglieder und ein Ziel: dass in Hochhausen jede und jeder einen Platz im Verein
+        findet.
+      </p>
       <div class="svh-actions svh-actions--center svh-mt-3">
-        <a class="svh-btn svh-btn--on-dark" href="/mitglied-werden/">Mitglied werden</a>
-        <a class="svh-btn svh-btn--outline-on-dark" href="/kontakt/">Mitmachen im Ehrenamt</a>
+        <a class="svh-btn svh-btn--on-dark" href="/mitglied-werden/">
+          Mitglied werden
+        </a>
+        <a class="svh-btn svh-btn--outline-on-dark" href="/kontakt/">
+          Mitmachen im Ehrenamt
+        </a>
       </div>
     </div>
   </section>
@@ -106,17 +128,37 @@ const themes = [
     <div class="svh-container">
       <SectionHeader eyebrow="Eindrücke" title="Momente aus dem Vereinsleben" />
       <div class="svh-mosaic">
-        <a class="svh-mosaic__item svh-mosaic__item--wide svh-mosaic__item--tall" href="/galerie/"><Pic theme="community" seed={91} clean width={900} w={900} h={700} /><span class="svh-mosaic__cap">Gemeinsam feiern</span></a>
-        <a class="svh-mosaic__item" href="/galerie/"><Pic theme="darts" seed={92} clean width={600} w={800} h={600} /><span class="svh-mosaic__cap">Darts-Abend</span></a>
-        <a class="svh-mosaic__item" href="/galerie/"><Pic theme="nordic" seed={93} clean width={600} w={800} h={600} /><span class="svh-mosaic__cap">Nordic Walking</span></a>
-        <a class="svh-mosaic__item svh-mosaic__item--wide" href="/galerie/"><Pic theme="football" seed={94} clean width={900} w={900} h={500} /><span class="svh-mosaic__cap">Spieltag</span></a>
-        <a class="svh-mosaic__item" href="/galerie/"><Pic theme="gym" seed={95} clean width={600} w={800} h={600} /><span class="svh-mosaic__cap">Gymnastik</span></a>
-        <a class="svh-mosaic__item" href="/galerie/"><Pic theme="hiking" seed={96} clean width={600} w={800} h={600} /><span class="svh-mosaic__cap">Unterwegs</span></a>
+        <a class="svh-mosaic__item svh-mosaic__item--wide svh-mosaic__item--tall" href="/galerie/">
+          <Pic theme="community" seed={91} clean width={900} w={900} h={700} />
+          <span class="svh-mosaic__cap">Gemeinsam feiern</span>
+        </a>
+        <a class="svh-mosaic__item" href="/galerie/">
+          <Pic theme="darts" seed={92} clean width={600} w={800} h={600} />
+          <span class="svh-mosaic__cap">Darts-Abend</span>
+        </a>
+        <a class="svh-mosaic__item" href="/galerie/">
+          <Pic theme="nordic" seed={93} clean width={600} w={800} h={600} />
+          <span class="svh-mosaic__cap">Nordic Walking</span>
+        </a>
+        <a class="svh-mosaic__item svh-mosaic__item--wide" href="/galerie/">
+          <Pic theme="football" seed={94} clean width={900} w={900} h={500} />
+          <span class="svh-mosaic__cap">Spieltag</span>
+        </a>
+        <a class="svh-mosaic__item" href="/galerie/">
+          <Pic theme="gym" seed={95} clean width={600} w={800} h={600} />
+          <span class="svh-mosaic__cap">Gymnastik</span>
+        </a>
+        <a class="svh-mosaic__item" href="/galerie/">
+          <Pic theme="hiking" seed={96} clean width={600} w={800} h={600} />
+          <span class="svh-mosaic__cap">Unterwegs</span>
+        </a>
       </div>
     </div>
   </section>
 
   <section class="svh-section svh-section--tight">
-    <div class="svh-container"><FollowBand /></div>
+    <div class="svh-container">
+      <FollowBand />
+    </div>
   </section>
 </BaseLayout>

@@ -25,7 +25,11 @@ export const sports = [
       'In der Saison 2026/27 tritt die SpG Hochhausen/Tauberbischofsheim 3 in der Kreisklasse B Tauberbischofsheim (Staffel 2) an. Heimspielstätte ist der Sportplatz in Hochhausen.',
       'Trainiert wird während der Saison dienstags und freitags um 19 Uhr auf dem Sportgelände. Neue Spieler sind jederzeit willkommen – einfach vorbeikommen oder vorher kurz melden.',
     ],
-    highlights: ['SpG mit dem TSV 1863 Tauberbischofsheim', 'Kreisklasse B Tauberbischofsheim', 'Training Di & Fr, 19 Uhr'],
+    highlights: [
+      'SpG mit dem TSV 1863 Tauberbischofsheim',
+      'Kreisklasse B Tauberbischofsheim',
+      'Training Di & Fr, 19 Uhr',
+    ],
     audience: 'Herren · Aktive',
     place: 'Sportgelände Hochhausen',
     schedule: [

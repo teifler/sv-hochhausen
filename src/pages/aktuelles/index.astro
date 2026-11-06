@@ -8,27 +8,56 @@ import { newsSorted, newsCategories } from '../../data/news.js'
 
 const cats = Object.keys(newsCategories).filter((c) => newsSorted.some((n) => n.category === c))
 ---
-<BaseLayout title="Aktuelles" description="Neuigkeiten, Spielberichte und Termine aus allen Abteilungen des SV Hochhausen 1946.">
-  <PageHero title="Aktuelles" eyebrow="News & Berichte" lead="Neuigkeiten aus allen Abteilungen des SV Hochhausen – vom Spieltag bis zur Wanderung." theme="club" seed={2} />
+
+<BaseLayout
+  title="Aktuelles"
+  description="Neuigkeiten, Spielberichte und Termine aus allen Abteilungen des SV Hochhausen 1946."
+>
+  <PageHero
+    title="Aktuelles"
+    eyebrow="News & Berichte"
+    lead="Neuigkeiten aus allen Abteilungen des SV Hochhausen – vom Spieltag bis zur Wanderung."
+    theme="club"
+    seed={2}
+  />
 
   <section class="svh-section">
     <div class="svh-container">
-      <div class="svh-gallery-filter" data-filter-group data-filter-target="#news-list" data-filter-empty="#news-empty" role="group" aria-label="Nach Kategorie filtern">
-        <button class="svh-chip is-active" type="button" data-filter-value="alle" aria-pressed="true">Alle</button>
-        {
-          cats.map((c) => (
-            <button class="svh-chip" type="button" data-filter-value={c} aria-pressed="false" style={`--chip-accent:${newsCategories[c]}`}>
-              <span class="svh-chip__dot"></span>
-              {c}
-            </button>
-          ))
-        }
+      <div
+        class="svh-gallery-filter"
+        data-filter-group
+        data-filter-target="#news-list"
+        data-filter-empty="#news-empty"
+        role="group"
+        aria-label="Nach Kategorie filtern"
+      >
+        <button class="svh-chip is-active" type="button" data-filter-value="alle" aria-pressed="true">
+          Alle
+        </button>
+        {cats.map((c) => (
+          <button
+            class="svh-chip"
+            type="button"
+            data-filter-value={c}
+            aria-pressed="false"
+            style={`--chip-accent:${newsCategories[c]}`}
+          >
+            <span class="svh-chip__dot"></span>
+            {c}
+          </button>
+        ))}
       </div>
       <div class="svh-grid svh-grid--3" id="news-list">
-        {newsSorted.map((n, i) => <NewsCard item={n} eager={i < 3} />)}
-        <div data-filter-cat="Verein"><InstaCard /></div>
+        {newsSorted.map((n, i) => (
+          <NewsCard item={n} eager={i < 3} />
+        ))}
+        <div data-filter-cat="Verein">
+          <InstaCard />
+        </div>
       </div>
-      <p class="svh-empty svh-mt-2" id="news-empty" hidden>In dieser Kategorie gibt es noch keine Beiträge.</p>
+      <p class="svh-empty svh-mt-2" id="news-empty" hidden>
+        In dieser Kategorie gibt es noch keine Beiträge.
+      </p>
     </div>
   </section>
 

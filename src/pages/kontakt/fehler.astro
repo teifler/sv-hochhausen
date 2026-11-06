@@ -3,18 +3,25 @@ import BaseLayout from '../../layouts/BaseLayout.astro'
 import Icon from '../../components/Icon.astro'
 import { contact } from '../../data/site.js'
 ---
+
 <BaseLayout title="Senden fehlgeschlagen" noindex>
   <section class="svh-section svh-404">
     <div class="svh-container svh-container--narrow">
-      <div class="svh-404__big" aria-hidden="true"><Icon name="alert" size={96} /></div>
+      <div class="svh-404__big" aria-hidden="true">
+        <Icon name="alert" size={96} />
+      </div>
       <h1 class="svh-section-title svh-mt-2">Das hat leider nicht geklappt.</h1>
       <p class="svh-section-lead svh-mt-2" style="margin-inline:auto">
-        Deine Nachricht konnte nicht gesendet werden – vielleicht fehlte ein Pflichtfeld, oder der Versand ist gerade gestört. Bitte versuch es noch einmal oder
-        schreib uns direkt.
+        Deine Nachricht konnte nicht gesendet werden – vielleicht fehlte ein Pflichtfeld, oder der Versand ist gerade
+        gestört. Bitte versuch es noch einmal oder schreib uns direkt.
       </p>
       <div class="svh-actions svh-actions--center svh-mt-3">
-        <a class="svh-btn svh-btn--primary" href="/kontakt/">Zurück zum Formular</a>
-        <a class="svh-btn svh-btn--outline" href={`mailto:${contact.main.email}`}>{contact.main.email}</a>
+        <a class="svh-btn svh-btn--primary" href="/kontakt/">
+          Zurück zum Formular
+        </a>
+        <a class="svh-btn svh-btn--outline" href={`mailto:${contact.main.email}`}>
+          {contact.main.email}
+        </a>
       </div>
     </div>
   </section>

@@ -89,7 +89,9 @@ document.querySelectorAll('[data-countdown]').forEach((el) => {
   const [hh, mm] = t.split(':').map(Number)
   const target = new Date(y, m - 1, day, hh, mm)
   const now = new Date()
-  const days = Math.round((new Date(y, m - 1, day) - new Date(now.getFullYear(), now.getMonth(), now.getDate())) / 86400000)
+  const days = Math.round(
+    (new Date(y, m - 1, day) - new Date(now.getFullYear(), now.getMonth(), now.getDate())) / 86400000,
+  )
   if (target < now) return
   el.textContent = days === 0 ? 'Heute' : days === 1 ? 'Morgen' : `In ${days} Tagen`
 })

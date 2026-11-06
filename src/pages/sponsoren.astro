@@ -7,20 +7,46 @@ import PartnerCard from '../components/cards/PartnerCard.astro'
 import SponsorCard from '../components/cards/SponsorCard.astro'
 import { partners, sponsors } from '../data/partners.js'
 ---
-<BaseLayout title="Sponsoren" description="Die Sponsoren und Partner des SV Hochhausen 1946 – und wie Unternehmen den Verein unterstützen können.">
-  <PageHero title="Sponsoren" eyebrow="Danke!" lead="Ohne unsere Sponsoren wäre vieles nicht möglich – vom Sportplatz bis zum Vereinsfest. Danke an alle, die den SV Hochhausen unterstützen." theme="club" seed={6} />
+
+<BaseLayout
+  title="Sponsoren"
+  description="Die Sponsoren und Partner des SV Hochhausen 1946 – und wie Unternehmen den Verein unterstützen können."
+>
+  <PageHero
+    title="Sponsoren"
+    eyebrow="Danke!"
+    lead="Ohne unsere Sponsoren wäre vieles nicht möglich – vom Sportplatz bis zum Vereinsfest. Danke an alle, die den SV Hochhausen unterstützen."
+    theme="club"
+    seed={6}
+  />
 
   <section class="svh-section">
     <div class="svh-container">
-      <SectionHeader eyebrow="Sponsoren" title="Unsere Unterstützer" lead="Bitte unterstützt auch ihr unsere Sponsoren – sie unterstützen den Verein." />
+      <SectionHeader
+        eyebrow="Sponsoren"
+        title="Unsere Unterstützer"
+        lead="Bitte unterstützt auch ihr unsere Sponsoren – sie unterstützen den Verein."
+      />
       <div class="svh-sponsor-grid">
-        {sponsors.map((s, i) => <div class="svh-reveal" data-delay={String(Math.min(i, 4))}><SponsorCard sponsor={s} /></div>)}
-        <a class="svh-sponsor svh-sponsor--invite svh-reveal" data-delay={String(Math.min(sponsors.length, 4))} href="#sponsor-werden">
-          <span class="svh-sponsor__logo"><Icon name="handshake" /></span>
+        {sponsors.map((s, i) => (
+          <div class="svh-reveal" data-delay={String(Math.min(i, 4))}>
+            <SponsorCard sponsor={s} />
+          </div>
+        ))}
+        <a
+          class="svh-sponsor svh-sponsor--invite svh-reveal"
+          data-delay={String(Math.min(sponsors.length, 4))}
+          href="#sponsor-werden"
+        >
+          <span class="svh-sponsor__logo">
+            <Icon name="handshake" />
+          </span>
           <span class="svh-sponsor__body">
             <span class="svh-sponsor__name">Ihr Unternehmen hier?</span>
             <span class="svh-sponsor__meta">Werden Sie Sponsor des SV Hochhausen.</span>
-            <span class="svh-sponsor__link">So geht's <Icon name="arrow-right" /></span>
+            <span class="svh-sponsor__link">
+              So geht's <Icon name="arrow-right" />
+            </span>
           </span>
         </a>
       </div>
@@ -30,7 +56,11 @@ import { partners, sponsors } from '../data/partners.js'
   <section class="svh-section svh-section--soft">
     <div class="svh-container">
       <SectionHeader eyebrow="Partner & Links" title="Mit diesen Partnern spielen wir zusammen" />
-      <div class="svh-grid svh-grid--4">{partners.map((p) => <PartnerCard partner={p} />)}</div>
+      <div class="svh-grid svh-grid--4">
+        {partners.map((p) => (
+          <PartnerCard partner={p} />
+        ))}
+      </div>
     </div>
   </section>
 
@@ -40,18 +70,38 @@ import { partners, sponsors } from '../data/partners.js'
         <div class="svh-split__content">
           <span class="svh-eyebrow">Sponsoring</span>
           <h2>Sichtbar in Hochhausen – und darüber hinaus.</h2>
-          <p>Als Sponsor unterstützen Sie Sport, Jugendarbeit und Gemeinschaft im Ort. Welche Form der Partnerschaft passt, besprechen wir gern persönlich – von der Präsenz auf der Website bis zur Unterstützung einzelner Abteilungen.</p>
+          <p>
+            Als Sponsor unterstützen Sie Sport, Jugendarbeit und Gemeinschaft im Ort. Welche Form der Partnerschaft
+            passt, besprechen wir gern persönlich – von der Präsenz auf der Website bis zur Unterstützung einzelner
+            Abteilungen.
+          </p>
           <p>Ansprechpartner für Werbung, Marketing und Sponsoring ist Philipp Seethaler aus dem Vorstand.</p>
           <div class="svh-actions">
-            <a class="svh-btn svh-btn--primary" href="/kontakt/?anliegen=sponsoring">Kontakt aufnehmen <Icon name="arrow-right" class="svh-arrow" /></a>
-            <a class="svh-btn svh-btn--outline" href="/spenden/">Lieber spenden?</a>
+            <a class="svh-btn svh-btn--primary" href="/kontakt/?anliegen=sponsoring">
+              Kontakt aufnehmen <Icon name="arrow-right" class="svh-arrow" />
+            </a>
+            <a class="svh-btn svh-btn--outline" href="/spenden/">
+              Lieber spenden?
+            </a>
           </div>
         </div>
         <ul class="svh-list-check">
-          <li><Icon name="check" /><span>Logo und Link hier auf der Sponsorenseite und auf der Startseite</span></li>
-          <li><Icon name="check" /><span>Unterstützung einer bestimmten Abteilung</span></li>
-          <li><Icon name="check" /><span>Partnerschaft bei Veranstaltungen und Turnieren</span></li>
-          <li><Icon name="check" /><span>Individuelle Absprachen – sprechen Sie uns an</span></li>
+          <li>
+            <Icon name="check" />
+            <span>Logo und Link hier auf der Sponsorenseite und auf der Startseite</span>
+          </li>
+          <li>
+            <Icon name="check" />
+            <span>Unterstützung einer bestimmten Abteilung</span>
+          </li>
+          <li>
+            <Icon name="check" />
+            <span>Partnerschaft bei Veranstaltungen und Turnieren</span>
+          </li>
+          <li>
+            <Icon name="check" />
+            <span>Individuelle Absprachen – sprechen Sie uns an</span>
+          </li>
         </ul>
       </div>
     </div>

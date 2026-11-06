@@ -14,50 +14,73 @@ const topics = [
   ['website', 'Website'],
 ]
 ---
+
 <form class="svh-form" action="/api/contact/" method="post" data-ajax-form>
   <div class="svh-form__row">
     <div class="svh-field">
-      <label for="cf-name">Name <span class="req">*</span></label>
+      <label for="cf-name">
+        Name <span class="req">*</span>
+      </label>
       <input class="svh-input" id="cf-name" name="name" type="text" autocomplete="name" required maxlength="120" />
     </div>
     <div class="svh-field">
-      <label for="cf-email">E-Mail <span class="req">*</span></label>
+      <label for="cf-email">
+        E-Mail <span class="req">*</span>
+      </label>
       <input class="svh-input" id="cf-email" name="email" type="email" autocomplete="email" required maxlength="160" />
     </div>
   </div>
   <div class="svh-form__row">
     <div class="svh-field">
-      <label for="cf-phone">Telefon <small>(optional)</small></label>
+      <label for="cf-phone">
+        Telefon <small>(optional)</small>
+      </label>
       <input class="svh-input" id="cf-phone" name="phone" type="tel" autocomplete="tel" maxlength="40" />
     </div>
     <div class="svh-field">
       <label for="cf-topic">Anliegen</label>
       <select class="svh-input" id="cf-topic" name="topic">
-        {topics.map(([v, l]) => <option value={v}>{l}</option>)}
+        {topics.map(([v, l]) => (
+          <option value={v}>{l}</option>
+        ))}
       </select>
     </div>
   </div>
   <div class="svh-field">
-    <label for="cf-dept">Abteilung <small>(optional)</small></label>
+    <label for="cf-dept">
+      Abteilung <small>(optional)</small>
+    </label>
     <select class="svh-input" id="cf-dept" name="department">
       <option value="">– keine bestimmte –</option>
-      {sports.map((s) => <option value={s.name}>{s.name}</option>)}
+      {sports.map((s) => (
+        <option value={s.name}>{s.name}</option>
+      ))}
     </select>
   </div>
   <div class="svh-field">
-    <label for="cf-message">Nachricht <span class="req">*</span></label>
+    <label for="cf-message">
+      Nachricht <span class="req">*</span>
+    </label>
     <textarea class="svh-textarea" id="cf-message" name="message" required minlength="10" maxlength="4000"></textarea>
   </div>
   <label class="svh-check">
     <input type="checkbox" name="consent" value="ja" required />
-    <span>Ich bin einverstanden, dass meine Angaben zur Bearbeitung der Anfrage verwendet werden. Mehr in der <a href="/datenschutz/">Datenschutzerklärung</a>. <span class="req">*</span></span>
+    <span>
+      Ich bin einverstanden, dass meine Angaben zur Bearbeitung der Anfrage verwendet werden. Mehr in der{' '}
+      <a href="/datenschutz/">Datenschutzerklärung</a>. <span class="req">*</span>
+    </span>
   </label>
   <div class="svh-hp" aria-hidden="true">
-    <label>Website <input type="text" name="website" tabindex="-1" autocomplete="off" /></label>
+    <label>
+      Website <input type="text" name="website" tabindex="-1" autocomplete="off" />
+    </label>
   </div>
   <input type="hidden" name="ts" value="" />
   <div class="svh-actions">
-    <button class="svh-btn svh-btn--primary" type="submit"><Icon name="send" />Nachricht senden</button>
+    <button class="svh-btn svh-btn--primary" type="submit">
+      <Icon name="send" />
+      Nachricht senden
+    </button>
   </div>
   <p class="svh-form__note">Pflichtfelder sind mit * markiert. Alternativ erreichst du uns direkt per E-Mail.</p>
   <div data-form-status role="status" aria-live="polite"></div>

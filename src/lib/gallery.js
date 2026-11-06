@@ -59,5 +59,9 @@ export async function galleryItems({ limit = Infinity, thumbWidth = 600, fullWid
 /** Filter-Kategorien in fester Reihenfolge, nur vorhandene */
 export function galleryCategories(items) {
   const present = new Set(items.map((i) => i.category))
-  return ['Alle', ...categoryOrder.filter((c) => present.has(c)), ...[...present].filter((c) => !categoryOrder.includes(c))]
+  return [
+    'Alle',
+    ...categoryOrder.filter((c) => present.has(c)),
+    ...[...present].filter((c) => !categoryOrder.includes(c)),
+  ]
 }

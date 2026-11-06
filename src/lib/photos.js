@@ -28,7 +28,11 @@ const files = import.meta.glob('/src/assets/photos/*.{jpg,jpeg,png,webp,avif,JPG
 
 const byName = {}
 for (const [path, meta] of Object.entries(files)) {
-  const name = path.split('/').pop().replace(/\.[^.]+$/, '').toLowerCase()
+  const name = path
+    .split('/')
+    .pop()
+    .replace(/\.[^.]+$/, '')
+    .toLowerCase()
   byName[name] = meta
 }
 
@@ -82,7 +86,9 @@ const cache = new Map()
 /** Eigenes Foto (Astro-Asset) optimieren → { src, srcset, width, height } */
 export async function optimizeOwn(meta, { width = 1200, widths, quality = 72 } = {}) {
   const w = Math.min(width, meta.width)
-  const ws = (widths || [Math.round(w / 2), w]).map((x) => Math.min(x, meta.width)).filter((x, i, a) => a.indexOf(x) === i)
+  const ws = (widths || [Math.round(w / 2), w])
+    .map((x) => Math.min(x, meta.width))
+    .filter((x, i, a) => a.indexOf(x) === i)
   const key = `${meta.src}|${w}|${ws.join(',')}|${quality}`
   if (cache.has(key)) return cache.get(key)
   const img = await getImage({ src: meta, width: w, widths: ws, format: 'webp', quality })
@@ -100,7 +106,11 @@ export async function optimizeOwn(meta, { width = 1200, widths, quality = 72 } =
  * Optimiertes Foto für ein Thema oder null (→ Grafik).
  * @param {object} o  width/widths/quality, avoid (Set aus usedOnPage), clean (kein Poster)
  */
-export async function optimizedPhoto(theme, seed = 0, { width = 1200, widths, quality = 70, avoid = null, clean = false, minScale = 0.6 } = {}) {
+export async function optimizedPhoto(
+  theme,
+  seed = 0,
+  { width = 1200, widths, quality = 70, avoid = null, clean = false, minScale = 0.6 } = {},
+) {
   const s = Math.abs(Number(seed) || 0)
   const list = candidates(theme, s, { clean, minWidth: Math.round(width * minScale) })
   const pick = list.find((c) => !avoid || !avoid.has(c.key))

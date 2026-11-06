@@ -13,45 +13,72 @@ function groupActive(item: any) {
   return isActive(item.to) || (item.children || []).some((c: any) => !c.to.includes('#') && isActive(c.to))
 }
 ---
+
 <header class="svh-header" data-header>
   <div class="svh-container svh-container--wide svh-header__bar">
     <a class="svh-brand" href="/" aria-label="SV Hochhausen 1946 – zur Startseite">
       <Logo class="svh-brand__logo" size={48} title="" />
-      <span class="svh-brand__name"><b>SV Hochhausen</b><span>Seit 1946 · Tauber</span></span>
+      <span class="svh-brand__name">
+        <b>SV Hochhausen</b>
+        <span>Seit 1946 · Tauber</span>
+      </span>
     </a>
 
     <nav aria-label="Hauptnavigation">
       <ul class="svh-nav">
-        {
-          nav.map((item) => (
-            <li class="svh-nav__item">
-              <a class:list={['svh-nav__link', groupActive(item) && 'is-active']} href={item.to} aria-current={path === item.to ? 'page' : undefined}>
-                {item.label}
-                {item.children && <Icon name="chevron-down" class="svh-caret" />}
-              </a>
-              {item.children && (
-                <div class="svh-nav__menu">
-                  {item.children.map((c) => (
-                    <a class:list={['svh-nav__menu-link', !c.to.includes('#') && path === c.to && 'is-active']} href={c.to}>
-                      <b>{c.label}</b>
-                      <small>{c.desc}</small>
-                    </a>
-                  ))}
-                </div>
-              )}
-            </li>
-          ))
-        }
+        {nav.map((item) => (
+          <li class="svh-nav__item">
+            <a
+              class:list={['svh-nav__link', groupActive(item) && 'is-active']}
+              href={item.to}
+              aria-current={path === item.to ? 'page' : undefined}
+            >
+              {item.label}
+              {item.children && <Icon name="chevron-down" class="svh-caret" />}
+            </a>
+            {item.children && (
+              <div class="svh-nav__menu">
+                {item.children.map((c) => (
+                  <a
+                    class:list={['svh-nav__menu-link', !c.to.includes('#') && path === c.to && 'is-active']}
+                    href={c.to}
+                  >
+                    <b>{c.label}</b>
+                    <small>{c.desc}</small>
+                  </a>
+                ))}
+              </div>
+            )}
+          </li>
+        ))}
       </ul>
     </nav>
 
     <div class="svh-header__actions">
-      <button class="svh-iconbtn" type="button" data-search-open aria-label="Suche öffnen" aria-controls="svh-search" aria-haspopup="dialog">
+      <button
+        class="svh-iconbtn"
+        type="button"
+        data-search-open
+        aria-label="Suche öffnen"
+        aria-controls="svh-search"
+        aria-haspopup="dialog"
+      >
         <Icon name="search" />
       </button>
-      <a class="svh-btn svh-btn--primary svh-btn--sm svh-header__cta" href="/mitglied-werden/">Mitglied werden</a>
-      <button class="svh-burger" type="button" data-mnav-open aria-label="Menü öffnen" aria-controls="svh-mnav" aria-expanded="false">
-        <span></span><span></span><span></span>
+      <a class="svh-btn svh-btn--primary svh-btn--sm svh-header__cta" href="/mitglied-werden/">
+        Mitglied werden
+      </a>
+      <button
+        class="svh-burger"
+        type="button"
+        data-mnav-open
+        aria-label="Menü öffnen"
+        aria-controls="svh-mnav"
+        aria-expanded="false"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
       </button>
     </div>
   </div>

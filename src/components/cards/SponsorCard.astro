@@ -10,33 +10,66 @@ interface Props {
 }
 const { sponsor: s, compact = false } = Astro.props
 
-const files = import.meta.glob('/src/assets/sponsors/*.{png,jpg,jpeg,webp,PNG,JPG,JPEG,WEBP}', { eager: true, import: 'default' })
-const asset: any = Object.entries(files).find(([p]) => p.split('/').pop()?.replace(/\.[^.]+$/, '').toLowerCase() === s.id)?.[1]
+const files = import.meta.glob('/src/assets/sponsors/*.{png,jpg,jpeg,webp,PNG,JPG,JPEG,WEBP}', {
+  eager: true,
+  import: 'default',
+})
+const asset: any = Object.entries(files).find(
+  ([p]) =>
+    p
+      .split('/')
+      .pop()
+      ?.replace(/\.[^.]+$/, '')
+      .toLowerCase() === s.id,
+)?.[1]
 
 let logo: { src: string; srcset?: string; width: number; height: number } | null = null
 if (asset) {
   const h = 96
   const w = Math.round((asset.width / asset.height) * h)
-  const img = await getImage({ src: asset, height: h, densities: asset.height >= h * 2 ? [1, 2] : [1], format: 'webp', quality: 90 })
+  const img = await getImage({
+    src: asset,
+    height: h,
+    densities: asset.height >= h * 2 ? [1, 2] : [1],
+    format: 'webp',
+    quality: 90,
+  })
   logo = { src: img.src, srcset: img.srcSet?.attribute || undefined, width: w, height: h }
 } else if (s.logo) {
   logo = { src: s.logo, width: 240, height: 96 }
 }
 const meta = [s.category, s.place].filter(Boolean).join(' · ')
 ---
-<a class:list={['svh-sponsor', compact && 'svh-sponsor--compact']} href={s.url} target="_blank" rel="noopener noreferrer" aria-label={`${s.name} – Website öffnen`}>
+
+<a
+  class:list={['svh-sponsor', compact && 'svh-sponsor--compact']}
+  href={s.url}
+  target="_blank"
+  rel="noopener noreferrer"
+  aria-label={`${s.name} – Website öffnen`}
+>
   <span class="svh-sponsor__logo">
-    {logo ? <img src={logo.src} srcset={logo.srcset} width={logo.width} height={logo.height} alt={`Logo ${s.name}`} loading="lazy" decoding="async" /> : <span class="svh-sponsor__wordmark">{s.name}</span>}
+    {logo ? (
+      <img
+        src={logo.src}
+        srcset={logo.srcset}
+        width={logo.width}
+        height={logo.height}
+        alt={`Logo ${s.name}`}
+        loading="lazy"
+        decoding="async"
+      />
+    ) : (
+      <span class="svh-sponsor__wordmark">{s.name}</span>
+    )}
   </span>
-  {
-    !compact && (
-      <span class="svh-sponsor__body">
-        <span class="svh-sponsor__name">{s.name}</span>
-        {meta && <span class="svh-sponsor__meta">{meta}</span>}
-        <span class="svh-sponsor__link">
-          Website besuchen <Icon name="external" />
-        </span>
+  {!compact && (
+    <span class="svh-sponsor__body">
+      <span class="svh-sponsor__name">{s.name}</span>
+      {meta && <span class="svh-sponsor__meta">{meta}</span>}
+      <span class="svh-sponsor__link">
+        Website besuchen <Icon name="external" />
       </span>
-    )
-  }
+    </span>
+  )}
 </a>

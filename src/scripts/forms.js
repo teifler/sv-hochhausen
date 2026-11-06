@@ -2,8 +2,10 @@
    Formulare: Versand per fetch (ohne Neuladen), Fallback =
    normales Absenden. Spamschutz: Honeypot + Zeitstempel.
    ========================================================= */
-const OK_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.1V12a10 10 0 1 1-5.9-9.1"/><path d="M22 4L12 14.01l-3-3"/></svg>'
-const ERR_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg>'
+const OK_ICON =
+  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.1V12a10 10 0 1 1-5.9-9.1"/><path d="M22 4L12 14.01l-3-3"/></svg>'
+const ERR_ICON =
+  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg>'
 
 const MESSAGES = {
   not_configured:
@@ -64,7 +66,11 @@ for (const form of document.querySelectorAll('form[data-ajax-form]')) {
     if (!form.reportValidity()) return
     /* Vorschau-Version (ohne Server): nichts senden */
     if (window.SVH_PREVIEW) {
-      setStatus(form, true, '<strong>Vorschau:</strong> Das Formular funktioniert. Der E-Mail-Versand ist erst auf der veröffentlichten Website aktiv.')
+      setStatus(
+        form,
+        true,
+        '<strong>Vorschau:</strong> Das Formular funktioniert. Der E-Mail-Versand ist erst auf der veröffentlichten Website aktiv.',
+      )
       return
     }
     const btn = form.querySelector('[type="submit"]')

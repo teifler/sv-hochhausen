@@ -16,11 +16,38 @@ interface Props {
   photo?: boolean
   minScale?: number
 }
-const { theme, seed = 1, alt = '', ratio = '16x9', zoom = false, overlay = false, width = 900, sizes = '(max-width: 560px) 100vw, (max-width: 1000px) 50vw, 400px', eager = false, class: cls, photo = true, minScale = 0.6 } = Astro.props
+const {
+  theme,
+  seed = 1,
+  alt = '',
+  ratio = '16x9',
+  zoom = false,
+  overlay = false,
+  width = 900,
+  sizes = '(max-width: 560px) 100vw, (max-width: 1000px) 50vw, 400px',
+  eager = false,
+  class: cls,
+  photo = true,
+  minScale = 0.6,
+} = Astro.props
 const [rw, rh] = ratio === 'fill' ? [4, 3] : ratio.split('x').map(Number)
 ---
-<div class:list={['svh-media', ratio === 'fill' ? 'svh-media--fill' : `svh-media--r-${ratio}`, zoom && 'svh-zoom', cls]}>
-  <Pic theme={theme} seed={seed} alt={alt} width={width} sizes={sizes} eager={eager} photo={photo} minScale={minScale} w={1200} h={Math.round((1200 * rh) / rw)} />
+
+<div
+  class:list={['svh-media', ratio === 'fill' ? 'svh-media--fill' : `svh-media--r-${ratio}`, zoom && 'svh-zoom', cls]}
+>
+  <Pic
+    theme={theme}
+    seed={seed}
+    alt={alt}
+    width={width}
+    sizes={sizes}
+    eager={eager}
+    photo={photo}
+    minScale={minScale}
+    w={1200}
+    h={Math.round((1200 * rh) / rw)}
+  />
   {overlay && <span class="svh-media__overlay"></span>}
   <slot />
 </div>

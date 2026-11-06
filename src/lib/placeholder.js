@@ -162,8 +162,10 @@ function motif(kind, w, h, accent, rand) {
       break
     }
     case 'grid': {
-      for (let i = 1; i < 10; i++) out += `<line x1="${f((w / 10) * i)}" y1="0" x2="${f((w / 10) * i)}" y2="${h}" stroke="${accent}" opacity=".18"/>`
-      for (let i = 1; i < 6; i++) out += `<line x1="0" y1="${f((h / 6) * i)}" x2="${w}" y2="${f((h / 6) * i)}" stroke="${accent}" opacity=".18"/>`
+      for (let i = 1; i < 10; i++)
+        out += `<line x1="${f((w / 10) * i)}" y1="0" x2="${f((w / 10) * i)}" y2="${h}" stroke="${accent}" opacity=".18"/>`
+      for (let i = 1; i < 6; i++)
+        out += `<line x1="0" y1="${f((h / 6) * i)}" x2="${w}" y2="${f((h / 6) * i)}" stroke="${accent}" opacity=".18"/>`
       out += `<circle cx="${w / 2}" cy="${f(h * 1.1)}" r="${f(min * 0.5)}" fill="none" stroke="${accent}" stroke-width="3" opacity=".25"/>`
       break
     }
@@ -183,7 +185,9 @@ function motif(kind, w, h, accent, rand) {
 export function placeholder(theme = 'neutral', { w = 1200, h = 800, seed = 1, label = '' } = {}) {
   const p = paletteFor(theme)
   const rand = rng(seed + String(theme).length * 13)
-  const id = `g${seed}${String(theme).replace(/[^a-z]/gi, '').slice(0, 5)}`
+  const id = `g${seed}${String(theme)
+    .replace(/[^a-z]/gi, '')
+    .slice(0, 5)}`
   let svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" preserveAspectRatio="xMidYMid slice">`
   svg += `<defs><linearGradient id="${id}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${p.stops[0]}"/><stop offset=".55" stop-color="${p.stops[1]}"/><stop offset="1" stop-color="${p.stops[2]}"/></linearGradient>`
   svg += `<radialGradient id="v${id}" cx=".5" cy=".4" r=".75"><stop offset=".6" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".35"/></radialGradient></defs>`

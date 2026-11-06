@@ -2,16 +2,26 @@
 import BaseLayout from '../layouts/BaseLayout.astro'
 import Icon from '../components/Icon.astro'
 ---
+
 <BaseLayout title="Seite nicht gefunden" noindex>
   <section class="svh-section svh-404">
     <div class="svh-container svh-container--narrow">
       <div class="svh-404__big">404</div>
       <h1 class="svh-section-title svh-mt-2">Abseits!</h1>
-      <p class="svh-section-lead svh-mt-2" style="margin-inline:auto">Diese Seite gibt es nicht (mehr). Vielleicht hilft die Suche oder einer der Links weiter.</p>
+      <p class="svh-section-lead svh-mt-2" style="margin-inline:auto">
+        Diese Seite gibt es nicht (mehr). Vielleicht hilft die Suche oder einer der Links weiter.
+      </p>
       <div class="svh-actions svh-actions--center svh-mt-3">
-        <a class="svh-btn svh-btn--primary" href="/">Zur Startseite</a>
-        <button class="svh-btn svh-btn--outline" type="button" data-search-open><Icon name="search" />Suche öffnen</button>
-        <a class="svh-btn svh-btn--light" href="/kontakt/">Kontakt</a>
+        <a class="svh-btn svh-btn--primary" href="/">
+          Zur Startseite
+        </a>
+        <button class="svh-btn svh-btn--outline" type="button" data-search-open>
+          <Icon name="search" />
+          Suche öffnen
+        </button>
+        <a class="svh-btn svh-btn--light" href="/kontakt/">
+          Kontakt
+        </a>
       </div>
     </div>
   </section>

@@ -6,11 +6,16 @@ interface Props {
 }
 const { doc: d } = Astro.props
 ---
+
 <div class="svh-doc">
-  <span class="svh-doc__icon"><Icon name="file-text" /></span>
+  <span class="svh-doc__icon">
+    <Icon name="file-text" />
+  </span>
   <div class="svh-doc__main">
     <div class="svh-doc__title">{d.title}</div>
-    <div class="svh-doc__meta">{d.fileType} · {d.category} – {d.desc}</div>
+    <div class="svh-doc__meta">
+      {d.fileType} · {d.category} – {d.desc}
+    </div>
   </div>
   <div class="svh-doc__action">
     <a class="svh-btn svh-btn--outline svh-btn--sm" href={d.url} target="_blank" rel="noopener noreferrer">

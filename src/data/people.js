@@ -8,7 +8,13 @@
    ========================================================= */
 
 export const chairs = [
-  { name: 'Philipp Seethaler', role: 'Vorsitzender', extra: 'Werbung, Marketing & Sponsoring', initials: 'PS', seed: 1 },
+  {
+    name: 'Philipp Seethaler',
+    role: 'Vorsitzender',
+    extra: 'Werbung, Marketing & Sponsoring',
+    initials: 'PS',
+    seed: 1,
+  },
   { name: 'Sebastian Michel', role: 'Vorsitzender', extra: 'Platzwart', initials: 'SM', seed: 2 },
   { name: 'Armin Gärtner', role: 'Vorsitzender', initials: 'AG', seed: 3 },
 ]

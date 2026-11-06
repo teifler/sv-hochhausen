@@ -5,48 +5,66 @@ import { donate, donationPurposes } from '../data/donate.js'
 
 const hasBank = Boolean(donate.bank.iban)
 ---
+
 <form class="svh-form" action="/api/spende/" method="post" data-ajax-form data-donation-form>
   <fieldset class="svh-fieldset">
     <legend>Betrag</legend>
     <div class="svh-amounts" role="radiogroup" aria-label="Spendenbetrag">
-      {
-        donate.suggestedAmounts.map((a, i) => (
-          <label class="svh-amount">
-            <input type="radio" name="amount" value={String(a)} checked={i === 1} />
-            <span>{a} €</span>
-          </label>
-        ))
-      }
+      {donate.suggestedAmounts.map((a, i) => (
+        <label class="svh-amount">
+          <input type="radio" name="amount" value={String(a)} checked={i === 1} />
+          <span>{a} €</span>
+        </label>
+      ))}
       <label class="svh-amount">
         <input type="radio" name="amount" value="andere" data-amount-other />
         <span>Anderer Betrag</span>
       </label>
     </div>
     <div class="svh-field svh-amount-other" data-amount-other-field hidden>
-      <label for="df-amount">Eigener Betrag in € <span class="req">*</span></label>
-      <input class="svh-input" id="df-amount" name="amountOther" type="number" min="1" max="100000" step="1" inputmode="numeric" />
+      <label for="df-amount">
+        Eigener Betrag in € <span class="req">*</span>
+      </label>
+      <input
+        class="svh-input"
+        id="df-amount"
+        name="amountOther"
+        type="number"
+        min="1"
+        max="100000"
+        step="1"
+        inputmode="numeric"
+      />
     </div>
   </fieldset>
 
   <div class="svh-field">
     <label for="df-purpose">Wofür soll die Spende eingesetzt werden?</label>
     <select class="svh-input" id="df-purpose" name="purpose">
-      {donationPurposes.map((p) => <option value={p.title}>{p.title}</option>)}
+      {donationPurposes.map((p) => (
+        <option value={p.title}>{p.title}</option>
+      ))}
     </select>
   </div>
 
   <div class="svh-form__row">
     <div class="svh-field">
-      <label for="df-name">Name <span class="req">*</span></label>
+      <label for="df-name">
+        Name <span class="req">*</span>
+      </label>
       <input class="svh-input" id="df-name" name="name" type="text" autocomplete="name" required maxlength="120" />
     </div>
     <div class="svh-field">
-      <label for="df-email">E-Mail <span class="req">*</span></label>
+      <label for="df-email">
+        E-Mail <span class="req">*</span>
+      </label>
       <input class="svh-input" id="df-email" name="email" type="email" autocomplete="email" required maxlength="160" />
     </div>
   </div>
   <div class="svh-field">
-    <label for="df-phone">Telefon <small>(optional)</small></label>
+    <label for="df-phone">
+      Telefon <small>(optional)</small>
+    </label>
     <input class="svh-input" id="df-phone" name="phone" type="tel" autocomplete="tel" maxlength="40" />
   </div>
 
@@ -56,11 +74,15 @@ const hasBank = Boolean(donate.bank.iban)
   </label>
   <div class="svh-form__row" data-receipt-fields hidden>
     <div class="svh-field">
-      <label for="df-street">Straße &amp; Hausnummer <span class="req">*</span></label>
+      <label for="df-street">
+        Straße &amp; Hausnummer <span class="req">*</span>
+      </label>
       <input class="svh-input" id="df-street" name="street" type="text" autocomplete="street-address" maxlength="160" />
     </div>
     <div class="svh-field">
-      <label for="df-city">PLZ &amp; Ort <span class="req">*</span></label>
+      <label for="df-city">
+        PLZ &amp; Ort <span class="req">*</span>
+      </label>
       <input class="svh-input" id="df-city" name="city" type="text" autocomplete="address-level2" maxlength="120" />
     </div>
   </div>
@@ -71,23 +93,36 @@ const hasBank = Boolean(donate.bank.iban)
   </label>
 
   <div class="svh-field">
-    <label for="df-message">Nachricht <small>(optional)</small></label>
+    <label for="df-message">
+      Nachricht <small>(optional)</small>
+    </label>
     <textarea class="svh-textarea" id="df-message" name="message" maxlength="2000" rows="4"></textarea>
   </div>
 
   <label class="svh-check">
     <input type="checkbox" name="consent" value="ja" required />
-    <span>Ich bin einverstanden, dass meine Angaben zur Abwicklung der Spende verwendet werden. Mehr in der <a href="/datenschutz/">Datenschutzerklärung</a>. <span class="req">*</span></span>
+    <span>
+      Ich bin einverstanden, dass meine Angaben zur Abwicklung der Spende verwendet werden. Mehr in der{' '}
+      <a href="/datenschutz/">Datenschutzerklärung</a>. <span class="req">*</span>
+    </span>
   </label>
   <div class="svh-hp" aria-hidden="true">
-    <label>Website <input type="text" name="website" tabindex="-1" autocomplete="off" /></label>
+    <label>
+      Website <input type="text" name="website" tabindex="-1" autocomplete="off" />
+    </label>
   </div>
   <input type="hidden" name="ts" value="" />
   <div class="svh-actions">
-    <button class="svh-btn svh-btn--primary" type="submit"><Icon name="heart" />Spende ankündigen</button>
+    <button class="svh-btn svh-btn--primary" type="submit">
+      <Icon name="heart" />
+      Spende ankündigen
+    </button>
   </div>
   <p class="svh-form__note">
-    {hasBank ? 'Nach dem Absenden bitte den Betrag auf das Vereinskonto überweisen (Bankverbindung und GiroCode auf dieser Seite).' : 'Nach dem Absenden meldet sich der Verein mit den Überweisungsdaten bei dir.'} Es wird nichts automatisch abgebucht.
+    {hasBank
+      ? 'Nach dem Absenden bitte den Betrag auf das Vereinskonto überweisen (Bankverbindung und GiroCode auf dieser Seite).'
+      : 'Nach dem Absenden meldet sich der Verein mit den Überweisungsdaten bei dir.'}{' '}
+    Es wird nichts automatisch abgebucht.
   </p>
   <div data-form-status role="status" aria-live="polite"></div>
 </form>
