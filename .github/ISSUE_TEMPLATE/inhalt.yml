@@ -1,0 +1,32 @@
+name: Inhalt ändern oder ergänzen
+description: Neuer Termin, News, Trainingszeit, Ansprechpartner, Sponsor, Foto …
+labels: [inhalt]
+body:
+  - type: dropdown
+    id: bereich
+    attributes:
+      label: Bereich
+      options:
+        - Termin / Veranstaltung
+        - News / Bericht
+        - Trainingszeiten
+        - Vorstand / Ansprechpartner
+        - Sponsor / Partner
+        - Fotos
+        - Sonstiges
+    validations:
+      required: true
+  - type: textarea
+    id: inhalt
+    attributes:
+      label: Was soll auf die Website?
+      description: Möglichst vollständig – Datum, Uhrzeit, Ort, Namen, Text. Fotos hier hineinziehen.
+    validations:
+      required: true
+  - type: checkboxes
+    id: freigabe
+    attributes:
+      label: Freigabe
+      options:
+        - label: Die Angaben sind mit dem Vorstand bzw. der Abteilung abgestimmt.
+        - label: Abgebildete Personen sind mit der Veröffentlichung einverstanden.

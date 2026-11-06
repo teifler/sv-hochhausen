@@ -1,0 +1,8 @@
+# Abhängigkeiten, Build-Ausgabe, generierte Dateien
+node_modules/
+dist/
+.vercel/
+.astro/
+coverage/
+package-lock.json
+src/assets/instagram/

@@ -1,0 +1,32 @@
+name: Fehler melden
+description: Etwas auf der Website funktioniert nicht oder sieht kaputt aus.
+labels: [bug]
+body:
+  - type: input
+    id: seite
+    attributes:
+      label: Betroffene Seite
+      placeholder: z. B. /termine/ oder https://…
+    validations:
+      required: true
+  - type: textarea
+    id: beschreibung
+    attributes:
+      label: Was ist passiert, was hättest du erwartet?
+    validations:
+      required: true
+  - type: dropdown
+    id: geraet
+    attributes:
+      label: Gerät
+      options: [Handy, Tablet, Computer]
+  - type: input
+    id: browser
+    attributes:
+      label: Browser
+      placeholder: z. B. Safari auf iPhone, Chrome auf Windows
+  - type: textarea
+    id: screenshot
+    attributes:
+      label: Screenshot (optional)
+      description: Bild einfach hier hineinziehen.

@@ -1,0 +1,14 @@
+* text=auto eol=lf
+
+# Windows-Skripte (Doppelklick-Upload) mit CRLF auschecken
+*.cmd text eol=crlf
+*.ps1 text eol=crlf
+
+# Binärdateien
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.ico binary
+*.pdf binary
+*.woff2 binary
