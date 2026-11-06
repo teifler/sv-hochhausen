@@ -36,6 +36,33 @@ for (const pathname of pages) {
       () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
     )
     expect(overflow, 'horizontale Scrollbar').toBeLessThanOrEqual(0)
+
+    /* SEO & Teilen: Sprache, Beschreibung, Canonical auf die Hauptadresse, Vorschaubild, gültiges JSON-LD */
+    await expect(page.locator('html')).toHaveAttribute('lang', 'de')
+    await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', /.{30,}/)
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
+      'href',
+      `https://www.sportverein-hochhausen.de${pathname}`,
+    )
+    await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content', /^https:\/\//)
+    for (const json of await page.locator('script[type="application/ld+json"]').allTextContents()) {
+      expect(() => JSON.parse(json), 'JSON-LD').not.toThrow()
+    }
+
+    /* Keine kaputten Bilder (auch die erst beim Scrollen geladenen) */
+    const broken = await page.evaluate(() =>
+      Promise.all(
+        [...document.images].map((img) => {
+          img.loading = 'eager'
+          return img.decode().then(
+            () => null,
+            () => img.currentSrc || img.src,
+          )
+        }),
+      ).then((r) => r.filter(Boolean)),
+    )
+    expect(broken, 'Bilder, die nicht laden').toEqual([])
+
     expect(errors, 'Fehler in der Konsole').toEqual([])
     expect(external, 'Anfragen an Dritte beim Laden').toEqual([])
   })
