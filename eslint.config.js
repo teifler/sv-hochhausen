@@ -8,7 +8,7 @@ import globals from 'globals'
 import tseslint from 'typescript-eslint'
 
 export default [
-  { ignores: ['dist/', '.vercel/', '.astro/', 'coverage/', 'node_modules/'] },
+  { ignores: ['dist/', '.vercel/', '.astro/', 'coverage/', 'node_modules/', 'test-results/', 'playwright-report/'] },
 
   js.configs.recommended,
   ...astro.configs.recommended,
@@ -44,6 +44,12 @@ export default [
   {
     files: ['scripts/**/*.mjs', '*.config.{js,mjs}', 'src/{lib,data,pages}/**/*.js', 'tests/**/*.js'],
     languageOptions: { globals: { ...globals.node } },
+  },
+
+  /* E2E-Tests: Node + Browser (Callbacks von page.evaluate laufen im Browser) */
+  {
+    files: ['tests/e2e/**/*.js'],
+    languageOptions: { globals: { ...globals.node, ...globals.browser } },
   },
 
   prettier,

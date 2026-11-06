@@ -12,7 +12,7 @@ Menschen. `CLAUDE.md` bindet diese Datei nur ein. Inhaltspflege für Vereinsmitg
 | Node         | **24.22.2** laut `.nvmrc` (`nvm use`); erlaubt `>=22.23.4 <23 \|\| >=24.22.1` (Brotli-Fix CVE-2026-111497) |
 | Inhalte      | ausschließlich `src/data/*.js`                                                                             |
 | Qualität     | Prettier · ESLint (inkl. a11y) · Vitest · Husky + lint-staged + commitlint · GitHub Actions                |
-| Fertig heißt | `npm run validate` **und** `npm run build:local` laufen fehlerfrei                                         |
+| Fertig heißt | `npm run validate`, `npm run build:local` und `npm run test:e2e` laufen fehlerfrei                         |
 
 ## 1. Was ist das?
 
@@ -74,6 +74,7 @@ Nordic Walking, Wandern) gleichwertig darstellen.
 | `npm run format` / `format:check`           | Prettier schreiben / prüfen                                                  |
 | `npm run lint` / `lint:fix`                 | ESLint (JS + Astro + a11y)                                                   |
 | `npm test` / `test:watch` / `test:coverage` | Vitest                                                                       |
+| `npm run test:e2e` / `test:e2e:ui`          | Playwright gegen den fertigen Build (vorher `build:local`)                   |
 | `npm run check`                             | `astro check` (Typen) – derzeit nicht fehlerfrei, siehe Abschnitt 11         |
 
 Build-Ausgabe: `.vercel/output/static` (statisch) + `.vercel/output/functions` (API).
@@ -208,31 +209,39 @@ Parallax `[data-parallax]`.
 - Einblenden beim Scrollen: `.js .svh-reveal` (+ `--zoom`, `data-delay`) per IntersectionObserver. Nur
   `transform`/`opacity` animieren; `prefers-reduced-motion` wird respektiert.
 - Scroll-Hinweis im Hero sitzt rechts unten (ab 1000 px), damit er die linksbündigen Inhalte nie überdeckt.
+- Overlays mit `visibility: hidden` (Suche, Termin-Modal): im `.is-open`-Zustand `visibility 0s` als Transition, sonst
+  kann `focus()` beim Öffnen ins Leere gehen (Element noch unsichtbar). Ausblenden darf verzögert bleiben.
 
 ## 8. Qualität & Tooling
 
-| Werkzeug                             | Konfiguration                         | Hinweise                                                                                                         |
-| ------------------------------------ | ------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
-| Prettier 3 + `prettier-plugin-astro` | `.prettierrc.json`, `.prettierignore` | keine Semikolons, einfache Anführungszeichen, Breite 120                                                         |
-| ESLint 10 (Flat Config)              | `eslint.config.js`                    | `@eslint/js` recommended, `eslint-plugin-astro` + jsx-a11y, TS-Parser fürs Frontmatter, `eslint-config-prettier` |
-| Vitest 5                             | `vitest.config.js`, `tests/*.test.js` | nur reine Module (kein DOM); Astro-Komponenten prüft der Build                                                   |
-| Husky 9                              | `.husky/`                             | `pre-commit` → lint-staged, `commit-msg` → commitlint, `pre-push` → `npm test`                                   |
-| lint-staged                          | `package.json` → `lint-staged`        | ESLint `--fix` + Prettier nur auf gestagte Dateien                                                               |
-| commitlint                           | `commitlint.config.js`                | Conventional Commits, Groß-/Kleinschreibung des Betreffs frei (Deutsch)                                          |
-| EditorConfig / VS Code               | `.editorconfig`, `.vscode/`           | LF, 2 Leerzeichen; `.cmd`/`.ps1` mit CRLF (`.gitattributes`)                                                     |
-| GitHub Actions                       | `.github/workflows/ci.yml`            | Prettier, ESLint, Tests und `build:local` bei Push/PR                                                            |
-| Dependabot                           | `.github/dependabot.yml`              | npm wöchentlich (Astro-Pakete gruppiert), Actions monatlich                                                      |
+| Werkzeug                             | Konfiguration                                 | Hinweise                                                                                                         |
+| ------------------------------------ | --------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| Prettier 3 + `prettier-plugin-astro` | `.prettierrc.json`, `.prettierignore`         | keine Semikolons, einfache Anführungszeichen, Breite 120                                                         |
+| ESLint 10 (Flat Config)              | `eslint.config.js`                            | `@eslint/js` recommended, `eslint-plugin-astro` + jsx-a11y, TS-Parser fürs Frontmatter, `eslint-config-prettier` |
+| Vitest 5                             | `vitest.config.js`, `tests/*.test.js`         | nur reine Module (kein DOM); Astro-Komponenten prüft der Build                                                   |
+| Playwright 1.64                      | `playwright.config.js`, `tests/e2e/*.spec.js` | Chromium, Desktop 1280 px + Handy 360 px; Server `scripts/serve.mjs` (wie Webspace: 301 auf `/`, 404.html)       |
+| Husky 9                              | `.husky/`                                     | `pre-commit` → lint-staged, `commit-msg` → commitlint, `pre-push` → `npm test`                                   |
+| lint-staged                          | `package.json` → `lint-staged`                | ESLint `--fix` + Prettier nur auf gestagte Dateien                                                               |
+| commitlint                           | `commitlint.config.js`                        | Conventional Commits, Groß-/Kleinschreibung des Betreffs frei (Deutsch)                                          |
+| EditorConfig / VS Code               | `.editorconfig`, `.vscode/`                   | LF, 2 Leerzeichen; `.cmd`/`.ps1` mit CRLF (`.gitattributes`)                                                     |
+| GitHub Actions                       | `.github/workflows/ci.yml`                    | Prettier, ESLint, Unit-Tests (Node 24.22.2 + 22.23.4), `build:local` + E2E bei Push/PR                           |
+| Dependabot                           | `.github/dependabot.yml`                      | npm wöchentlich (Astro-Pakete gruppiert), Actions monatlich                                                      |
 
 **Tests** (`tests/`): `format` (Datum/Zeitzone), `searchcore` (Normalisierung, Ranking, Escaping), `formutil` (Spam-
 schutz, Header-Injection, JSON/303), `ics` (Kalenderexport), `data` (IBAN, Links/Weiterleitungen, Slugs, Spielplan).
 Neue reine Logik gehört in `src/lib/` bzw. `src/scripts/` als DOM-freies Modul mit Test – DOM-Code (z. B. `modal.js`)
 importiert sie nur.
 
+**E2E** (`tests/e2e/`): `seiten` – jede Seite der Sitemap lädt mit Status 200, Titel, `<h1>`, ohne Konsolenfehler, ohne
+horizontale Scrollbar und **ohne Anfrage an fremde Server**; 404-Seite. `interaktion` – Mobile-Menü (Fokus, Escape),
+Suche (ß/ss), Termin-Modal + `.ics`-Download, Facebook erst nach Klick, Weiterleitungen alter Adressen.
+Neue Seiten sind über die Sitemap automatisch abgedeckt.
+
 **Ausgabe vergleichen:** Bei Umbauten an Templates/Formatierung den Build vorher/nachher vergleichen
 (`.vercel/output/static` kopieren, neu bauen, `diff -r`). Der statische Build ist deterministisch; im Server-Bundle
 unterscheiden sich nur zufällige Build-Secrets.
 
-**Manuell/Browser geprüft** (Playwright, beim Relaunch): alle Seiten bei 360/390/768/1024/1280/1536 px ohne Overflow und
+**Zusätzlich manuell geprüft** (beim Relaunch): alle Seiten bei 360/390/768/1024/1280/1536 px ohne Overflow und
 ohne Konsolenfehler; Mobile-Menü inkl. Fokus/Escape, Dropdown, Suche, Modal + ICS, Kalender-Monatsansicht,
 Galerie-Lightbox, Filter, Kopieren, Formular-Logik; Motion (Laufband, keine externen Requests beim Laden, Zähler,
 `--svh-p`, „Heute“, Countdown, Ken Burns, reduzierte Bewegung); Facebook-iframe erst nach Zustimmung.

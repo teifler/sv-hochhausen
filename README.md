@@ -6,6 +6,7 @@
 [![Prettier](https://img.shields.io/badge/code_style-Prettier-F7B93E?logo=prettier&logoColor=white)](https://prettier.io)
 [![ESLint](https://img.shields.io/badge/lint-ESLint-4B32C3?logo=eslint&logoColor=white)](https://eslint.org)
 [![Vitest](https://img.shields.io/badge/tests-Vitest-6E9F18?logo=vitest&logoColor=white)](https://vitest.dev)
+[![Playwright](https://img.shields.io/badge/e2e-Playwright-2EAD33?logo=playwright&logoColor=white)](https://playwright.dev)
 [![Conventional Commits](https://img.shields.io/badge/Conventional_Commits-1.0.0-FE5196?logo=conventionalcommits&logoColor=white)](https://www.conventionalcommits.org/de/v1.0.0/)
 
 Website des **Sportverein 1946 Hochhausen/Tauber e.V.** (Tauberbischofsheim-Hochhausen).
@@ -56,13 +57,14 @@ Technische Doku für Entwickler und KI-Assistenten: [`AGENTS.md`](AGENTS.md).
 
 ## Entwicklung
 
-| Befehl                | Zweck                                                  |
-| --------------------- | ------------------------------------------------------ |
-| `npm run validate`    | alles, was die CI prüft: Prettier, ESLint, Unit-Tests  |
-| `npm run format`      | Code mit Prettier formatieren                          |
-| `npm run lint:fix`    | ESLint (JavaScript, Astro, Barrierefreiheit) mit Fixes |
-| `npm test`            | Unit-Tests mit Vitest (`test:watch`, `test:coverage`)  |
-| `npm run build:local` | Build ohne Downloads – muss fehlerfrei durchlaufen     |
+| Befehl                | Zweck                                                    |
+| --------------------- | -------------------------------------------------------- |
+| `npm run validate`    | alles, was die CI prüft: Prettier, ESLint, Unit-Tests    |
+| `npm run format`      | Code mit Prettier formatieren                            |
+| `npm run lint:fix`    | ESLint (JavaScript, Astro, Barrierefreiheit) mit Fixes   |
+| `npm test`            | Unit-Tests mit Vitest (`test:watch`, `test:coverage`)    |
+| `npm run test:e2e`    | E2E-Tests mit Playwright gegen den Build (`test:e2e:ui`) |
+| `npm run build:local` | Build ohne Downloads – muss fehlerfrei durchlaufen       |
 
 - **Git-Hooks (Husky):** Vor jedem Commit formatiert und lintet `lint-staged` die geänderten Dateien, commitlint prüft die
   Nachricht, vor dem Push laufen die Tests. Die Hooks richtet `npm install` automatisch ein.
