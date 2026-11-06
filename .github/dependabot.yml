@@ -8,6 +8,10 @@ updates:
     open-pull-requests-limit: 5
     commit-message:
       prefix: 'chore(deps)'
+    ignore:
+      # TypeScript 7 wird von typescript-eslint und @astrojs/check noch nicht unterstützt
+      - dependency-name: typescript
+        update-types: ['version-update:semver-major']
     groups:
       astro:
         patterns: ['astro', '@astrojs/*', 'prettier-plugin-astro', 'eslint-plugin-astro']
