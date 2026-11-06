@@ -1,0 +1,6 @@
+# Reine Formatierungs-Commits – in git blame überspringen:
+#   git config blame.ignoreRevsFile .git-blame-ignore-revs
+# (GitHub berücksichtigt die Datei automatisch.)
+
+# style: gesamten Code mit Prettier formatieren
+6be383ce48cb9db9624d2c158a19fae95268769e
